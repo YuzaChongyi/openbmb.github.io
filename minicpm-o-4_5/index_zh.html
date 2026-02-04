@@ -417,15 +417,15 @@
     <!-- Hero -->
     <header class="hero">
         <div class="hero-inner">
-            <h1>MiniCPM-o 4.5</h1>
+            <h1>MiniCPM-o 4.5 语音能力演示</h1>
             <div class="hero-links">
-                <a href="#">DEMO</a>
+                <a href="#">DEMO (即将上线)</a>
                 <span class="sep">|</span>
-                <a href="#">PAPER</a>
+                <!-- <a href="#">PAPER</a> -->
+                <!-- <span class="sep">|</span> -->
+                <a href="https://github.com/OpenBMB/MiniCPM-o">GITHUB</a>
                 <span class="sep">|</span>
-                <a href="#">GITHUB</a>
-                <span class="sep">|</span>
-                <a href="#">HUGGING FACE</a>
+                <a href="https://huggingface.co/openbmb/MiniCPM-o-4_5">HUGGING FACE</a>
             </div>
             <div class="lang-switch">
                 <span class="lang-active">中文</span>
@@ -537,14 +537,14 @@
             
             return `
                 <div class="system-block">
-                    <div class="system-title">System Setting</div>
+                    <div class="system-title">系统设定</div>
                     <div class="system-row">
-                        <span class="system-label">Prefix</span>
+                        <span class="system-label">前缀</span>
                         <div class="system-value mono">${escapeHtml(system.prefix || '')}</div>
                     </div>
                     ${system.ref_audio ? `
                         <div class="system-row">
-                            <span class="system-label">Ref Audio</span>
+                            <span class="system-label">参考音频</span>
                             <div class="system-value">
                                 <div class="audio-player">
                                     <audio controls preload="none">
@@ -555,7 +555,7 @@
                         </div>
                     ` : ''}
                     <div class="system-row">
-                        <span class="system-label">Suffix</span>
+                        <span class="system-label">后缀</span>
                         <div class="system-value mono">${escapeHtml(system.suffix || '')}</div>
                     </div>
                 </div>
@@ -576,13 +576,13 @@
             return `
                 <div class="turn">
                     <div class="message user">
-                        <div class="message-role">User</div>
+                        <div class="message-role">用户</div>
                         <div class="message-content">
                             <div class="message-text">${escapeHtml(turn.user_text || '')}</div>
                         </div>
                     </div>
                     <div class="message ai">
-                        <div class="message-role">AI</div>
+                        <div class="message-role">模型</div>
                         <div class="message-content">
                             <div class="message-text">${escapeHtml(turn.assistant_text || '')}</div>
                             ${turn.assistant_audio ? `
