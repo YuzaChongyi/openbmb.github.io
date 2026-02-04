@@ -1,0 +1,11 @@
+{
+  "collected_at": "2026-02-03T14:06:45",
+  "lang": "zh",
+  "case_name": "海天_故事",
+  "src": "/user/wangtianran/eval/audio_3val_3o_duplex_vc_wip/simple_demo/sessions/session_20260201_061402_8687e555",
+  "dst": "/user/xubokai/audio_eval_3o/github_pages/collected/zh/海天_故事/session_20260201_061402_8687e555",
+  "turn_range_raw": ":",
+  "turn_range": null,
+  "case_line_no": 13,
+  "case_line_raw": "海天_故事,/user/wangtianran/eval/audio_3val_3o_duplex_vc_wip/simple_demo/sessions/session_20260201_061402_8687e555,:"
+}

@@ -1,0 +1,7 @@
+{
+  "text": "language Chinese<asr_text>说我是面壁小钢炮，第一遍很快的说，第二遍很慢的说，说两遍。",
+  "usage": {
+    "type": "duration",
+    "seconds": 6
+  }
+}

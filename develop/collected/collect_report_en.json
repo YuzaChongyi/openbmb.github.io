@@ -1,0 +1,135 @@
+{
+  "generated_at": "2026-02-03T14:06:44",
+  "lang": "en",
+  "case_file": "/user/xubokai/audio_eval_3o/github_pages/case_en.txt",
+  "out_root": "/user/xubokai/audio_eval_3o/github_pages/collected",
+  "dry_run": false,
+  "skip_existing": false,
+  "total_entries": 9,
+  "unique_entries": 9,
+  "status_counts": {
+    "copied": 9
+  },
+  "results": [
+    {
+      "lang": "en",
+      "case_name": "role_play",
+      "src": "/user/sunweiyue/lib/audio_eval_3o/simple_demo/sessions/session_20260202_105227_ce11813b",
+      "dst": "/user/xubokai/audio_eval_3o/github_pages/collected/en/role_play/session_20260202_105227_ce11813b",
+      "turn_range_raw": ":",
+      "turn_range": null,
+      "line_no": 1,
+      "line_raw": "role_play,/user/sunweiyue/lib/audio_eval_3o/simple_demo/sessions/session_20260202_105227_ce11813b,:",
+      "status": "copied",
+      "error": null,
+      "user_audio_files": 1
+    },
+    {
+      "lang": "en",
+      "case_name": "role_play",
+      "src": "/user/sunweiyue/lib/audio_eval_3o/simple_demo/sessions/session_20260202_123623_74d99a7b",
+      "dst": "/user/xubokai/audio_eval_3o/github_pages/collected/en/role_play/session_20260202_123623_74d99a7b",
+      "turn_range_raw": ":",
+      "turn_range": null,
+      "line_no": 2,
+      "line_raw": "role_play,/user/sunweiyue/lib/audio_eval_3o/simple_demo/sessions/session_20260202_123623_74d99a7b,:",
+      "status": "copied",
+      "error": null,
+      "user_audio_files": 1
+    },
+    {
+      "lang": "en",
+      "case_name": "role_play",
+      "src": "/user/sunweiyue/lib/audio_eval_3o/simple_demo/sessions/session_20260202_095916_841945f1",
+      "dst": "/user/xubokai/audio_eval_3o/github_pages/collected/en/role_play/session_20260202_095916_841945f1",
+      "turn_range_raw": ":",
+      "turn_range": null,
+      "line_no": 3,
+      "line_raw": "role_play,/user/sunweiyue/lib/audio_eval_3o/simple_demo/sessions/session_20260202_095916_841945f1,:",
+      "status": "copied",
+      "error": null,
+      "user_audio_files": 2
+    },
+    {
+      "lang": "en",
+      "case_name": "role_play",
+      "src": "/user/zhangluoyuan/audio_eval_3o/simple_demo/sessions/session_20260201_162123_cea6a9a3",
+      "dst": "/user/xubokai/audio_eval_3o/github_pages/collected/en/role_play/session_20260201_162123_cea6a9a3",
+      "turn_range_raw": ":",
+      "turn_range": null,
+      "line_no": 4,
+      "line_raw": "role_play,/user/zhangluoyuan/audio_eval_3o/simple_demo/sessions/session_20260201_162123_cea6a9a3,:",
+      "status": "copied",
+      "error": null,
+      "user_audio_files": 2
+    },
+    {
+      "lang": "en",
+      "case_name": "role_play",
+      "src": "/user/zhangluoyuan/audio_eval_3o/simple_demo/sessions/session_20260202_052426_8eae8492",
+      "dst": "/user/xubokai/audio_eval_3o/github_pages/collected/en/role_play/session_20260202_052426_8eae8492",
+      "turn_range_raw": "0:1",
+      "turn_range": [
+        0,
+        1
+      ],
+      "line_no": 5,
+      "line_raw": "role_play,/user/zhangluoyuan/audio_eval_3o/simple_demo/sessions/session_20260202_052426_8eae8492,0:1",
+      "status": "copied",
+      "error": null,
+      "user_audio_files": 1
+    },
+    {
+      "lang": "en",
+      "case_name": "role_play",
+      "src": "/user/sunweiyue/lib/audio_eval_3o/simple_demo/sessions/session_20260202_090115_395fe482",
+      "dst": "/user/xubokai/audio_eval_3o/github_pages/collected/en/role_play/session_20260202_090115_395fe482",
+      "turn_range_raw": ":",
+      "turn_range": null,
+      "line_no": 6,
+      "line_raw": "role_play,/user/sunweiyue/lib/audio_eval_3o/simple_demo/sessions/session_20260202_090115_395fe482,:",
+      "status": "copied",
+      "error": null,
+      "user_audio_files": 2
+    },
+    {
+      "lang": "en",
+      "case_name": "role_play",
+      "src": "/user/sunweiyue/lib/audio_eval_3o/simple_demo/sessions/session_20260202_102023_bd095bf7",
+      "dst": "/user/xubokai/audio_eval_3o/github_pages/collected/en/role_play/session_20260202_102023_bd095bf7",
+      "turn_range_raw": ":",
+      "turn_range": null,
+      "line_no": 7,
+      "line_raw": "role_play,/user/sunweiyue/lib/audio_eval_3o/simple_demo/sessions/session_20260202_102023_bd095bf7,:",
+      "status": "copied",
+      "error": null,
+      "user_audio_files": 3
+    },
+    {
+      "lang": "en",
+      "case_name": "role_play",
+      "src": "/user/sunweiyue/lib/audio_eval_3o/simple_demo/sessions/session_20260202_104302_1be1c709",
+      "dst": "/user/xubokai/audio_eval_3o/github_pages/collected/en/role_play/session_20260202_104302_1be1c709",
+      "turn_range_raw": ":",
+      "turn_range": null,
+      "line_no": 8,
+      "line_raw": "role_play,/user/sunweiyue/lib/audio_eval_3o/simple_demo/sessions/session_20260202_104302_1be1c709,:",
+      "status": "copied",
+      "error": null,
+      "user_audio_files": 4
+    },
+    {
+      "lang": "en",
+      "case_name": "role_play",
+      "src": "/user/sunweiyue/lib/audio_eval_3o/simple_demo/sessions/session_20260202_110538_209d75f5",
+      "dst": "/user/xubokai/audio_eval_3o/github_pages/collected/en/role_play/session_20260202_110538_209d75f5",
+      "turn_range_raw": ":",
+      "turn_range": null,
+      "line_no": 9,
+      "line_raw": "role_play,/user/sunweiyue/lib/audio_eval_3o/simple_demo/sessions/session_20260202_110538_209d75f5,:",
+      "status": "copied",
+      "error": null,
+      "user_audio_files": 3
+    }
+  ]
+}

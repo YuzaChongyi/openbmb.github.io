@@ -1,0 +1,11 @@
+{
+  "collected_at": "2026-02-03T14:06:45",
+  "lang": "zh",
+  "case_name": "海天_高级语音",
+  "src": "/user/sunweiyue/lib/audio_eval_3o/simple_demo/sessions/session_20260203_070847_0d25e695",
+  "dst": "/user/xubokai/audio_eval_3o/github_pages/collected/zh/海天_高级语音/session_20260203_070847_0d25e695",
+  "turn_range_raw": ":",
+  "turn_range": null,
+  "case_line_no": 21,
+  "case_line_raw": "海天_高级语音,/user/sunweiyue/lib/audio_eval_3o/simple_demo/sessions/session_20260203_070847_0d25e695,:"
+}

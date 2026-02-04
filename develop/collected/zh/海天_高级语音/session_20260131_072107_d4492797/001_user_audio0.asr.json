@@ -1,0 +1,7 @@
+{
+  "text": "language Chinese<asr_text>继续保持这种声音。你现在要说：“今天的阳光可真明媚啊！”",
+  "usage": {
+    "type": "duration",
+    "seconds": 10
+  }
+}

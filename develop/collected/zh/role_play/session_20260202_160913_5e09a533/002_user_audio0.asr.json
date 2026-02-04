@@ -1,0 +1,7 @@
+{
+  "text": "language Chinese<asr_text>我想吃天天花酿鸡。",
+  "usage": {
+    "type": "duration",
+    "seconds": 3
+  }
+}

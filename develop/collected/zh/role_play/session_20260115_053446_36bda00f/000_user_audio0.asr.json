@@ -1,0 +1,7 @@
+{
+  "text": "language Chinese<asr_text>Hello，你好呀。",
+  "usage": {
+    "type": "duration",
+    "seconds": 3
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "text": "language Chinese<asr_text>读一下，我没说他偷了钱这句话，要强调“他”这个字。",
+  "usage": {
+    "type": "duration",
+    "seconds": 7
+  }
+}

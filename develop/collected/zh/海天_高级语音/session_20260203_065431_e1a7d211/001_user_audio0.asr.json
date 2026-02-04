@@ -1,0 +1,7 @@
+{
+  "text": "language Chinese<asr_text>用极慢的语速，从一数到十。",
+  "usage": {
+    "type": "duration",
+    "seconds": 3
+  }
+}

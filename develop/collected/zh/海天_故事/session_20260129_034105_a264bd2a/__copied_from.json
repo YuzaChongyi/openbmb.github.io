@@ -1,0 +1,11 @@
+{
+  "collected_at": "2026-02-03T14:06:45",
+  "lang": "zh",
+  "case_name": "海天_故事",
+  "src": "/user/xubokai/audio_eval_3o/simple_demo/sessions/session_20260129_034105_a264bd2a",
+  "dst": "/user/xubokai/audio_eval_3o/github_pages/collected/zh/海天_故事/session_20260129_034105_a264bd2a",
+  "turn_range_raw": ":",
+  "turn_range": null,
+  "case_line_no": 11,
+  "case_line_raw": "海天_故事,/user/xubokai/audio_eval_3o/simple_demo/sessions/session_20260129_034105_a264bd2a,:"
+}

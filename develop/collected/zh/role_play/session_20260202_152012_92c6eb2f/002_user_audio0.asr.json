@@ -1,0 +1,7 @@
+{
+  "text": "language Chinese<asr_text>那么，再请你以豆角为主题写一首现代诗。",
+  "usage": {
+    "type": "duration",
+    "seconds": 5
+  }
+}

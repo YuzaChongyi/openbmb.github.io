@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>Session Viewer - session_20260203_070632_2c0bdb76</title>
+  <style>
+    :root {
+      --bg: #f9fafb;
+      --text: #111827;
+      --muted: #6b7280;
+      --card-bg: #ffffff;
+      --border: rgba(148,163,184,0.5);
+      --accent: #22c55e;
+      --accent-soft: rgba(34,197,94,0.15);
+    }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 24px;
+      background: var(--bg);
+      color: var(--text);
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: 24px;
+    }
+    h2 {
+      margin: 24px 0 12px;
+      font-size: 18px;
+    }
+    .card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      padding: 20px;
+      box-shadow: 0 18px 45px rgba(15,23,42,0.7);
+    }
+    .session-meta {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .sys-block {
+      margin-bottom: 16px;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #f3f4f6;
+    }
+    .turn {
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 12px;
+      margin-bottom: 10px;
+      background: #f9fafb;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .turn-role-user {
+      border-left: 3px solid #38bdf8;
+    }
+    .turn-role-assistant {
+      border-left: 3px solid #22c55e;
+    }
+    .turn-meta {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .turn-text {
+      font-size: 14px;
+      white-space: pre-wrap;
+    }
+    .audio-col {
+      min-width: 220px;
+    }
+    audio {
+      width: 100%;
+      margin-top: 4px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      font-size: 12px;
+    }
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+    .sessions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .session-card {
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #ffffff;
+      padding: 12px;
+      font-size: 13px;
+    }
+    .session-name {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .path {
+      font-size: 11px;
+      color: var(--muted);
+      word-break: break-all;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <h1>Session Viewer - session_20260203_070632_2c0bdb76</h1>
+      <span class="badge"><span class="badge-dot"></span>单 Session 可视化</span>
+    </div>
+    <div class="session-meta">Session 目录: /user/sunweiyue/lib/audio_eval_3o/simple_demo/sessions/session_20260203_070632_2c0bdb76</div>
+    <div class="sys-block" style="background:#eff6ff;">
+<div class="turn-meta"><strong>📋 Session 信息</strong></div>
+<div class="turn-text"><strong>创建时间:</strong> 2026-02-03 07:06:32</div>
+<div class="turn-text" style="margin-top:4px;word-break:break-all;"><strong>Checkpoint:</strong> <code style="font-size:11px;">...inicpm-v/qwen3_final_o/0202_post_tune_tts/job_87305_ckpt_500/minicpm-v_500.pt</code></div>
+</div>
+<div class="sys-block">
+<div class="turn-meta"><strong>System Prompt</strong></div>
+<div class="turn-text"><strong>Prefix:</strong><br />模仿音频样本的音色并生成新的内容。</div>
+<div class="turn-text" style="margin-top:6px;"><strong>Suffix:</strong><br />你的任务是用这种声音模式来当一个助手。请认真、高质量地回复用户的问题。请用高自然度的方式和用户聊天。你是由面壁智能开发的人工智能助手：面壁小钢炮。</div>
+<div style="margin-top:8px;" class="audio-col">
+<div class="turn-meta">参考音频</div>
+<audio controls preload="none" src="system_ref_audio.mp3"></audio>
+</div>
+</div>
+<h2>对话轮次</h2>
+<div class="turn turn-role-user">
+<div style="flex:1;">
+<div class="turn-meta">User #0 · 文件: 000_user_audio0.mp3</div>
+</div>
+<div class="audio-col">
+<div class="turn-meta">用户音频</div>
+<audio controls preload="none" src="000_user_audio0.mp3"></audio>
+</div>
+</div>
+<div class="turn turn-role-assistant">
+<div style="flex:1;">
+<div class="turn-meta">Assistant #0 · 文本: 000_assistant.txt</div>
+<div class="turn-text">我没说他偷了钱。</div>
+</div>
+<div class="audio-col">
+<div class="turn-meta">助手音频</div>
+<audio controls preload="none" src="000_assistant_audio0.mp3"></audio>
+</div>
+</div>
+<div class="turn turn-role-user">
+<div style="flex:1;">
+<div class="turn-meta">User #1 · 文件: 001_user_audio0.mp3</div>
+</div>
+<div class="audio-col">
+<div class="turn-meta">用户音频</div>
+<audio controls preload="none" src="001_user_audio0.mp3"></audio>
+</div>
+</div>
+<div class="turn turn-role-assistant">
+<div style="flex:1;">
+<div class="turn-meta">Assistant #1 · 文本: 001_assistant.txt</div>
+<div class="turn-text">我没说他偷了钱。</div>
+</div>
+<div class="audio-col">
+<div class="turn-meta">助手音频</div>
+<audio controls preload="none" src="001_assistant_audio0.mp3"></audio>
+</div>
+</div>
+<div class="turn turn-role-user">
+<div style="flex:1;">
+<div class="turn-meta">User #2 · 文件: 002_user_audio0.mp3</div>
+</div>
+<div class="audio-col">
+<div class="turn-meta">用户音频</div>
+<audio controls preload="none" src="002_user_audio0.mp3"></audio>
+</div>
+</div>
+<div class="turn turn-role-assistant">
+<div style="flex:1;">
+<div class="turn-meta">Assistant #2 · 文本: 002_assistant.txt</div>
+<div class="turn-text">我没说他偷了钱。</div>
+</div>
+<div class="audio-col">
+<div class="turn-meta">助手音频</div>
+<audio controls preload="none" src="002_assistant_audio0.mp3"></audio>
+</div>
+</div>
+  </div>
+</body>
+</html>

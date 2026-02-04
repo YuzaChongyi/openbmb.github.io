@@ -1,0 +1,20 @@
+{
+  "generated_at": "2026-02-03T14:06:45",
+  "out_root": "/user/xubokai/audio_eval_3o/github_pages/collected",
+  "langs": {
+    "en": {
+      "report": "/user/xubokai/audio_eval_3o/github_pages/collected/collect_report_en.json",
+      "index": "/user/xubokai/audio_eval_3o/github_pages/collected/en/index.jsonl",
+      "status_counts": {
+        "copied": 9
+      }
+    },
+    "zh": {
+      "report": "/user/xubokai/audio_eval_3o/github_pages/collected/collect_report_zh.json",
+      "index": "/user/xubokai/audio_eval_3o/github_pages/collected/zh/index.jsonl",
+      "status_counts": {
+        "copied": 20
+      }
+    }
+  }
+}

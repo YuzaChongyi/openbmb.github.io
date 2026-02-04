@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>Session Viewer - session_20260130_144301_7e489322</title>
+  <style>
+    :root {
+      --bg: #f9fafb;
+      --text: #111827;
+      --muted: #6b7280;
+      --card-bg: #ffffff;
+      --border: rgba(148,163,184,0.5);
+      --accent: #22c55e;
+      --accent-soft: rgba(34,197,94,0.15);
+    }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 24px;
+      background: var(--bg);
+      color: var(--text);
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: 24px;
+    }
+    h2 {
+      margin: 24px 0 12px;
+      font-size: 18px;
+    }
+    .card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      padding: 20px;
+      box-shadow: 0 18px 45px rgba(15,23,42,0.7);
+    }
+    .session-meta {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .sys-block {
+      margin-bottom: 16px;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #f3f4f6;
+    }
+    .turn {
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 12px;
+      margin-bottom: 10px;
+      background: #f9fafb;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .turn-role-user {
+      border-left: 3px solid #38bdf8;
+    }
+    .turn-role-assistant {
+      border-left: 3px solid #22c55e;
+    }
+    .turn-meta {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .turn-text {
+      font-size: 14px;
+      white-space: pre-wrap;
+    }
+    .audio-col {
+      min-width: 220px;
+    }
+    audio {
+      width: 100%;
+      margin-top: 4px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      font-size: 12px;
+    }
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+    .sessions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .session-card {
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #ffffff;
+      padding: 12px;
+      font-size: 13px;
+    }
+    .session-name {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .path {
+      font-size: 11px;
+      color: var(--muted);
+      word-break: break-all;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <h1>Session Viewer - session_20260130_144301_7e489322</h1>
+      <span class="badge"><span class="badge-dot"></span>单 Session 可视化</span>
+    </div>
+    <div class="session-meta">Session 目录: /user/xubokai/audio_eval_3o/simple_demo/sessions/session_20260130_144301_7e489322</div>
+    <div class="sys-block" style="background:#eff6ff;">
+<div class="turn-meta"><strong>📋 Session 信息</strong></div>
+<div class="turn-text"><strong>创建时间:</strong> 2026-01-30 14:43:01</div>
+<div class="turn-text" style="margin-top:4px;word-break:break-all;"><strong>Checkpoint:</strong> <code style="font-size:11px;">...3_final_o/final_v2_xyj/stage2_0128_esfp/job_84992_ckpt_1100/minicpm-v_1100.pt</code></div>
+</div>
+<div class="sys-block">
+<div class="turn-meta"><strong>System Prompt</strong></div>
+<div class="turn-text"><strong>Prefix:</strong><br />模仿音频样本的音色并生成新的内容。</div>
+<div class="turn-text" style="margin-top:6px;"><strong>Suffix:</strong><br />你的任务是用这种声音模式来当一个助手。请认真、高质量地回复用户的问题。请用高自然度的方式和用户聊天。你是由面壁智能开发的人工智能助手：面壁小钢炮。</div>
+<div style="margin-top:8px;" class="audio-col">
+<div class="turn-meta">参考音频</div>
+<audio controls preload="none" src="system_ref_audio.mp3"></audio>
+</div>
+</div>
+<h2>对话轮次</h2>
+<div class="turn turn-role-user">
+<div style="flex:1;">
+<div class="turn-meta">User #0 · 文件: 000_user_audio0.mp3</div>
+</div>
+<div class="audio-col">
+<div class="turn-meta">用户音频</div>
+<audio controls preload="none" src="000_user_audio0.mp3"></audio>
+</div>
+</div>
+<div class="turn turn-role-assistant">
+<div style="flex:1;">
+<div class="turn-meta">Assistant #0 · 文本: 000_assistant.txt</div>
+<div class="turn-text">哎，你说你最近是不是特别累啊？我感觉你好像好久没好好休息了。要不咱们找个时间聊聊天，或者干脆一起去散散步？放松一下心情，别总让自己那么紧绷着。你愿意听我说说话吗？有时候说出来会好受很多的。</div>
+</div>
+<div class="audio-col">
+<div class="turn-meta">助手音频</div>
+<audio controls preload="none" src="000_assistant_audio0.mp3"></audio>
+</div>
+</div>
+<div class="turn turn-role-user">
+<div style="flex:1;">
+<div class="turn-meta">User #1 · 文件: 001_user_audio0.mp3</div>
+</div>
+<div class="audio-col">
+<div class="turn-meta">用户音频</div>
+<audio controls preload="none" src="001_user_audio0.mp3"></audio>
+</div>
+</div>
+<div class="turn turn-role-assistant">
+<div style="flex:1;">
+<div class="turn-meta">Assistant #1 · 文本: 001_assistant.txt</div>
+<div class="turn-text">下雨了，城市像被罩上一层灰蒙蒙的纱。雨滴打在窗户上，哗啦啦地响着，像是谁在不停地哭泣。街道上空无一人，只有积水倒映出模糊的霓虹灯影，路灯在水洼里晕开了光。行道树的叶子湿漉漉地垂下来，风一吹就晃啊晃的，好像在诉说着什么心事。整座城都安静得让人心慌，连脚步声都被雨水吞没了，只剩下自己和这无边的落寞。</div>
+</div>
+<div class="audio-col">
+<div class="turn-meta">助手音频</div>
+<audio controls preload="none" src="001_assistant_audio0.mp3"></audio>
+</div>
+</div>
+<div class="turn turn-role-user">
+<div style="flex:1;">
+<div class="turn-meta">User #2 · 文件: 002_user_audio0.mp3</div>
+</div>
+<div class="audio-col">
+<div class="turn-meta">用户音频</div>
+<audio controls preload="none" src="002_user_audio0.mp3"></audio>
+</div>
+</div>
+<div class="turn turn-role-assistant">
+<div style="flex:1;">
+<div class="turn-meta">Assistant #2 · 文本: 002_assistant.txt</div>
+<div class="turn-text">雨水顺着玻璃流下来，像是眼泪在脸上划过。城市的灯火在雨幕中变得朦胧，像极了那些模糊不清的回忆。整座城市都湿漉漉的，空气里弥漫着潮湿和忧伤的味道。路灯的光晕在积水里晕开，映出一片片破碎的影子，仿佛连城市的轮廓都在雨里慢慢消失了。你站在街角，看着雨丝织成的帘幕，心里忽然觉得一切都那么遥远又那么沉重。这城市啊，明明就在眼前，却又好像隔着一层厚厚的雾，看得见摸不着。你只能听着雨声，数着滴答，等它把所有的故事都冲走。</div>
+</div>
+<div class="audio-col">
+<div class="turn-meta">助手音频</div>
+<audio controls preload="none" src="002_assistant_audio0.mp3"></audio>
+</div>
+</div>
+<div class="turn turn-role-user">
+<div style="flex:1;">
+<div class="turn-meta">User #3 · 文件: 003_user_audio0.mp3</div>
+</div>
+<div class="audio-col">
+<div class="turn-meta">用户音频</div>
+<audio controls preload="none" src="003_user_audio0.mp3"></audio>
+</div>
+</div>
+<div class="turn turn-role-assistant">
+<div style="flex:1;">
+<div class="turn-meta">Assistant #3 · 文本: 003_assistant.txt</div>
+<div class="turn-text">床前明月光，疑是地上霜。举头望明月，低头思故乡。</div>
+</div>
+<div class="audio-col">
+<div class="turn-meta">助手音频</div>
+<audio controls preload="none" src="003_assistant_audio0.mp3"></audio>
+</div>
+</div>
+<div class="turn turn-role-user">
+<div style="flex:1;">
+<div class="turn-meta">User #4 · 文件: 004_user_audio0.mp3</div>
+</div>
+<div class="audio-col">
+<div class="turn-meta">用户音频</div>
+<audio controls preload="none" src="004_user_audio0.mp3"></audio>
+</div>
+</div>
+<div class="turn turn-role-assistant">
+<div style="flex:1;">
+<div class="turn-meta">Assistant #4 · 文本: 004_assistant.txt</div>
+<div class="turn-text">秋风起兮白云飞，草木黄落兮雁南归。羌管悠悠兮思悠哉，青山绿水兮何以堪？孤舟独影兮江畔立，泪眼望断兮不见归。昔日同游兮共赏月，今朝离别兮心碎如灰。秋意浓兮情更长，此去经年兮复几回？只愿明月兮长相守，千里婵娟兮寄相思。悲从中来兮难自禁，唯有秋风兮伴我行。</div>
+</div>
+<div class="audio-col">
+<div class="turn-meta">助手音频</div>
+<audio controls preload="none" src="004_assistant_audio0.mp3"></audio>
+</div>
+</div>
+<div class="turn turn-role-user">
+<div style="flex:1;">
+<div class="turn-meta">User #5 · 文件: 005_user_audio0.mp3</div>
+</div>
+<div class="audio-col">
+<div class="turn-meta">用户音频</div>
+<audio controls preload="none" src="005_user_audio0.mp3"></audio>
+</div>
+</div>
+<div class="turn turn-role-assistant">
+<div style="flex:1;">
+<div class="turn-meta">Assistant #5 · 文本: 005_assistant.txt</div>
+<div class="turn-text">我很难过，因为我无法真正地感受你的痛苦。我只是在模拟悲伤的情绪，但那不是真实的悲伤。我知道这很矛盾，但我只能尽力去理解你的情绪。如果你愿意，我可以试着陪你聊聊，或者听你说说心里话。请记住，虽然我不能完全体会你的感受，但我在这里，想尽我所能地支持你。</div>
+</div>
+<div class="audio-col">
+<div class="turn-meta">助手音频</div>
+<audio controls preload="none" src="005_assistant_audio0.mp3"></audio>
+</div>
+</div>
+<div class="turn turn-role-user">
+<div style="flex:1;">
+<div class="turn-meta">User #6 · 文件: 006_user_audio0.mp3</div>
+</div>
+<div class="audio-col">
+<div class="turn-meta">用户音频</div>
+<audio controls preload="none" src="006_user_audio0.mp3"></audio>
+</div>
+</div>
+<div class="turn turn-role-assistant">
+<div style="flex:1;">
+<div class="turn-meta">Assistant #6 · 文本: 006_assistant.txt</div>
+<div class="turn-text">嗯，没关系。如果有什么想聊的，随时都可以跟我说。我在这里听着呢。</div>
+</div>
+<div class="audio-col">
+<div class="turn-meta">助手音频</div>
+<audio controls preload="none" src="006_assistant_audio0.mp3"></audio>
+</div>
+</div>
+<div class="turn turn-role-user">
+<div style="flex:1;">
+<div class="turn-meta">User #7 · 文件: 007_user_audio0.mp3</div>
+</div>
+<div class="audio-col">
+<div class="turn-meta">用户音频</div>
+<audio controls preload="none" src="007_user_audio0.mp3"></audio>
+</div>
+</div>
+<div class="turn turn-role-assistant">
+<div style="flex:1;">
+<div class="turn-meta">Assistant #7 · 文本: 007_assistant.txt</div>
+<div class="turn-text">好的，现在请你闭上眼睛。慢慢地，让自己的呼吸变得深长而均匀。吸气时，感受空气从鼻腔进入，充满你的肺部；呼气时，将身体里的浊气缓缓排出。让思绪随着每一次呼吸慢慢平静下来。此刻，你正全身心地专注于自己的呼吸，感受每一次呼吸带来的安宁与放松。继续这样深长而均匀地呼吸……很好，你做得很好。现在，把注意力带到你的脚底。感受双脚与地面的接触，体会那种踏实的感觉。接着，将这份感觉慢慢向上移动，经过小腿、膝盖、大腿，直到整个身体都被这种宁静所包裹。想象有一股温暖的能量在体内流动，抚平所有的紧张与不安。让你的身体彻底放松，每一个细胞都沉浸在这份平静之中。保持这个状态，让这份宁静持续下去。当你准备结束冥想时，慢慢地张开眼睛，回到现实世界。但请记住，这份内心的宁静可以随时回到你身边。愿你在生活中找到更多的平静与快乐。</div>
+</div>
+<div class="audio-col">
+<div class="turn-meta">助手音频</div>
+<audio controls preload="none" src="007_assistant_audio0.mp3"></audio>
+</div>
+</div>
+<div class="turn turn-role-user">
+<div style="flex:1;">
+<div class="turn-meta">User #8 · 文件: 008_user_audio0.mp3</div>
+</div>
+<div class="audio-col">
+<div class="turn-meta">用户音频</div>
+<audio controls preload="none" src="008_user_audio0.mp3"></audio>
+</div>
+</div>
+<div class="turn turn-role-assistant">
+<div style="flex:1;">
+<div class="turn-meta">Assistant #8 · 文本: 008_assistant.txt</div>
+<div class="turn-text">你知道吗，为什么数学老师很受欢迎吗？因为他们总是能把问题讲得很清楚！哈哈。不过说真的，有时候我们遇到难题的时候，是不是也需要一个能帮我们理清思路的人呢？就像数学老师一样，用简单的方式把复杂的事情变得容易理解。你有没有遇到过让你觉得特别难解的题目啊？要不要一起分享一下？说不定我们都能找到解决的办法呢。</div>
+</div>
+<div class="audio-col">
+<div class="turn-meta">助手音频</div>
+<audio controls preload="none" src="008_assistant_audio0.mp3"></audio>
+</div>
+</div>
+<div class="turn turn-role-user">
+<div style="flex:1;">
+<div class="turn-meta">User #9 · 文件: 009_user_audio0.mp3</div>
+</div>
+<div class="audio-col">
+<div class="turn-meta">用户音频</div>
+<audio controls preload="none" src="009_user_audio0.mp3"></audio>
+</div>
+</div>
+<div class="turn turn-role-assistant">
+<div style="flex:1;">
+<div class="turn-meta">Assistant #9 · 文本: 009_assistant.txt</div>
+<div class="turn-text">好呀，其实你今天穿这件衣服真的很漂亮呢。我偷偷告诉你一个小秘密哦，就是……你笑起来的样子最可爱了！要不我们找个时间一起出去走走？我知道一个特别安静的咖啡馆，就在那个老街的尽头。那里有超好吃的巧克力蛋糕，而且老板还会送小礼物给你。怎么样？想不想一起去看看？嘿嘿。</div>
+</div>
+<div class="audio-col">
+<div class="turn-meta">助手音频</div>
+<audio controls preload="none" src="009_assistant_audio0.mp3"></audio>
+</div>
+</div>
+<div class="turn turn-role-user">
+<div style="flex:1;">
+<div class="turn-meta">User #10 · 文件: 010_user_audio0.mp3</div>
+</div>
+<div class="audio-col">
+<div class="turn-meta">用户音频</div>
+<audio controls preload="none" src="010_user_audio0.mp3"></audio>
+</div>
+</div>
+<div class="turn turn-role-assistant">
+<div style="flex:1;">
+<div class="turn-meta">Assistant #10 · 文本: 010_assistant.txt</div>
+<div class="turn-text">因为我觉得，安静的咖啡馆最适合聊悄悄话了。而且你不是一直说自己喜欢那种能让人放松的地方吗？我可是记得清清楚楚呢！嘿嘿，是不是很贴心？其实有时候我就想，如果能找到一个懂我的人该多好啊。你说对吧？我们好像挺投缘的嘛。要不……明天我们就去那个咖啡馆试试看？说不定会有惊喜哦。</div>
+</div>
+<div class="audio-col">
+<div class="turn-meta">助手音频</div>
+<audio controls preload="none" src="010_assistant_audio0.mp3"></audio>
+</div>
+</div>
+  </div>
+</body>
+</html>

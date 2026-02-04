@@ -1,0 +1,7 @@
+{
+  "text": "language Chinese<asr_text>给我讲故事。",
+  "usage": {
+    "type": "duration",
+    "seconds": 2
+  }
+}

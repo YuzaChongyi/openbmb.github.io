@@ -1,0 +1,7 @@
+{
+  "text": "language Chinese<asr_text>你参加一场面试，面试官故意刁难你，问了一个带有侮辱性的问题，请用愤怒的声音回应。",
+  "usage": {
+    "type": "duration",
+    "seconds": 7
+  }
+}

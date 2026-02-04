@@ -1,0 +1,11 @@
+{
+  "collected_at": "2026-02-03T14:06:45",
+  "lang": "zh",
+  "case_name": "综合能力_多轮",
+  "src": "/user/xubokai/audio_eval_3o/simple_demo/sessions/session_20260130_144301_7e489322",
+  "dst": "/user/xubokai/audio_eval_3o/github_pages/collected/zh/综合能力_多轮/session_20260130_144301_7e489322",
+  "turn_range_raw": ":",
+  "turn_range": null,
+  "case_line_no": 14,
+  "case_line_raw": "综合能力_多轮,/user/xubokai/audio_eval_3o/simple_demo/sessions/session_20260130_144301_7e489322,:"
+}

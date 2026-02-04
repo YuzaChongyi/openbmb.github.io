@@ -1,0 +1,11 @@
+{
+  "collected_at": "2026-02-03T14:06:44",
+  "lang": "en",
+  "case_name": "role_play",
+  "src": "/user/zhangluoyuan/audio_eval_3o/simple_demo/sessions/session_20260201_162123_cea6a9a3",
+  "dst": "/user/xubokai/audio_eval_3o/github_pages/collected/en/role_play/session_20260201_162123_cea6a9a3",
+  "turn_range_raw": ":",
+  "turn_range": null,
+  "case_line_no": 4,
+  "case_line_raw": "role_play,/user/zhangluoyuan/audio_eval_3o/simple_demo/sessions/session_20260201_162123_cea6a9a3,:"
+}

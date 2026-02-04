@@ -1,0 +1,7 @@
+{
+  "text": "language Chinese<asr_text>你能有感情地朗诵一下李白的《静夜思》吗？",
+  "usage": {
+    "type": "duration",
+    "seconds": 5
+  }
+}

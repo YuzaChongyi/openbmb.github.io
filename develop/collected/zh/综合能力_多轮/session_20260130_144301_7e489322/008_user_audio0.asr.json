@@ -1,0 +1,7 @@
+{
+  "text": "language Chinese<asr_text>好，非常好。然后，用轻柔的语气，跟我随便说点什么吧，可以说个悄悄话。",
+  "usage": {
+    "type": "duration",
+    "seconds": 15
+  }
+}

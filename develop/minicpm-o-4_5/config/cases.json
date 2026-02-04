@@ -1,0 +1,233 @@
+{
+  "meta": {
+    "title": "MiniCPM-o 4.5",
+    "description": "下一代全模态语音对话模型",
+    "version": "1.0.0"
+  },
+  "collected_base": "../collected",
+  "abilities": [
+    {
+      "id": "minicpm_assistant",
+      "name": "MiniCPM 助手",
+      "description": "高表现力语音合成，专业声优音色，自然韵律",
+      "sub_abilities": [
+        {
+          "id": "qa",
+          "name": "知识问答",
+          "cases": [
+            {
+              "id": "haitian_qa_001",
+              "summary": "倾诉心情",
+              "source_session": "session_20260130_144301_7e489322"
+            }
+          ]
+        },
+        {
+          "id": "story",
+          "name": "故事创作",
+          "cases": [
+            {
+              "id": "haitian_story_001",
+              "summary": "睡前故事（轻柔语气）",
+              "source_session": "session_20260129_034105_a264bd2a"
+            },
+            {
+              "id": "haitian_story_002",
+              "summary": "童话故事（小鹿）",
+              "source_session": "session_20260130_131610_741612e0"
+            },
+            {
+              "id": "haitian_story_003",
+              "summary": "诗歌朗读（忧伤语气）",
+              "source_session": "session_20260201_061402_8687e555"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "voice_clone",
+      "name": "声音克隆",
+      "description": "Zero-shot 音色克隆，高还原度",
+      "sub_abilities": [
+        {
+          "id": "character",
+          "name": "角色模仿",
+          "cases": [
+            {
+              "id": "custom_voice_roleplay_001",
+              "summary": "王者李白（游戏解说）",
+              "source_session": "session_20260201_114917_93b98603"
+            },
+            {
+              "id": "custom_voice_roleplay_002",
+              "summary": "三国曹操（谋略对话）",
+              "source_session": "session_20260201_120337_1bd0974c"
+            },
+            {
+              "id": "custom_voice_roleplay_003",
+              "summary": "原神派蒙",
+              "source_session": "session_20260202_160913_5e09a533"
+            },
+            {
+              "id": "custom_voice_celebrity_001",
+              "summary": "何老师（节目开场白）",
+              "source_session": "session_20260202_152012_92c6eb2f"
+            }
+          ]
+        },
+        {
+          "id": "natural",
+          "name": "自然对话",
+          "cases": [
+            {
+              "id": "custom_voice_daily_001",
+              "summary": "问候打招呼",
+              "source_session": "session_20260115_053446_36bda00f"
+            },
+            {
+              "id": "custom_voice_daily_002",
+              "summary": "北京旅游推荐",
+              "source_session": "session_20260130_115417_d63db917"
+            },
+            {
+              "id": "custom_voice_daily_003",
+              "summary": "电影解说（泰坦尼克号）",
+              "source_session": "session_20260201_060746_085558bf"
+            },
+            {
+              "id": "custom_voice_daily_004",
+              "summary": "心里话倾诉",
+              "source_session": "session_20260203_054036_8ed904a2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "advanced_speech",
+      "name": "高级语音能力",
+      "description": "重音、语速、情感等高级语音控制",
+      "sub_abilities": [
+        {
+          "id": "emphasis",
+          "name": "重音控制",
+          "cases": [
+            {
+              "id": "advanced_emphasis_001",
+              "summary": "强调「今天」",
+              "source_session": "session_20260131_065745_e28aea0e"
+            },
+            {
+              "id": "advanced_emphasis_002",
+              "summary": "强调「他」字",
+              "source_session": "session_20260203_070632_2c0bdb76"
+            }
+          ]
+        },
+        {
+          "id": "speed",
+          "name": "语速控制",
+          "cases": [
+            {
+              "id": "advanced_speed_001",
+              "summary": "极快语速数数",
+              "source_session": "session_20260203_065431_e1a7d211"
+            },
+            {
+              "id": "advanced_speed_002",
+              "summary": "快慢对比朗读",
+              "source_session": "session_20260203_065843_1e548f82"
+            }
+          ]
+        },
+        {
+          "id": "emotion",
+          "name": "情感表达",
+          "cases": [
+            {
+              "id": "advanced_emotion_001",
+              "summary": "激动→失落（抢票）",
+              "source_session": "session_20260131_075044_42c34ba8"
+            },
+            {
+              "id": "advanced_emotion_002",
+              "summary": "愤怒回应",
+              "source_session": "session_20260203_070847_0d25e695"
+            },
+            {
+              "id": "advanced_emotion_003",
+              "summary": "开心说悲伤的话",
+              "source_session": "session_20260203_102257_eb967432"
+            }
+          ]
+        },
+        {
+          "id": "voice_style",
+          "name": "音色变化",
+          "cases": [
+            {
+              "id": "advanced_voice_001",
+              "summary": "老年沙哑声音",
+              "source_session": "session_20260131_072107_d4492797"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "english",
+      "name": "英文能力",
+      "description": "英文对话与角色扮演",
+      "sub_abilities": [
+        {
+          "id": "conversation",
+          "name": "日常对话",
+          "cases": [
+            {
+              "id": "english_conv_001",
+              "summary": "篮球话题闲聊",
+              "source_session": "session_20260201_162123_cea6a9a3"
+            },
+            {
+              "id": "english_conv_002",
+              "summary": "政治话题讨论",
+              "source_session": "session_20260202_052426_8eae8492"
+            },
+            {
+              "id": "english_conv_003",
+              "summary": "AI 职业影响",
+              "source_session": "session_20260202_095916_841945f1"
+            }
+          ]
+        },
+        {
+          "id": "roleplay",
+          "name": "角色扮演",
+          "cases": [
+            {
+              "id": "english_role_001",
+              "summary": "Hermione（霍格沃茨）",
+              "source_session": "session_20260202_102023_bd095bf7"
+            },
+            {
+              "id": "english_role_002",
+              "summary": "Groot（银河护卫队）",
+              "source_session": "session_20260202_104302_1be1c709"
+            },
+            {
+              "id": "english_role_003",
+              "summary": "Alan（宿醉）",
+              "source_session": "session_20260202_105227_ce11813b"
+            },
+            {
+              "id": "english_role_004",
+              "summary": "Carly Rae（歌手）",
+              "source_session": "session_20260202_110538_209d75f5"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

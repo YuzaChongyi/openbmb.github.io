@@ -1,0 +1,7 @@
+{
+  "text": "language Chinese<asr_text>很好，你再给我写一首关于秋天送别悲伤的一首古诗吧。",
+  "usage": {
+    "type": "duration",
+    "seconds": 10
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "text": "language Chinese<asr_text>很好，再读一遍。这次和上次一样，但是你只是把今天给它重读，后边就要发布了，你不要去改变风格。",
+  "usage": {
+    "type": "duration",
+    "seconds": 12
+  }
+}
