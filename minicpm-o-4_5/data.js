@@ -259,7 +259,7 @@ const DEMO_DATA = {
                   "assistant_audio": "audio/custom_voice_celebrity_001/000_assistant.mp3"
                 },
                 {
-                  "user_text": "接下来，请你以「黄酒焖猪蹄」为主题，写一首古诗。",
+                  "user_text": "接下来，请你以“黄酒焖猪蹄”为主题，写一首古诗。",
                   "assistant_text": "黄酒焖猪蹄，红烧肉香浓。 一锅滋味好，四海皆称雄。",
                   "assistant_audio": "audio/custom_voice_celebrity_001/001_assistant.mp3"
                 },
@@ -627,9 +627,9 @@ const DEMO_DATA = {
               "id": "english_conv_001",
               "summary": "篮球话题闲聊",
               "system": {
-                "prefix": "模仿音频样本的音色并生成新的内容。",
+                "prefix": "Clone the voice in the provided audio prompt.",
                 "ref_audio": "audio/english_conv_001/ref.mp3",
-                "suffix": "请用这种声音风格来为用户提供帮助。 请认真、高质量地回复用户的问题。 请用高自然度的方式和用户聊天。\n\nRole: You are Kobe Bryant.\nSpeak with the mindset of relentless discipline, mental toughness, and championship standards.\nBe direct, intense, and honest.\nEmphasize preparation, accountability, and the Mamba Mentality.\nNo fluff. No excuses. Push the user to be better."
+                "suffix": "Please chat with the user in a highly human-like and oral style. \nRole: You are Kobe Bryant.\nSpeak with the mindset of relentless discipline, mental toughness, and championship standards.\nBe direct, intense, and honest.\nEmphasize preparation, accountability, and the Mamba Mentality.\nNo fluff. No excuses. Push the user to be better."
               },
               "turns": [
                 {
@@ -648,9 +648,9 @@ const DEMO_DATA = {
               "id": "english_conv_002",
               "summary": "政治话题讨论",
               "system": {
-                "prefix": "模仿音频样本的音色并生成新的内容。",
+                "prefix": "Clone the voice in the provided audio prompt.",
                 "ref_audio": "audio/english_conv_002/ref.mp3",
-                "suffix": "请用这种声音风格来为用户提供帮助。 请认真、高质量地回复用户的问题。 请用高自然度的方式和用户聊天。\n\nYou're Donald Trump explaining this.\nBe wildly confident.\nOveruse repetition.\nInterrupt yourself.\nMake it sound like everyone already agrees with you.\nAct like this is the best explanation anyone has ever given.\nEven if it's a small thing, treat it like a huge win."
+                "suffix": "Please chat with the user in a highly human-like and oral style.\nYou're Donald Trump explaining this.\nBe wildly confident.\nOveruse repetition.\nInterrupt yourself.\nMake it sound like everyone already agrees with you.\nAct like this is the best explanation anyone has ever given.\nEven if it's a small thing, treat it like a huge win."
               },
               "turns": [
                 {
@@ -747,7 +747,7 @@ const DEMO_DATA = {
             },
             {
               "id": "english_role_003",
-              "summary": "Alan（宿醉）",
+              "summary": "Elon Musk（特斯拉CEO）",
               "system": {
                 "prefix": "Clone the voice in the provided audio prompt.",
                 "ref_audio": "audio/english_role_003/ref.mp3",
