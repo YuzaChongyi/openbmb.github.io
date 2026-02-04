@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -44,7 +44,7 @@
             -webkit-font-smoothing: antialiased;
         }
         
-        /* === Hero Section (MiMo style: dark bg, centered) === */
+        /* === Hero Section === */
         .hero {
             background: var(--bg-hero);
             padding: 80px 24px 60px;
@@ -124,7 +124,7 @@
             padding: 40px 24px 80px;
         }
         
-        /* === Section (MiMo style: white bg, clean) === */
+        /* === Section === */
         .section {
             background: var(--bg-section);
             border-radius: var(--radius);
@@ -169,7 +169,7 @@
             color: var(--text-primary);
         }
         
-        /* === Case Card (MiMo style: no extra bg, clean) === */
+        /* === Case Card === */
         .case-card {
             background: transparent;
             border: none;
@@ -177,7 +177,7 @@
             margin-top: 0;
         }
         
-        /* === Tab Buttons (MiMo style: warm, subtle) === */
+        /* === Tab Buttons === */
         .tab-group {
             display: flex;
             flex-wrap: wrap;
@@ -217,7 +217,7 @@
             display: block;
         }
         
-        /* === System Block (MiMo style: warm bg) === */
+        /* === System Block === */
         .system-block {
             background: var(--bg-body);
             border-radius: var(--radius);
@@ -271,7 +271,7 @@
             color: var(--text-primary);
         }
         
-        /* === Conversation (MiMo style: clean, compact) === */
+        /* === Conversation === */
         .conversation {
             display: flex;
             flex-direction: column;
@@ -347,7 +347,7 @@
             margin-bottom: 8px;
         }
         
-        /* === Audio Player (MiMo style: full width) === */
+        /* === Audio Player === */
         .audio-player {
             display: flex;
             align-items: center;
@@ -428,9 +428,9 @@
                 <a href="#">HUGGING FACE</a>
             </div>
             <div class="lang-switch">
-                <span class="lang-active">中文</span>
+                <a href="index_zh.html" class="lang-link">中文</a>
                 <span class="lang-sep">/</span>
-                <a href="index_en.html" class="lang-link">EN</a>
+                <span class="lang-active">EN</span>
             </div>
         </div>
     </header>
@@ -438,12 +438,12 @@
     <!-- Main -->
     <main class="main" id="mainContent">
         <div class="section">
-            <div class="loading" style="text-align:center;padding:40px;color:#888;">加载中...</div>
+            <div class="loading" style="text-align:center;padding:40px;color:#888;">Loading...</div>
         </div>
     </main>
     
     <!-- Data -->
-    <script src="data.js"></script>
+    <script src="data_en.js"></script>
     
     <!-- App Logic -->
     <script>
@@ -458,8 +458,8 @@
                 document.getElementById('mainContent').innerHTML = `
                     <div class="section">
                         <div class="empty-state">
-                            <h3>数据未加载</h3>
-                            <p>请确保 data.js 文件存在</p>
+                            <h3>Data not loaded</h3>
+                            <p>Please ensure data_en.js file exists</p>
                         </div>
                     </div>
                 `;
@@ -469,7 +469,7 @@
             let html = '';
             
             DEMO_DATA.abilities.forEach(ability => {
-                // 检查是否有 cases
+                // Check if has cases
                 const hasCases = ability.sub_abilities.some(sub => sub.cases && sub.cases.length > 0);
                 if (!hasCases) return;
                 
@@ -485,8 +485,8 @@
             document.getElementById('mainContent').innerHTML = html || `
                 <div class="section">
                     <div class="empty-state">
-                        <h3>暂无案例</h3>
-                        <p>请在配置中添加案例</p>
+                        <h3>No cases available</h3>
+                        <p>Please add cases in configuration</p>
                     </div>
                 </div>
             `;
