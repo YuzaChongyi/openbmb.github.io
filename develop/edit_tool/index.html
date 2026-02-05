@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiniCPM-o Demo Editor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* MiMo-Audio 风格：暖灰色调 */
+            --bg-hero: #e8e4e0;
+            --bg-body: #f5f3f0;
+            --bg-section: #ffffff;
+            --bg-card: #ffffff;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --text-muted: #888888;
+            --text-hero: #1a1a1a;
+            --accent: #1a1a1a;
+            --accent-hover: #333333;
+            --border: #e0dcd8;
+            --border-light: #eae6e2;
+            --radius: 8px;
+            --radius-sm: 4px;
+            /* 编辑器专用 */
+            --edit-accent: #e94560;
+            --edit-success: #4ecdc4;
+            --edit-warning: #f7d794;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-body);
+            color: var(--text-primary);
+            line-height: 1.6;
+            font-size: 15px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* === 编辑器工具栏 === */
+        .editor-toolbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 52px;
+            background: var(--bg-section);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            z-index: 1000;
+        }
+
+        .toolbar-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .toolbar-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .toolbar-lang {
+            display: flex;
+            gap: 4px;
+            background: var(--bg-body);
+            border-radius: var(--radius);
+            padding: 3px;
+        }
+
+        .toolbar-lang button {
+            padding: 5px 14px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: var(--radius-sm);
+            transition: all 0.2s;
+        }
+
+        .toolbar-lang button.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        .toolbar-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn {
+            padding: 7px 14px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--bg-section);
+            color: var(--text-primary);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn:hover {
+            background: var(--bg-body);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-success {
+            background: var(--edit-success);
+            color: #1a1a1a;
+            border-color: var(--edit-success);
+        }
+
+        /* === Hero Section === */
+        .hero {
+            background: var(--bg-hero);
+            padding: 80px 24px 60px;
+            padding-top: 132px; /* 工具栏高度 + 原始padding */
+            text-align: center;
+        }
+
+        .hero-inner {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 12px;
+            color: var(--text-hero);
+            letter-spacing: -0.02em;
+        }
+
+        .hero-desc {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        /* === Main Content === */
+        .main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 24px 80px;
+        }
+
+        /* === Section === */
+        .section {
+            background: var(--bg-section);
+            border-radius: var(--radius);
+            padding: 40px 48px;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+        }
+
+        .section-desc {
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            font-size: 0.9rem;
+        }
+
+        /* === Sub Section === */
+        .subsection {
+            margin-top: 28px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .subsection:first-of-type {
+            margin-top: 0;
+            padding-top: 0;
+            border-top: none;
+        }
+
+        .subsection-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .subsection-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* === Tab Buttons === */
+        .tab-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .tab-btn {
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: var(--bg-body);
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover {
+            background: var(--border-light);
+            color: var(--text-primary);
+        }
+
+        .tab-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        /* === Case Content === */
+        .case-content {
+            display: none;
+        }
+
+        .case-content.active {
+            display: block;
+        }
+
+        /* === System Block === */
+        .system-block {
+            background: var(--bg-body);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            margin-bottom: 24px;
+        }
+
+        .system-title {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .system-row {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 10px;
+            font-size: 0.85rem;
+        }
+
+        .system-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .system-label {
+            width: 80px;
+            flex-shrink: 0;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            padding-top: 4px;
+        }
+
+        .system-value {
+            flex: 1;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .system-value.mono {
+            font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+            font-size: 0.8rem;
+            background: var(--bg-section);
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            line-height: 1.5;
+            color: var(--text-primary);
+        }
+
+        /* === Conversation === */
+        .conversation {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .turn {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+        }
+
+        .turn:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .message {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .message-role {
+            width: 60px;
+            flex-shrink: 0;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            padding-top: 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        .message-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .message.ai .message-role {
+            color: var(--accent);
+        }
+
+        .message-text {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--text-primary);
+        }
+
+        .message-text:not(:last-child) {
+            margin-bottom: 8px;
+        }
+
+        /* === Audio Player === */
+        .audio-player {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .audio-player audio {
+            height: 32px;
+            width: 100%;
+            max-width: 320px;
+            border-radius: var(--radius-sm);
+        }
+
+        /* === 可编辑元素 === */
+        .editable {
+            cursor: text;
+            padding: 2px 4px;
+            margin: -2px -4px;
+            border-radius: var(--radius-sm);
+            border: 1px dashed transparent;
+            transition: all 0.2s;
+        }
+
+        .editable:hover {
+            border-color: var(--border);
+            background: rgba(0,0,0,0.02);
+        }
+
+        .editable.editing {
+            background: white;
+            border-color: var(--edit-accent);
+            box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.1);
+        }
+
+        .editable-input {
+            background: transparent;
+            border: none;
+            color: inherit;
+            font: inherit;
+            width: 100%;
+            outline: none;
+            resize: none;
+        }
+
+        .editable-textarea {
+            background: transparent;
+            border: none;
+            color: inherit;
+            font: inherit;
+            width: 100%;
+            outline: none;
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        /* === 操作按钮 === */
+        .action-btns {
+            display: flex;
+            gap: 4px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .section:hover > .section-header .action-btns,
+        .subsection:hover > .subsection-header .action-btns,
+        .turn:hover > .action-btns,
+        .tab-btn:hover .action-btns {
+            opacity: 1;
+        }
+
+        .action-btn {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: var(--bg-body);
+            color: var(--text-muted);
+            cursor: pointer;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            transition: all 0.15s;
+        }
+
+        .action-btn:hover {
+            background: var(--border);
+            color: var(--text-primary);
+        }
+
+        .action-btn.danger:hover {
+            background: rgba(233, 69, 96, 0.15);
+            color: var(--edit-accent);
+        }
+
+        /* === 添加按钮 === */
+        .add-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+            padding: 12px;
+            border: 2px dashed var(--border);
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            cursor: pointer;
+            border-radius: var(--radius);
+            transition: all 0.2s;
+            margin-top: 16px;
+        }
+
+        .add-btn:hover {
+            border-color: var(--edit-accent);
+            color: var(--edit-accent);
+            background: rgba(233, 69, 96, 0.05);
+        }
+
+        /* === 状态栏 === */
+        .status-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 28px;
+            background: var(--bg-section);
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--edit-success);
+        }
+
+        .status-dot.modified {
+            background: var(--edit-warning);
+        }
+
+        /* === 空状态 === */
+        .empty-state {
+            text-align: center;
+            padding: 40px 24px;
+            color: var(--text-muted);
+        }
+
+        /* === 模态框 === */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: var(--bg-section);
+            border-radius: var(--radius);
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow: auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-title {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            padding: 16px 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: var(--text-secondary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px 12px;
+            background: var(--bg-body);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--text-primary);
+            font-size: 13px;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--edit-accent);
+        }
+
+        .form-textarea {
+            min-height: 80px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        /* === Toast === */
+        .toast-container {
+            position: fixed;
+            top: 68px;
+            right: 24px;
+            z-index: 3000;
+        }
+
+        .toast {
+            background: var(--bg-section);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 10px 14px;
+            margin-bottom: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            animation: slideIn 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .toast.success { border-left: 3px solid var(--edit-success); }
+        .toast.error { border-left: 3px solid var(--edit-accent); }
+        .toast.warning { border-left: 3px solid var(--edit-warning); }
+        .toast.info { border-left: 3px solid #64b5f6; }
+
+        /* === 拖拽状态 === */
+        .dragging { opacity: 0.5; }
+        .drag-over { outline: 2px dashed var(--edit-accent); outline-offset: 2px; }
+
+        /* Turn action buttons positioning */
+        .turn {
+            position: relative;
+        }
+        .turn > .action-btns {
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+
+        /* Tab with delete button */
+        .tab-wrapper {
+            position: relative;
+            display: inline-flex;
+        }
+        .tab-wrapper .action-btns {
+            position: absolute;
+            right: -8px;
+            top: -8px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 工具栏 -->
+    <header class="editor-toolbar">
+        <div class="toolbar-left">
+            <span class="toolbar-title">📝 MiniCPM-o Demo Editor</span>
+            <div class="toolbar-lang">
+                <button id="btn-lang-zh" class="active" onclick="switchLang('zh')">中文</button>
+                <button id="btn-lang-en" onclick="switchLang('en')">EN</button>
+            </div>
+        </div>
+        <div class="toolbar-right">
+            <button class="btn" onclick="previewDemo()">👁 预览</button>
+            <button class="btn" onclick="loadFromFile()">📂 导入</button>
+            <button class="btn" onclick="exportData()">📤 导出</button>
+            <button class="btn btn-primary" onclick="saveToServer()">💾 保存</button>
+            <button class="btn btn-success" onclick="triggerBuild()">🔨 构建</button>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-inner">
+            <h1 class="editable" data-path="meta.title" ondblclick="startEdit(this)" id="meta-title">MiniCPM-o 4.5</h1>
+            <p class="hero-desc editable" data-path="meta.description" ondblclick="startEdit(this)" id="meta-desc">下一代全模态语音对话模型</p>
+        </div>
+    </section>
+
+    <!-- 主内容 -->
+    <main class="main" id="main-content">
+        <!-- 由 JS 动态渲染 -->
+    </main>
+
+    <!-- 状态栏 -->
+    <footer class="status-bar">
+        <div class="status-indicator">
+            <span class="status-dot" id="status-dot"></span>
+            <span id="status-text">已保存</span>
+        </div>
+        <span id="status-info">双击编辑 · 拖拽排序 · Ctrl+S 保存</span>
+    </footer>
+
+    <!-- Toast -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- 模态框 -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <span class="modal-title" id="modal-title">编辑</span>
+                <button class="action-btn" onclick="closeModal()">✕</button>
+            </div>
+            <div class="modal-body" id="modal-body"></div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeModal()">取消</button>
+                <button class="btn btn-primary" onclick="saveModal()">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== 数据 ====================
+        let currentLang = 'zh';
+        let data = { zh: null, en: null };
+        let modified = false;
+        let activeCases = {}; // 记录每个 subsection 激活的 case
+
+        const API_BASE = window.location.protocol === 'file:' ? null : '';
+
+        // ==================== 初始化 ====================
+        async function init() {
+            // 从服务器或本地加载
+            for (const lang of ['zh', 'en']) {
+                try {
+                    if (API_BASE !== null) {
+                        const res = await fetch(`${API_BASE}/api/data/${lang}`);
+                        if (res.ok) data[lang] = await res.json();
+                    }
+                } catch (e) {}
+                
+                if (!data[lang]) {
+                    try {
+                        const res = await fetch(`/minicpm-o-4_5/data${lang === 'en' ? '_en' : ''}.js`);
+                        const text = await res.text();
+                        const match = text.match(/const DEMO_DATA = ({[\s\S]*});/);
+                        if (match) data[lang] = JSON.parse(match[1]);
+                    } catch (e) {}
+                }
+                
+                if (!data[lang]) {
+                    data[lang] = { meta: { title: "MiniCPM-o 4.5", description: "" }, abilities: [] };
+                }
+            }
+            
+            render();
+            updateStatus();
+        }
+
+        // ==================== 渲染 ====================
+        function render() {
+            const d = data[currentLang];
+            
+            // Meta
+            document.getElementById('meta-title').textContent = d.meta?.title || '';
+            document.getElementById('meta-desc').textContent = d.meta?.description || '';
+            
+            // Abilities
+            const main = document.getElementById('main-content');
+            let html = '';
+            
+            (d.abilities || []).forEach((ability, aIdx) => {
+                html += renderAbility(ability, aIdx);
+            });
+            
+            html += `<button class="add-btn" onclick="addAbility()">+ 添加能力分类</button>`;
+            main.innerHTML = html;
+        }
+
+        function renderAbility(ability, aIdx) {
+            let html = `
+            <div class="section" draggable="true" data-type="ability" data-index="${aIdx}">
+                <div class="section-header">
+                    <h2 class="section-title editable" data-path="abilities.${aIdx}.name" ondblclick="startEdit(this)">${ability.name || '未命名'}</h2>
+                    <div class="action-btns">
+                        <button class="action-btn danger" onclick="deleteAbility(${aIdx})" title="删除">✕</button>
+                    </div>
+                </div>
+                <p class="section-desc editable" data-path="abilities.${aIdx}.description" ondblclick="startEdit(this)">${ability.description || '描述'}</p>
+            `;
+            
+            (ability.sub_abilities || []).forEach((sub, sIdx) => {
+                html += renderSubAbility(sub, aIdx, sIdx);
+            });
+            
+            html += `<button class="add-btn" onclick="addSubAbility(${aIdx})">+ 添加子分类</button>`;
+            html += `</div>`;
+            return html;
+        }
+
+        function renderSubAbility(sub, aIdx, sIdx) {
+            const key = `${aIdx}-${sIdx}`;
+            const activeIdx = activeCases[key] || 0;
+            const cases = sub.cases || [];
+            
+            let html = `
+            <div class="subsection" data-type="sub" data-ability="${aIdx}" data-index="${sIdx}">
+                <div class="subsection-header">
+                    <h3 class="subsection-title editable" data-path="abilities.${aIdx}.sub_abilities.${sIdx}.name" ondblclick="startEdit(this)">${sub.name || '未命名'}</h3>
+                    <div class="action-btns">
+                        <button class="action-btn danger" onclick="deleteSubAbility(${aIdx}, ${sIdx})" title="删除">✕</button>
+                    </div>
+                </div>
+                <div class="tab-group">
+            `;
+            
+            cases.forEach((c, cIdx) => {
+                html += `
+                    <div class="tab-wrapper">
+                        <button class="tab-btn ${cIdx === activeIdx ? 'active' : ''}" onclick="selectCase(${aIdx}, ${sIdx}, ${cIdx})">${c.summary || c.id}</button>
+                        <div class="action-btns">
+                            <button class="action-btn danger" onclick="event.stopPropagation(); deleteCase(${aIdx}, ${sIdx}, ${cIdx})" title="删除">✕</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += `<button class="tab-btn" onclick="addCase(${aIdx}, ${sIdx})">+</button></div>`;
+            
+            // Case 内容
+            cases.forEach((c, cIdx) => {
+                html += renderCase(c, aIdx, sIdx, cIdx, cIdx === activeIdx);
+            });
+            
+            html += `</div>`;
+            return html;
+        }
+
+        function renderCase(c, aIdx, sIdx, cIdx, active) {
+            const sys = c.system || {};
+            const turns = c.turns || [];
+            
+            let html = `
+            <div class="case-content ${active ? 'active' : ''}" data-case="${aIdx}-${sIdx}-${cIdx}">
+                <div class="system-block">
+                    <div class="system-title">System Prompt</div>
+                    <div class="system-row">
+                        <span class="system-label">Prefix</span>
+                        <div class="system-value mono editable" data-path="abilities.${aIdx}.sub_abilities.${sIdx}.cases.${cIdx}.system.prefix" ondblclick="startEditArea(this)">${sys.prefix || '(无)'}</div>
+                    </div>
+                    <div class="system-row">
+                        <span class="system-label">Ref Audio</span>
+                        <div class="system-value">
+                            ${sys.ref_audio ? `<div class="audio-player"><audio controls src="/minicpm-o-4_5/${sys.ref_audio}"></audio></div>` : '(无音频)'}
+                        </div>
+                    </div>
+                    <div class="system-row">
+                        <span class="system-label">Suffix</span>
+                        <div class="system-value mono editable" data-path="abilities.${aIdx}.sub_abilities.${sIdx}.cases.${cIdx}.system.suffix" ondblclick="startEditArea(this)">${sys.suffix || '(无)'}</div>
+                    </div>
+                </div>
+                
+                <div class="conversation">
+            `;
+            
+            turns.forEach((turn, tIdx) => {
+                html += renderTurn(turn, aIdx, sIdx, cIdx, tIdx);
+            });
+            
+            html += `
+                </div>
+                <button class="add-btn" onclick="addTurn(${aIdx}, ${sIdx}, ${cIdx})">+ 添加对话轮次</button>
+            </div>
+            `;
+            return html;
+        }
+
+        function renderTurn(turn, aIdx, sIdx, cIdx, tIdx) {
+            const basePath = `abilities.${aIdx}.sub_abilities.${sIdx}.cases.${cIdx}.turns.${tIdx}`;
+            return `
+            <div class="turn" data-type="turn" data-path="${basePath}">
+                <div class="action-btns">
+                    <button class="action-btn danger" onclick="deleteTurn(${aIdx}, ${sIdx}, ${cIdx}, ${tIdx})" title="删除">✕</button>
+                </div>
+                <div class="message user">
+                    <span class="message-role">User</span>
+                    <div class="message-content">
+                        <div class="message-text editable" data-path="${basePath}.user_text" ondblclick="startEditArea(this)">${turn.user_text || '(用户输入)'}</div>
+                    </div>
+                </div>
+                <div class="message ai">
+                    <span class="message-role">AI</span>
+                    <div class="message-content">
+                        <div class="message-text editable" data-path="${basePath}.assistant_text" ondblclick="startEditArea(this)">${turn.assistant_text || '(AI回复)'}</div>
+                        ${turn.assistant_audio ? `<div class="audio-player"><audio controls src="/minicpm-o-4_5/${turn.assistant_audio}"></audio></div>` : ''}
+                    </div>
+                </div>
+            </div>
+            `;
+        }
+
+        // ==================== Case 选择 ====================
+        function selectCase(aIdx, sIdx, cIdx) {
+            const key = `${aIdx}-${sIdx}`;
+            activeCases[key] = cIdx;
+            render();
+        }
+
+        // ==================== 编辑 ====================
+        function startEdit(el) {
+            if (el.classList.contains('editing')) return;
+            const text = el.textContent;
+            el.classList.add('editing');
+            el.innerHTML = `<input type="text" class="editable-input" value="${escapeHtml(text)}" onblur="finishEdit(this)" onkeydown="handleEditKey(event, this)">`;
+            el.querySelector('input').focus();
+            el.querySelector('input').select();
+        }
+
+        function startEditArea(el) {
+            if (el.classList.contains('editing')) return;
+            const text = el.textContent;
+            el.classList.add('editing');
+            el.innerHTML = `<textarea class="editable-textarea" onblur="finishEdit(this)" onkeydown="handleEditKey(event, this)">${escapeHtml(text)}</textarea>`;
+            el.querySelector('textarea').focus();
+        }
+
+        function finishEdit(input) {
+            const el = input.parentElement;
+            const path = el.dataset.path;
+            const value = input.value;
+            setNestedValue(data[currentLang], path, value);
+            el.classList.remove('editing');
+            el.textContent = value || '(空)';
+            markModified();
+        }
+
+        function handleEditKey(e, input) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                input.blur();
+            } else if (e.key === 'Escape') {
+                const el = input.parentElement;
+                const path = el.dataset.path;
+                el.classList.remove('editing');
+                el.textContent = getNestedValue(data[currentLang], path) || '(空)';
+            }
+        }
+
+        // ==================== 添加/删除 ====================
+        function addAbility() {
+            data[currentLang].abilities.push({
+                id: 'ability_' + Date.now(),
+                name: '新能力分类',
+                description: '描述',
+                sub_abilities: []
+            });
+            markModified();
+            render();
+            showToast('已添加能力分类', 'success');
+        }
+
+        function deleteAbility(aIdx) {
+            if (!confirm('确定删除此能力分类？')) return;
+            data[currentLang].abilities.splice(aIdx, 1);
+            markModified();
+            render();
+        }
+
+        function addSubAbility(aIdx) {
+            const ability = data[currentLang].abilities[aIdx];
+            if (!ability.sub_abilities) ability.sub_abilities = [];
+            ability.sub_abilities.push({
+                id: 'sub_' + Date.now(),
+                name: '新子分类',
+                cases: []
+            });
+            markModified();
+            render();
+        }
+
+        function deleteSubAbility(aIdx, sIdx) {
+            if (!confirm('确定删除此子分类？')) return;
+            data[currentLang].abilities[aIdx].sub_abilities.splice(sIdx, 1);
+            markModified();
+            render();
+        }
+
+        function addCase(aIdx, sIdx) {
+            const sub = data[currentLang].abilities[aIdx].sub_abilities[sIdx];
+            if (!sub.cases) sub.cases = [];
+            sub.cases.push({
+                id: 'case_' + Date.now(),
+                summary: '新案例',
+                system: { prefix: '', ref_audio: '', suffix: '' },
+                turns: []
+            });
+            activeCases[`${aIdx}-${sIdx}`] = sub.cases.length - 1;
+            markModified();
+            render();
+        }
+
+        function deleteCase(aIdx, sIdx, cIdx) {
+            if (!confirm('确定删除此案例？')) return;
+            data[currentLang].abilities[aIdx].sub_abilities[sIdx].cases.splice(cIdx, 1);
+            const key = `${aIdx}-${sIdx}`;
+            if (activeCases[key] >= cIdx) activeCases[key] = Math.max(0, activeCases[key] - 1);
+            markModified();
+            render();
+        }
+
+        function addTurn(aIdx, sIdx, cIdx) {
+            const c = data[currentLang].abilities[aIdx].sub_abilities[sIdx].cases[cIdx];
+            if (!c.turns) c.turns = [];
+            c.turns.push({
+                user_text: '用户输入',
+                assistant_text: 'AI回复',
+                assistant_audio: ''
+            });
+            markModified();
+            render();
+        }
+
+        function deleteTurn(aIdx, sIdx, cIdx, tIdx) {
+            if (!confirm('确定删除此对话轮次？')) return;
+            data[currentLang].abilities[aIdx].sub_abilities[sIdx].cases[cIdx].turns.splice(tIdx, 1);
+            markModified();
+            render();
+        }
+
+        // ==================== 语言切换 ====================
+        function switchLang(lang) {
+            currentLang = lang;
+            document.getElementById('btn-lang-zh').classList.toggle('active', lang === 'zh');
+            document.getElementById('btn-lang-en').classList.toggle('active', lang === 'en');
+            render();
+        }
+
+        // ==================== 保存/导出 ====================
+        async function saveToServer() {
+            if (API_BASE === null) {
+                showToast('服务器未运行', 'warning');
+                exportData();
+                return;
+            }
+            try {
+                const res = await fetch(`${API_BASE}/api/data/${currentLang}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data[currentLang])
+                });
+                if (res.ok) {
+                    modified = false;
+                    updateStatus();
+                    showToast('已保存', 'success');
+                } else {
+                    showToast('保存失败', 'error');
+                }
+            } catch (e) {
+                showToast('保存失败: ' + e.message, 'error');
+            }
+        }
+
+        function exportData() {
+            const blob = new Blob([JSON.stringify(data[currentLang], null, 2)], { type: 'application/json' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `data_${currentLang}.json`;
+            a.click();
+            showToast('已导出', 'success');
+        }
+
+        function loadFromFile() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                try {
+                    data[currentLang] = JSON.parse(await file.text());
+                    render();
+                    markModified();
+                    showToast('导入成功', 'success');
+                } catch (err) {
+                    showToast('导入失败', 'error');
+                }
+            };
+            input.click();
+        }
+
+        async function triggerBuild() {
+            if (API_BASE === null) {
+                showToast('服务器未运行', 'error');
+                return;
+            }
+            showToast('正在构建...', 'info');
+            try {
+                const res = await fetch(`${API_BASE}/api/build`, { method: 'POST' });
+                const result = await res.json();
+                showToast(result.success ? '构建完成！' : '构建失败', result.success ? 'success' : 'error');
+            } catch (e) {
+                showToast('构建失败', 'error');
+            }
+        }
+
+        function previewDemo() {
+            window.open(`/minicpm-o-4_5/index${currentLang === 'en' ? '' : '_zh'}.html`, '_blank');
+        }
+
+        // ==================== 模态框 ====================
+        function closeModal() {
+            document.getElementById('modal-overlay').classList.remove('active');
+        }
+
+        function saveModal() {
+            // 扩展用
+            closeModal();
+        }
+
+        // ==================== 工具函数 ====================
+        function setNestedValue(obj, path, value) {
+            const keys = path.split('.');
+            let cur = obj;
+            for (let i = 0; i < keys.length - 1; i++) {
+                const k = isNaN(keys[i]) ? keys[i] : parseInt(keys[i]);
+                if (!cur[k]) cur[k] = {};
+                cur = cur[k];
+            }
+            const last = isNaN(keys[keys.length-1]) ? keys[keys.length-1] : parseInt(keys[keys.length-1]);
+            cur[last] = value;
+        }
+
+        function getNestedValue(obj, path) {
+            return path.split('.').reduce((a, k) => a ? a[isNaN(k) ? k : parseInt(k)] : undefined, obj);
+        }
+
+        function escapeHtml(s) {
+            if (!s) return '';
+            return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+
+        function markModified() {
+            modified = true;
+            updateStatus();
+        }
+
+        function updateStatus() {
+            document.getElementById('status-dot').classList.toggle('modified', modified);
+            document.getElementById('status-text').textContent = modified ? '有未保存的更改' : '已保存';
+        }
+
+        function showToast(msg, type = 'info') {
+            const c = document.getElementById('toast-container');
+            const t = document.createElement('div');
+            t.className = `toast ${type}`;
+            t.innerHTML = `<span>${{success:'✓',error:'✕',warning:'⚠',info:'ℹ'}[type]}</span> ${msg}`;
+            c.appendChild(t);
+            setTimeout(() => t.remove(), 3000);
+        }
+
+        // 快捷键
+        document.addEventListener('keydown', e => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); saveToServer(); }
+            if ((e.ctrlKey || e.metaKey) && e.key === 'b') { e.preventDefault(); triggerBuild(); }
+        });
+
+        // 离开提醒
+        window.onbeforeunload = e => { if (modified) return '有未保存的更改'; };
+
+        // 启动
+        init();
+    </script>
+</body>
+</html>

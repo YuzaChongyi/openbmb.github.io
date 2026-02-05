@@ -21,12 +21,23 @@ from typing import Optional
 SCRIPT_DIR = Path(__file__).parent
 REPO_ROOT = SCRIPT_DIR.parent.parent
 CONFIG_PATH = SCRIPT_DIR / "config" / "cases.json"
+EDIT_TOOL_CONFIG_ZH = SCRIPT_DIR.parent / "edit_tool" / "config" / "data_zh.json"
+EDIT_TOOL_CONFIG_EN = SCRIPT_DIR.parent / "edit_tool" / "config" / "data_en.json"
 OUTPUT_DIR = REPO_ROOT / "minicpm-o-4_5"
 COLLECTED_DIR = SCRIPT_DIR.parent / "collected"
 
 
 def load_config() -> dict:
-    """加载 cases.json 配置"""
+    """加载配置文件
+    
+    优先从 edit_tool 配置读取（如果存在），否则从 cases.json 读取
+    """
+    if EDIT_TOOL_CONFIG_ZH.exists():
+        print(f"[INFO] 从 edit_tool 配置加载: {EDIT_TOOL_CONFIG_ZH}")
+        with open(EDIT_TOOL_CONFIG_ZH, "r", encoding="utf-8") as f:
+            return json.load(f)
+    
+    print(f"[INFO] 从默认配置加载: {CONFIG_PATH}")
     with open(CONFIG_PATH, "r", encoding="utf-8") as f:
         return json.load(f)
 
@@ -160,6 +171,17 @@ def process_case(case: dict, lang: str, output_audio_dir: Path) -> Optional[dict
     Returns:
         处理后的 case 数据（用于 data.js），处理失败返回 None
     """
+    # 如果已经有完整数据（从 edit_tool 保存的），直接使用
+    if "turns" in case and case["turns"] and "system" in case:
+        print(f"  使用已处理的 case: {case['id']}")
+        return {
+            "id": case["id"],
+            "summary": case.get("summary", ""),
+            "system": case["system"],
+            "turns": case["turns"]
+        }
+    
+    # 否则从 source_session 读取
     source_session = case.get("source_session")
     if not source_session:
         print(f"  [WARN] Case {case.get('id', '?')} 缺少 source_session，跳过")
@@ -255,9 +277,9 @@ def build_data_js(config: dict, output_dir: Path) -> dict:
     return output_data
 
 
-def write_data_js(data: dict, output_dir: Path):
+def write_data_js(data: dict, output_dir: Path, filename: str = "data.js"):
     """将数据写入 data.js"""
-    data_js_path = output_dir / "data.js"
+    data_js_path = output_dir / filename
     
     # 格式化 JSON，便于阅读
     json_str = json.dumps(data, ensure_ascii=False, indent=2)
@@ -268,19 +290,35 @@ def write_data_js(data: dict, output_dir: Path):
     print(f"写入 {data_js_path}")
 
 
+def load_config_for_lang(lang: str) -> Optional[dict]:
+    """加载指定语言的配置
+    
+    Args:
+        lang: 语言代码，zh 或 en
+    
+    Returns:
+        配置字典，如果不存在则返回 None
+    """
+    edit_tool_config = EDIT_TOOL_CONFIG_ZH if lang == "zh" else EDIT_TOOL_CONFIG_EN
+    
+    if edit_tool_config.exists():
+        print(f"[INFO] 从 edit_tool 配置加载 ({lang}): {edit_tool_config}")
+        with open(edit_tool_config, "r", encoding="utf-8") as f:
+            return json.load(f)
+    
+    # 回退到默认配置
+    if CONFIG_PATH.exists():
+        print(f"[INFO] 从默认配置加载 ({lang}): {CONFIG_PATH}")
+        with open(CONFIG_PATH, "r", encoding="utf-8") as f:
+            return json.load(f)
+    
+    return None
+
+
 def main():
     print("=" * 60)
     print("MiniCPM-o 4.5 Demo Page Builder")
     print("=" * 60)
-    
-    # 检查配置文件
-    if not CONFIG_PATH.exists():
-        print(f"[ERROR] 配置文件不存在: {CONFIG_PATH}")
-        return 1
-    
-    # 加载配置
-    print(f"加载配置: {CONFIG_PATH}")
-    config = load_config()
     
     # 清理输出目录中的音频（保留其他文件）
     output_audio_dir = OUTPUT_DIR / "audio"
@@ -288,21 +326,47 @@ def main():
         print(f"清理音频目录: {output_audio_dir}")
         shutil.rmtree(output_audio_dir)
     
-    # 构建数据
-    print("\n处理 cases...")
-    output_data = build_data_js(config, OUTPUT_DIR)
+    total_cases_all = 0
     
-    # 写入 data.js
-    print("\n生成输出...")
-    write_data_js(output_data, OUTPUT_DIR)
+    # 处理中文版本
+    print("\n" + "=" * 40)
+    print("处理中文版本")
+    print("=" * 40)
+    config_zh = load_config_for_lang("zh")
+    if config_zh:
+        output_data_zh = build_data_js(config_zh, OUTPUT_DIR)
+        write_data_js(output_data_zh, OUTPUT_DIR, "data.js")
+        total_cases_zh = sum(
+            len(sub["cases"])
+            for ability in output_data_zh["abilities"]
+            for sub in ability["sub_abilities"]
+        )
+        print(f"中文版本完成：{total_cases_zh} 个 cases")
+        total_cases_all += total_cases_zh
+    else:
+        print("[WARN] 未找到中文配置文件")
     
-    # 统计
-    total_cases = sum(
-        len(sub["cases"])
-        for ability in output_data["abilities"]
-        for sub in ability["sub_abilities"]
-    )
-    print(f"\n完成！共处理 {total_cases} 个 cases")
+    # 处理英文版本
+    print("\n" + "=" * 40)
+    print("处理英文版本")
+    print("=" * 40)
+    config_en = load_config_for_lang("en")
+    if config_en:
+        output_data_en = build_data_js(config_en, OUTPUT_DIR)
+        write_data_js(output_data_en, OUTPUT_DIR, "data_en.js")
+        total_cases_en = sum(
+            len(sub["cases"])
+            for ability in output_data_en["abilities"]
+            for sub in ability["sub_abilities"]
+        )
+        print(f"英文版本完成：{total_cases_en} 个 cases")
+        total_cases_all += total_cases_en
+    else:
+        print("[WARN] 未找到英文配置文件")
+    
+    print("\n" + "=" * 60)
+    print(f"构建完成！共处理 {total_cases_all} 个 cases")
+    print("=" * 60)
     
     return 0
 
