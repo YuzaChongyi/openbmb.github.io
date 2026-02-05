@@ -98,23 +98,33 @@
             font-weight: 500;
         }
         
-        .lang-active {
+        .lang-btn {
+            background: none;
+            border: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: all 0.15s;
+        }
+        
+        .lang-btn.active {
+            color: var(--text-primary);
+            background: rgba(0,0,0,0.05);
+        }
+        
+        .lang-btn:not(.active) {
+            color: var(--text-muted);
+        }
+        
+        .lang-btn:hover:not(.active) {
             color: var(--text-primary);
         }
         
         .lang-sep {
             color: var(--text-muted);
-            margin: 0 8px;
-        }
-        
-        .lang-link {
-            color: var(--text-muted);
-            text-decoration: none;
-            transition: color 0.15s;
-        }
-        
-        .lang-link:hover {
-            color: var(--text-primary);
+            margin: 0 4px;
         }
         
         /* === Main Content === */
@@ -421,16 +431,14 @@
             <div class="hero-links">
                 <a href="#">DEMO (Coming Soon)</a>
                 <span class="sep">|</span>
-                <!-- <a href="#">PAPER</a> -->
-                <!-- <span class="sep">|</span> -->
                 <a href="https://github.com/OpenBMB/MiniCPM-o">GITHUB</a>
                 <span class="sep">|</span>
                 <a href="https://huggingface.co/openbmb/MiniCPM-o-4_5">HUGGING FACE</a>
             </div>
             <div class="lang-switch">
-                <a href="index_zh.html" class="lang-link">中文</a>
+                <button class="lang-btn" data-lang="zh">中文</button>
                 <span class="lang-sep">/</span>
-                <span class="lang-active">EN</span>
+                <button class="lang-btn active" data-lang="en">EN</button>
             </div>
         </div>
     </header>
@@ -442,15 +450,69 @@
         </div>
     </main>
     
-    <!-- Data -->
-    <script src="data_en.js"></script>
+    <!-- Data (single file with multi-lang) -->
+    <script src="data.js"></script>
     
     <!-- App Logic -->
     <script>
         // === State ===
         const state = {
+            lang: localStorage.getItem('demo_lang') || 'en',
             activeCase: {} // { sectionId: caseId }
         };
+        
+        // === i18n ===
+        const i18n = {
+            zh: {
+                systemSetting: '系统设置',
+                prefix: '前缀',
+                suffix: '后缀',
+                refAudio: '参考音频',
+                user: '用户',
+                ai: 'AI',
+                noData: '数据未加载',
+                ensureFile: '请确保 data.js 文件存在',
+                noCases: '暂无案例',
+                addCases: '请在配置中添加案例'
+            },
+            en: {
+                systemSetting: 'System Setting',
+                prefix: 'Prefix',
+                suffix: 'Suffix',
+                refAudio: 'Reference',
+                user: 'User',
+                ai: 'AI',
+                noData: 'Data not loaded',
+                ensureFile: 'Please ensure data.js file exists',
+                noCases: 'No cases available',
+                addCases: 'Please add cases in configuration'
+            }
+        };
+        
+        function t(key) {
+            return i18n[state.lang][key] || key;
+        }
+        
+        // === Get text from multi-lang object ===
+        function getText(obj) {
+            if (!obj) return '';
+            if (typeof obj === 'string') return obj;
+            return obj[state.lang] || obj.zh || obj.en || '';
+        }
+        
+        // === Switch Language ===
+        function switchLang(lang) {
+            state.lang = lang;
+            localStorage.setItem('demo_lang', lang);
+            document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+            
+            // Update lang buttons
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
+            
+            render();
+        }
         
         // === Render ===
         function render() {
@@ -458,8 +520,8 @@
                 document.getElementById('mainContent').innerHTML = `
                     <div class="section">
                         <div class="empty-state">
-                            <h3>Data not loaded</h3>
-                            <p>Please ensure data_en.js file exists</p>
+                            <h3>${t('noData')}</h3>
+                            <p>${t('ensureFile')}</p>
                         </div>
                     </div>
                 `;
@@ -475,8 +537,8 @@
                 
                 html += `
                     <div class="section">
-                        <h2 class="section-title">${ability.name}</h2>
-                        <p class="section-desc">${ability.description || ''}</p>
+                        <h2 class="section-title">${getText(ability.name)}</h2>
+                        <p class="section-desc">${getText(ability.description)}</p>
                         ${renderSubAbilities(ability)}
                     </div>
                 `;
@@ -485,8 +547,8 @@
             document.getElementById('mainContent').innerHTML = html || `
                 <div class="section">
                     <div class="empty-state">
-                        <h3>No cases available</h3>
-                        <p>Please add cases in configuration</p>
+                        <h3>${t('noCases')}</h3>
+                        <p>${t('addCases')}</p>
                     </div>
                 </div>
             `;
@@ -503,13 +565,13 @@
                 
                 return `
                     <div class="subsection">
-                        <h3 class="subsection-title">${sub.name}</h3>
+                        <h3 class="subsection-title">${getText(sub.name)}</h3>
                         <div class="case-card">
                             <div class="tab-group" data-section="${sectionId}">
                                 ${sub.cases.map((c, i) => `
                                     <button class="tab-btn ${c.id === activeCase ? 'active' : ''}" 
                                             data-case="${c.id}">
-                                        ${c.summary || `Case ${i + 1}`}
+                                        ${getText(c.summary) || `Case ${i + 1}`}
                                     </button>
                                 `).join('')}
                             </div>
@@ -537,14 +599,14 @@
             
             return `
                 <div class="system-block">
-                    <div class="system-title">System Setting</div>
+                    <div class="system-title">${t('systemSetting')}</div>
                     <div class="system-row">
-                        <span class="system-label">Prefix</span>
+                        <span class="system-label">${t('prefix')}</span>
                         <div class="system-value mono">${escapeHtml(system.prefix || '')}</div>
                     </div>
                     ${system.ref_audio ? `
                         <div class="system-row">
-                            <span class="system-label">Reference Audio</span>
+                            <span class="system-label">${t('refAudio')}</span>
                             <div class="system-value">
                                 <div class="audio-player">
                                     <audio controls preload="none">
@@ -555,7 +617,7 @@
                         </div>
                     ` : ''}
                     <div class="system-row">
-                        <span class="system-label">Suffix</span>
+                        <span class="system-label">${t('suffix')}</span>
                         <div class="system-value mono">${escapeHtml(system.suffix || '')}</div>
                     </div>
                 </div>
@@ -576,13 +638,13 @@
             return `
                 <div class="turn">
                     <div class="message user">
-                        <div class="message-role">User</div>
+                        <div class="message-role">${t('user')}</div>
                         <div class="message-content">
                             <div class="message-text">${escapeHtml(turn.user_text || '')}</div>
                         </div>
                     </div>
                     <div class="message ai">
-                        <div class="message-role">AI</div>
+                        <div class="message-role">${t('ai')}</div>
                         <div class="message-content">
                             <div class="message-text">${escapeHtml(turn.assistant_text || '')}</div>
                             ${turn.assistant_audio ? `
@@ -605,6 +667,7 @@
         }
         
         function bindEvents() {
+            // Tab switching
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     const sectionId = btn.closest('.tab-group').dataset.section;
@@ -624,10 +687,24 @@
                     });
                 });
             });
+            
+            // Lang switching
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    switchLang(btn.dataset.lang);
+                });
+            });
         }
         
         // === Init ===
-        document.addEventListener('DOMContentLoaded', render);
+        document.addEventListener('DOMContentLoaded', () => {
+            // Init lang buttons
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === state.lang);
+            });
+            document.documentElement.lang = state.lang === 'zh' ? 'zh-CN' : 'en';
+            render();
+        });
     </script>
 </body>
 </html>

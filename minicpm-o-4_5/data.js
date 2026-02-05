@@ -2,23 +2,38 @@
 const DEMO_DATA = {
   "meta": {
     "title": "MiniCPM-o 4.5",
-    "description": "下一代全模态语音对话模型",
+    "description": {
+      "zh": "下一代全模态语音对话模型",
+      "en": "Next-generation Omni-modal Voice Dialog Model"
+    },
     "version": "1.0.0"
   },
   "abilities": [
     {
       "id": "minicpm_assistant",
-      "name": "MiniCPM 助手",
-      "description": "高表现力语音合成，专业声优音色，自然韵律",
+      "name": {
+        "zh": "MiniCPM 助手",
+        "en": "MiniCPM Assistant"
+      },
+      "description": {
+        "zh": "高表现力语音合成，专业声优音色，自然韵律",
+        "en": "Expressive speech synthesis with professional voice and natural rhythm"
+      },
       "sub_abilities": [
         {
           "id": "qa",
-          "name": "知识问答",
+          "name": {
+            "zh": "知识问答",
+            "en": "Knowledge Q&A"
+          },
           "description": "",
           "cases": [
             {
               "id": "haitian_qa_001",
-              "summary": "倾诉心情",
+              "summary": {
+                "zh": "倾诉心情",
+                "en": "Express Feelings"
+              },
               "system": {
                 "prefix": "模仿音频样本的音色并生成新的内容。",
                 "ref_audio": "audio/haitian_qa_001/ref.mp3",
@@ -86,12 +101,18 @@ const DEMO_DATA = {
         },
         {
           "id": "story",
-          "name": "故事创作",
+          "name": {
+            "zh": "故事创作",
+            "en": "Story Creation"
+          },
           "description": "",
           "cases": [
             {
               "id": "haitian_story_001",
-              "summary": "睡前故事（轻柔语气）",
+              "summary": {
+                "zh": "睡前故事（轻柔语气）",
+                "en": "Bedtime Story (Soft Tone)"
+              },
               "system": {
                 "prefix": "模仿音频样本的音色并生成新的内容。",
                 "ref_audio": "audio/haitian_story_001/ref.mp3",
@@ -112,7 +133,10 @@ const DEMO_DATA = {
             },
             {
               "id": "haitian_story_002",
-              "summary": "童话故事（小鹿）",
+              "summary": {
+                "zh": "童话故事（小鹿）",
+                "en": "Fairy Tale (Little Deer)"
+              },
               "system": {
                 "prefix": "模仿音频样本的音色并生成新的内容。",
                 "ref_audio": "audio/haitian_story_002/ref.mp3",
@@ -133,7 +157,10 @@ const DEMO_DATA = {
             },
             {
               "id": "haitian_story_003",
-              "summary": "诗歌朗读（忧伤语气）",
+              "summary": {
+                "zh": "诗歌朗读（忧伤语气）",
+                "en": "Poetry Reading (Melancholic)"
+              },
               "system": {
                 "prefix": "模仿音频样本的音色并生成新的内容。",
                 "ref_audio": "audio/haitian_story_003/ref.mp3",
@@ -153,17 +180,29 @@ const DEMO_DATA = {
     },
     {
       "id": "voice_clone",
-      "name": "声音克隆",
-      "description": "Zero-shot 音色克隆，高还原度",
+      "name": {
+        "zh": "声音克隆",
+        "en": "Voice Cloning"
+      },
+      "description": {
+        "zh": "Zero-shot 音色克隆，高还原度",
+        "en": "Zero-shot voice cloning with high fidelity"
+      },
       "sub_abilities": [
         {
           "id": "character",
-          "name": "角色模仿",
+          "name": {
+            "zh": "角色模仿",
+            "en": "Character Imitation"
+          },
           "description": "",
           "cases": [
             {
               "id": "custom_voice_roleplay_001",
-              "summary": "王者李白（游戏解说）",
+              "summary": {
+                "zh": "王者李白（游戏解说）",
+                "en": "Li Bai - Honor of Kings"
+              },
               "system": {
                 "prefix": "模仿音频样本的音色并生成新的内容。",
                 "ref_audio": "audio/custom_voice_roleplay_001/ref.mp3",
@@ -189,7 +228,10 @@ const DEMO_DATA = {
             },
             {
               "id": "custom_voice_roleplay_002",
-              "summary": "三国曹操（谋略对话）",
+              "summary": {
+                "zh": "三国曹操（谋略对话）",
+                "en": "Cao Cao - Three Kingdoms"
+              },
               "system": {
                 "prefix": "模仿音频样本的音色并生成新的内容。",
                 "ref_audio": "audio/custom_voice_roleplay_002/ref.mp3",
@@ -220,7 +262,10 @@ const DEMO_DATA = {
             },
             {
               "id": "custom_voice_roleplay_003",
-              "summary": "原神派蒙",
+              "summary": {
+                "zh": "原神派蒙",
+                "en": "Paimon - Genshin Impact"
+              },
               "system": {
                 "prefix": "模仿音频样本的音色并生成新的内容。",
                 "ref_audio": "audio/custom_voice_roleplay_003/ref.mp3",
@@ -246,7 +291,10 @@ const DEMO_DATA = {
             },
             {
               "id": "custom_voice_celebrity_001",
-              "summary": "何老师（节目开场白）",
+              "summary": {
+                "zh": "何老师（节目开场白）",
+                "en": "He Jiong - TV Host"
+              },
               "system": {
                 "prefix": "模仿音频样本的音色并生成新的内容。",
                 "ref_audio": "audio/custom_voice_celebrity_001/ref.mp3",
@@ -274,12 +322,18 @@ const DEMO_DATA = {
         },
         {
           "id": "natural",
-          "name": "自然对话",
+          "name": {
+            "zh": "自然对话",
+            "en": "Natural Conversation"
+          },
           "description": "",
           "cases": [
             {
               "id": "custom_voice_daily_001",
-              "summary": "问候打招呼",
+              "summary": {
+                "zh": "问候打招呼",
+                "en": "Greeting"
+              },
               "system": {
                 "prefix": "模仿音频样本的音色并生成新的内容。",
                 "ref_audio": "audio/custom_voice_daily_001/ref.mp3",
@@ -310,7 +364,10 @@ const DEMO_DATA = {
             },
             {
               "id": "custom_voice_daily_002",
-              "summary": "北京旅游推荐",
+              "summary": {
+                "zh": "北京旅游推荐",
+                "en": "Beijing Travel Tips"
+              },
               "system": {
                 "prefix": "模仿音频样本的音色并生成新的内容。",
                 "ref_audio": "audio/custom_voice_daily_002/ref.mp3",
@@ -341,7 +398,10 @@ const DEMO_DATA = {
             },
             {
               "id": "custom_voice_daily_003",
-              "summary": "电影解说（泰坦尼克号）",
+              "summary": {
+                "zh": "电影解说（泰坦尼克号）",
+                "en": "Movie Commentary (Titanic)"
+              },
               "system": {
                 "prefix": "模仿音频样本的音色并生成新的内容。",
                 "ref_audio": "audio/custom_voice_daily_003/ref.mp3",
@@ -357,7 +417,10 @@ const DEMO_DATA = {
             },
             {
               "id": "custom_voice_daily_004",
-              "summary": "心里话倾诉",
+              "summary": {
+                "zh": "心里话倾诉",
+                "en": "Heart-to-Heart Talk"
+              },
               "system": {
                 "prefix": "模仿音频样本的音色并生成新的内容。",
                 "ref_audio": "audio/custom_voice_daily_004/ref.mp3",
@@ -377,17 +440,29 @@ const DEMO_DATA = {
     },
     {
       "id": "advanced_speech",
-      "name": "高级语音能力",
-      "description": "重音、语速、情感等高级语音控制",
+      "name": {
+        "zh": "高级语音能力",
+        "en": "Advanced Speech"
+      },
+      "description": {
+        "zh": "重音、语速、情感等高级语音控制",
+        "en": "Advanced speech control: emphasis, speed, emotion"
+      },
       "sub_abilities": [
         {
           "id": "emphasis",
-          "name": "重音控制",
+          "name": {
+            "zh": "重音控制",
+            "en": "Emphasis Control"
+          },
           "description": "",
           "cases": [
             {
               "id": "advanced_emphasis_001",
-              "summary": "强调「今天」",
+              "summary": {
+                "zh": "强调「今天」",
+                "en": "Emphasize 'Today'"
+              },
               "system": {
                 "prefix": "模仿音频样本的音色并生成新的内容。",
                 "ref_audio": "audio/advanced_emphasis_001/ref.mp3",
@@ -438,7 +513,10 @@ const DEMO_DATA = {
             },
             {
               "id": "advanced_emphasis_002",
-              "summary": "强调「他」字",
+              "summary": {
+                "zh": "强调「他」字",
+                "en": "Emphasize 'He'"
+              },
               "system": {
                 "prefix": "模仿音频样本的音色并生成新的内容。",
                 "ref_audio": "audio/advanced_emphasis_002/ref.mp3",
@@ -471,12 +549,18 @@ const DEMO_DATA = {
         },
         {
           "id": "speed",
-          "name": "语速控制",
+          "name": {
+            "zh": "语速控制",
+            "en": "Speed Control"
+          },
           "description": "",
           "cases": [
             {
               "id": "advanced_speed_001",
-              "summary": "极快语速数数",
+              "summary": {
+                "zh": "极快语速数数",
+                "en": "Ultra-fast Counting"
+              },
               "system": {
                 "prefix": "模仿音频样本的音色并生成新的内容。",
                 "ref_audio": "audio/advanced_speed_001/ref.mp3",
@@ -497,7 +581,10 @@ const DEMO_DATA = {
             },
             {
               "id": "advanced_speed_002",
-              "summary": "快慢对比朗读",
+              "summary": {
+                "zh": "快慢对比朗读",
+                "en": "Fast-Slow Contrast"
+              },
               "system": {
                 "prefix": "模仿音频样本的音色并生成新的内容。",
                 "ref_audio": "audio/advanced_speed_002/ref.mp3",
@@ -515,12 +602,18 @@ const DEMO_DATA = {
         },
         {
           "id": "emotion",
-          "name": "情感表达",
+          "name": {
+            "zh": "情感表达",
+            "en": "Emotional Expression"
+          },
           "description": "",
           "cases": [
             {
               "id": "advanced_emotion_001",
-              "summary": "激动→失落（抢票）",
+              "summary": {
+                "zh": "激动→失落（抢票）",
+                "en": "Excited→Disappointed (Tickets)"
+              },
               "system": {
                 "prefix": "模仿音频样本的音色并生成新的内容。",
                 "ref_audio": "audio/advanced_emotion_001/ref.mp3",
@@ -536,7 +629,10 @@ const DEMO_DATA = {
             },
             {
               "id": "advanced_emotion_002",
-              "summary": "愤怒回应",
+              "summary": {
+                "zh": "愤怒回应",
+                "en": "Angry Response"
+              },
               "system": {
                 "prefix": "模仿音频样本的音色并生成新的内容。",
                 "ref_audio": "audio/advanced_emotion_002/ref.mp3",
@@ -557,7 +653,10 @@ const DEMO_DATA = {
             },
             {
               "id": "advanced_emotion_003",
-              "summary": "开心说悲伤的话",
+              "summary": {
+                "zh": "开心说悲伤的话",
+                "en": "Happy Tone, Sad Words"
+              },
               "system": {
                 "prefix": "模仿音频样本的音色并生成新的内容。",
                 "ref_audio": "audio/advanced_emotion_003/ref.mp3",
@@ -585,12 +684,18 @@ const DEMO_DATA = {
         },
         {
           "id": "voice_style",
-          "name": "音色变化",
+          "name": {
+            "zh": "音色变化",
+            "en": "Voice Style"
+          },
           "description": "",
           "cases": [
             {
               "id": "advanced_voice_001",
-              "summary": "老年沙哑声音",
+              "summary": {
+                "zh": "老年沙哑声音",
+                "en": "Elderly Hoarse Voice"
+              },
               "system": {
                 "prefix": "模仿音频样本的音色并生成新的内容。",
                 "ref_audio": "audio/advanced_voice_001/ref.mp3",
@@ -615,17 +720,29 @@ const DEMO_DATA = {
     },
     {
       "id": "english",
-      "name": "英文能力",
-      "description": "英文对话与角色扮演",
+      "name": {
+        "zh": "英文能力",
+        "en": "English Ability"
+      },
+      "description": {
+        "zh": "英文对话与角色扮演",
+        "en": "English conversation and roleplay"
+      },
       "sub_abilities": [
         {
           "id": "conversation",
-          "name": "日常对话",
+          "name": {
+            "zh": "日常对话",
+            "en": "Daily Conversation"
+          },
           "description": "",
           "cases": [
             {
               "id": "english_conv_001",
-              "summary": "篮球话题闲聊",
+              "summary": {
+                "zh": "篮球话题闲聊",
+                "en": "Basketball Chat"
+              },
               "system": {
                 "prefix": "Clone the voice in the provided audio prompt.",
                 "ref_audio": "audio/english_conv_001/ref.mp3",
@@ -646,7 +763,10 @@ const DEMO_DATA = {
             },
             {
               "id": "english_conv_002",
-              "summary": "政治话题讨论",
+              "summary": {
+                "zh": "政治话题讨论",
+                "en": "Political Discussion"
+              },
               "system": {
                 "prefix": "Clone the voice in the provided audio prompt.",
                 "ref_audio": "audio/english_conv_002/ref.mp3",
@@ -662,7 +782,10 @@ const DEMO_DATA = {
             },
             {
               "id": "english_conv_003",
-              "summary": "AI 职业影响",
+              "summary": {
+                "zh": "AI 职业影响",
+                "en": "AI Impact on Jobs"
+              },
               "system": {
                 "prefix": "Clone the voice in the provided audio prompt.",
                 "ref_audio": "audio/english_conv_003/ref.mp3",
@@ -685,12 +808,18 @@ const DEMO_DATA = {
         },
         {
           "id": "roleplay",
-          "name": "角色扮演",
+          "name": {
+            "zh": "角色扮演",
+            "en": "Roleplay"
+          },
           "description": "",
           "cases": [
             {
               "id": "english_role_001",
-              "summary": "Hermione（霍格沃茨）",
+              "summary": {
+                "zh": "Hermione（霍格沃茨）",
+                "en": "Hermione (Hogwarts)"
+              },
               "system": {
                 "prefix": "Clone the voice in the provided audio prompt.",
                 "ref_audio": "audio/english_role_001/ref.mp3",
@@ -716,7 +845,10 @@ const DEMO_DATA = {
             },
             {
               "id": "english_role_002",
-              "summary": "Groot（银河护卫队）",
+              "summary": {
+                "zh": "Groot（银河护卫队）",
+                "en": "Groot (Guardians)"
+              },
               "system": {
                 "prefix": "Clone the voice in the provided audio prompt.",
                 "ref_audio": "audio/english_role_002/ref.mp3",
@@ -747,7 +879,10 @@ const DEMO_DATA = {
             },
             {
               "id": "english_role_003",
-              "summary": "Elon Musk（特斯拉CEO）",
+              "summary": {
+                "zh": "Elon Musk（特斯拉CEO）",
+                "en": "Elon Musk (Tesla CEO)"
+              },
               "system": {
                 "prefix": "Clone the voice in the provided audio prompt.",
                 "ref_audio": "audio/english_role_003/ref.mp3",
@@ -763,7 +898,10 @@ const DEMO_DATA = {
             },
             {
               "id": "english_role_004",
-              "summary": "Carly Rae（歌手）",
+              "summary": {
+                "zh": "Carly Rae（歌手）",
+                "en": "Carly Rae (Singer)"
+              },
               "system": {
                 "prefix": "Clone the voice in the provided audio prompt.",
                 "ref_audio": "audio/english_role_004/ref.mp3",

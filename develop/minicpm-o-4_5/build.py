@@ -14,17 +14,31 @@ import json
 import shutil
 import re
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Union
 
 
 # === 路径配置 ===
 SCRIPT_DIR = Path(__file__).parent
 REPO_ROOT = SCRIPT_DIR.parent.parent
 CONFIG_PATH = SCRIPT_DIR / "config" / "cases.json"
-EDIT_TOOL_CONFIG_ZH = SCRIPT_DIR.parent / "edit_tool" / "config" / "data_zh.json"
-EDIT_TOOL_CONFIG_EN = SCRIPT_DIR.parent / "edit_tool" / "config" / "data_en.json"
+EDIT_TOOL_CONFIG = SCRIPT_DIR.parent / "edit_tool" / "config" / "data.json"
 OUTPUT_DIR = REPO_ROOT / "minicpm-o-4_5"
 COLLECTED_DIR = SCRIPT_DIR.parent / "collected"
+
+
+def get_text(obj: Union[str, dict], lang: str = "zh") -> str:
+    """从多语言对象中获取指定语言的文本
+    
+    Args:
+        obj: 字符串或 {"zh": "...", "en": "..."} 对象
+        lang: 语言代码
+    
+    Returns:
+        对应语言的文本
+    """
+    if isinstance(obj, dict):
+        return obj.get(lang, obj.get("zh", ""))
+    return obj
 
 
 def load_config() -> dict:
@@ -32,9 +46,9 @@ def load_config() -> dict:
     
     优先从 edit_tool 配置读取（如果存在），否则从 cases.json 读取
     """
-    if EDIT_TOOL_CONFIG_ZH.exists():
-        print(f"[INFO] 从 edit_tool 配置加载: {EDIT_TOOL_CONFIG_ZH}")
-        with open(EDIT_TOOL_CONFIG_ZH, "r", encoding="utf-8") as f:
+    if EDIT_TOOL_CONFIG.exists():
+        print(f"[INFO] 从 edit_tool 配置加载: {EDIT_TOOL_CONFIG}")
+        with open(EDIT_TOOL_CONFIG, "r", encoding="utf-8") as f:
             return json.load(f)
     
     print(f"[INFO] 从默认配置加载: {CONFIG_PATH}")
@@ -42,17 +56,20 @@ def load_config() -> dict:
         return json.load(f)
 
 
-def find_session_dir(source_session: str, lang: str = "zh") -> Optional[Path]:
+def find_session_dir(source_session: str, ability_id: str) -> Optional[Path]:
     """在 collected 目录中查找 session 目录
     
     Args:
         source_session: session 目录名，如 session_20260129_034105_a264bd2a
-        lang: 语言，zh 或 en
+        ability_id: ability ID，用于判断语言（english -> en, 其他 -> zh）
     
     Returns:
         session 目录的 Path，找不到返回 None
     """
+    # 根据 ability_id 判断语言
+    lang = "en" if ability_id == "english" else "zh"
     lang_dir = COLLECTED_DIR / lang
+    
     if not lang_dir.exists():
         return None
     
@@ -160,12 +177,12 @@ def copy_audio_files(session_dir: Path, case_id: str, output_audio_dir: Path) ->
     return paths
 
 
-def process_case(case: dict, lang: str, output_audio_dir: Path) -> Optional[dict]:
+def process_case(case: dict, ability_id: str, output_audio_dir: Path) -> Optional[dict]:
     """处理单个 case，读取 session 数据并复制音频
     
     Args:
         case: case 配置
-        lang: 语言
+        ability_id: 所属 ability 的 ID
         output_audio_dir: 输出音频目录
     
     Returns:
@@ -187,7 +204,7 @@ def process_case(case: dict, lang: str, output_audio_dir: Path) -> Optional[dict
         print(f"  [WARN] Case {case.get('id', '?')} 缺少 source_session，跳过")
         return None
     
-    session_dir = find_session_dir(source_session, lang)
+    session_dir = find_session_dir(source_session, ability_id)
     if not session_dir:
         print(f"  [WARN] 找不到 session: {source_session}，跳过")
         return None
@@ -200,7 +217,7 @@ def process_case(case: dict, lang: str, output_audio_dir: Path) -> Optional[dict
     # 复制音频
     audio_paths = copy_audio_files(session_dir, case["id"], output_audio_dir)
     
-    # 构建输出数据（不包含溯源信息）
+    # 构建输出数据（保留多语言 summary）
     output_case = {
         "id": case["id"],
         "summary": case.get("summary", ""),
@@ -228,7 +245,7 @@ def process_case(case: dict, lang: str, output_audio_dir: Path) -> Optional[dict
     return output_case
 
 
-def build_data_js(config: dict, output_dir: Path) -> dict:
+def build_data(config: dict, output_dir: Path) -> dict:
     """构建 data.js 数据
     
     Args:
@@ -249,24 +266,21 @@ def build_data_js(config: dict, output_dir: Path) -> dict:
     for ability in config["abilities"]:
         output_ability = {
             "id": ability["id"],
-            "name": ability["name"],
-            "description": ability.get("description", ""),
+            "name": ability["name"],  # 保留多语言对象
+            "description": ability.get("description", ""),  # 保留多语言对象
             "sub_abilities": []
         }
         
         for sub_ability in ability.get("sub_abilities", []):
             output_sub = {
                 "id": sub_ability["id"],
-                "name": sub_ability["name"],
+                "name": sub_ability["name"],  # 保留多语言对象
                 "description": sub_ability.get("description", ""),
                 "cases": []
             }
             
-            # 检测语言（简单判断：英文能力用 en，其他用 zh）
-            lang = "en" if ability["id"] == "english" else "zh"
-            
             for case in sub_ability.get("cases", []):
-                processed = process_case(case, lang, output_audio_dir)
+                processed = process_case(case, ability["id"], output_audio_dir)
                 if processed:
                     output_sub["cases"].append(processed)
             
@@ -290,31 +304,6 @@ def write_data_js(data: dict, output_dir: Path, filename: str = "data.js"):
     print(f"写入 {data_js_path}")
 
 
-def load_config_for_lang(lang: str) -> Optional[dict]:
-    """加载指定语言的配置
-    
-    Args:
-        lang: 语言代码，zh 或 en
-    
-    Returns:
-        配置字典，如果不存在则返回 None
-    """
-    edit_tool_config = EDIT_TOOL_CONFIG_ZH if lang == "zh" else EDIT_TOOL_CONFIG_EN
-    
-    if edit_tool_config.exists():
-        print(f"[INFO] 从 edit_tool 配置加载 ({lang}): {edit_tool_config}")
-        with open(edit_tool_config, "r", encoding="utf-8") as f:
-            return json.load(f)
-    
-    # 回退到默认配置
-    if CONFIG_PATH.exists():
-        print(f"[INFO] 从默认配置加载 ({lang}): {CONFIG_PATH}")
-        with open(CONFIG_PATH, "r", encoding="utf-8") as f:
-            return json.load(f)
-    
-    return None
-
-
 def main():
     print("=" * 60)
     print("MiniCPM-o 4.5 Demo Page Builder")
@@ -326,46 +315,27 @@ def main():
         print(f"清理音频目录: {output_audio_dir}")
         shutil.rmtree(output_audio_dir)
     
-    total_cases_all = 0
+    # 加载配置
+    config = load_config()
     
-    # 处理中文版本
+    # 构建数据
     print("\n" + "=" * 40)
-    print("处理中文版本")
+    print("构建数据")
     print("=" * 40)
-    config_zh = load_config_for_lang("zh")
-    if config_zh:
-        output_data_zh = build_data_js(config_zh, OUTPUT_DIR)
-        write_data_js(output_data_zh, OUTPUT_DIR, "data.js")
-        total_cases_zh = sum(
-            len(sub["cases"])
-            for ability in output_data_zh["abilities"]
-            for sub in ability["sub_abilities"]
-        )
-        print(f"中文版本完成：{total_cases_zh} 个 cases")
-        total_cases_all += total_cases_zh
-    else:
-        print("[WARN] 未找到中文配置文件")
+    output_data = build_data(config, OUTPUT_DIR)
     
-    # 处理英文版本
-    print("\n" + "=" * 40)
-    print("处理英文版本")
-    print("=" * 40)
-    config_en = load_config_for_lang("en")
-    if config_en:
-        output_data_en = build_data_js(config_en, OUTPUT_DIR)
-        write_data_js(output_data_en, OUTPUT_DIR, "data_en.js")
-        total_cases_en = sum(
-            len(sub["cases"])
-            for ability in output_data_en["abilities"]
-            for sub in ability["sub_abilities"]
-        )
-        print(f"英文版本完成：{total_cases_en} 个 cases")
-        total_cases_all += total_cases_en
-    else:
-        print("[WARN] 未找到英文配置文件")
+    # 写入单一的 data.js（包含多语言字段）
+    write_data_js(output_data, OUTPUT_DIR, "data.js")
+    
+    # 统计
+    total_cases = sum(
+        len(sub["cases"])
+        for ability in output_data["abilities"]
+        for sub in ability["sub_abilities"]
+    )
     
     print("\n" + "=" * 60)
-    print(f"构建完成！共处理 {total_cases_all} 个 cases")
+    print(f"构建完成！共处理 {total_cases} 个 cases")
     print("=" * 60)
     
     return 0

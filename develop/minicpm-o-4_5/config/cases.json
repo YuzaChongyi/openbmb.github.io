@@ -1,44 +1,50 @@
 {
   "meta": {
     "title": "MiniCPM-o 4.5",
-    "description": "下一代全模态语音对话模型",
+    "description": {
+      "zh": "下一代全模态语音对话模型",
+      "en": "Next-generation Omni-modal Voice Dialog Model"
+    },
     "version": "1.0.0"
   },
   "collected_base": "../collected",
   "abilities": [
     {
       "id": "minicpm_assistant",
-      "name": "MiniCPM 助手",
-      "description": "高表现力语音合成，专业声优音色，自然韵律",
+      "name": { "zh": "MiniCPM 助手", "en": "MiniCPM Assistant" },
+      "description": {
+        "zh": "高表现力语音合成，专业声优音色，自然韵律",
+        "en": "Expressive speech synthesis with professional voice and natural rhythm"
+      },
       "sub_abilities": [
         {
           "id": "qa",
-          "name": "知识问答",
+          "name": { "zh": "知识问答", "en": "Knowledge Q&A" },
           "cases": [
             {
               "id": "haitian_qa_001",
-              "summary": "倾诉心情",
+              "summary": { "zh": "倾诉心情", "en": "Express Feelings" },
               "source_session": "session_20260130_144301_7e489322"
             }
           ]
         },
         {
           "id": "story",
-          "name": "故事创作",
+          "name": { "zh": "故事创作", "en": "Story Creation" },
           "cases": [
             {
               "id": "haitian_story_001",
-              "summary": "睡前故事（轻柔语气）",
+              "summary": { "zh": "睡前故事（轻柔语气）", "en": "Bedtime Story (Soft Tone)" },
               "source_session": "session_20260129_034105_a264bd2a"
             },
             {
               "id": "haitian_story_002",
-              "summary": "童话故事（小鹿）",
+              "summary": { "zh": "童话故事（小鹿）", "en": "Fairy Tale (Little Deer)" },
               "source_session": "session_20260130_131610_741612e0"
             },
             {
               "id": "haitian_story_003",
-              "summary": "诗歌朗读（忧伤语气）",
+              "summary": { "zh": "诗歌朗读（忧伤语气）", "en": "Poetry Reading (Melancholic)" },
               "source_session": "session_20260201_061402_8687e555"
             }
           ]
@@ -47,57 +53,60 @@
     },
     {
       "id": "voice_clone",
-      "name": "声音克隆",
-      "description": "Zero-shot 音色克隆，高还原度",
+      "name": { "zh": "声音克隆", "en": "Voice Cloning" },
+      "description": {
+        "zh": "Zero-shot 音色克隆，高还原度",
+        "en": "Zero-shot voice cloning with high fidelity"
+      },
       "sub_abilities": [
         {
           "id": "character",
-          "name": "角色模仿",
+          "name": { "zh": "角色模仿", "en": "Character Imitation" },
           "cases": [
             {
               "id": "custom_voice_roleplay_001",
-              "summary": "王者李白（游戏解说）",
+              "summary": { "zh": "王者李白（游戏解说）", "en": "Li Bai - Honor of Kings" },
               "source_session": "session_20260201_114917_93b98603"
             },
             {
               "id": "custom_voice_roleplay_002",
-              "summary": "三国曹操（谋略对话）",
+              "summary": { "zh": "三国曹操（谋略对话）", "en": "Cao Cao - Three Kingdoms" },
               "source_session": "session_20260201_120337_1bd0974c"
             },
             {
               "id": "custom_voice_roleplay_003",
-              "summary": "原神派蒙",
+              "summary": { "zh": "原神派蒙", "en": "Paimon - Genshin Impact" },
               "source_session": "session_20260202_160913_5e09a533"
             },
             {
               "id": "custom_voice_celebrity_001",
-              "summary": "何老师（节目开场白）",
+              "summary": { "zh": "何老师（节目开场白）", "en": "He Jiong - TV Host" },
               "source_session": "session_20260202_152012_92c6eb2f"
             }
           ]
         },
         {
           "id": "natural",
-          "name": "自然对话",
+          "name": { "zh": "自然对话", "en": "Natural Conversation" },
           "cases": [
             {
               "id": "custom_voice_daily_001",
-              "summary": "问候打招呼",
+              "summary": { "zh": "问候打招呼", "en": "Greeting" },
               "source_session": "session_20260115_053446_36bda00f"
             },
             {
               "id": "custom_voice_daily_002",
-              "summary": "北京旅游推荐",
+              "summary": { "zh": "北京旅游推荐", "en": "Beijing Travel Tips" },
               "source_session": "session_20260130_115417_d63db917"
             },
             {
               "id": "custom_voice_daily_003",
-              "summary": "电影解说（泰坦尼克号）",
+              "summary": { "zh": "电影解说（泰坦尼克号）", "en": "Movie Commentary (Titanic)" },
               "source_session": "session_20260201_060746_085558bf"
             },
             {
               "id": "custom_voice_daily_004",
-              "summary": "心里话倾诉",
+              "summary": { "zh": "心里话倾诉", "en": "Heart-to-Heart Talk" },
               "source_session": "session_20260203_054036_8ed904a2"
             }
           ]
@@ -106,69 +115,72 @@
     },
     {
       "id": "advanced_speech",
-      "name": "高级语音能力",
-      "description": "重音、语速、情感等高级语音控制",
+      "name": { "zh": "高级语音能力", "en": "Advanced Speech" },
+      "description": {
+        "zh": "重音、语速、情感等高级语音控制",
+        "en": "Advanced speech control: emphasis, speed, emotion"
+      },
       "sub_abilities": [
         {
           "id": "emphasis",
-          "name": "重音控制",
+          "name": { "zh": "重音控制", "en": "Emphasis Control" },
           "cases": [
             {
               "id": "advanced_emphasis_001",
-              "summary": "强调「今天」",
+              "summary": { "zh": "强调「今天」", "en": "Emphasize 'Today'" },
               "source_session": "session_20260131_065745_e28aea0e"
             },
             {
               "id": "advanced_emphasis_002",
-              "summary": "强调「他」字",
+              "summary": { "zh": "强调「他」字", "en": "Emphasize 'He'" },
               "source_session": "session_20260203_070632_2c0bdb76"
             }
           ]
         },
         {
           "id": "speed",
-          "name": "语速控制",
+          "name": { "zh": "语速控制", "en": "Speed Control" },
           "cases": [
             {
               "id": "advanced_speed_001",
-              "summary": "极快语速数数",
+              "summary": { "zh": "极快语速数数", "en": "Ultra-fast Counting" },
               "source_session": "session_20260203_065431_e1a7d211"
             },
             {
               "id": "advanced_speed_002",
-              "summary": "快慢对比朗读",
+              "summary": { "zh": "快慢对比朗读", "en": "Fast-Slow Contrast" },
               "source_session": "session_20260203_065843_1e548f82"
             }
           ]
         },
         {
           "id": "emotion",
-          "name": "情感表达",
+          "name": { "zh": "情感表达", "en": "Emotional Expression" },
           "cases": [
             {
               "id": "advanced_emotion_001",
-              "summary": "激动→失落（抢票）",
+              "summary": { "zh": "激动→失落（抢票）", "en": "Excited→Disappointed (Tickets)" },
               "source_session": "session_20260131_075044_42c34ba8"
             },
             {
               "id": "advanced_emotion_002",
-              "summary": "愤怒回应",
+              "summary": { "zh": "愤怒回应", "en": "Angry Response" },
               "source_session": "session_20260203_070847_0d25e695"
             },
             {
               "id": "advanced_emotion_003",
-              "summary": "开心说悲伤的话",
+              "summary": { "zh": "开心说悲伤的话", "en": "Happy Tone, Sad Words" },
               "source_session": "session_20260203_102257_eb967432"
             }
           ]
         },
         {
           "id": "voice_style",
-          "name": "音色变化",
+          "name": { "zh": "音色变化", "en": "Voice Style" },
           "cases": [
             {
               "id": "advanced_voice_001",
-              "summary": "老年沙哑声音",
+              "summary": { "zh": "老年沙哑声音", "en": "Elderly Hoarse Voice" },
               "source_session": "session_20260131_072107_d4492797"
             }
           ]
@@ -177,52 +189,55 @@
     },
     {
       "id": "english",
-      "name": "英文能力",
-      "description": "英文对话与角色扮演",
+      "name": { "zh": "英文能力", "en": "English Ability" },
+      "description": {
+        "zh": "英文对话与角色扮演",
+        "en": "English conversation and roleplay"
+      },
       "sub_abilities": [
         {
           "id": "conversation",
-          "name": "日常对话",
+          "name": { "zh": "日常对话", "en": "Daily Conversation" },
           "cases": [
             {
               "id": "english_conv_001",
-              "summary": "篮球话题闲聊",
+              "summary": { "zh": "篮球话题闲聊", "en": "Basketball Chat" },
               "source_session": "session_20260201_162123_cea6a9a3"
             },
             {
               "id": "english_conv_002",
-              "summary": "政治话题讨论",
+              "summary": { "zh": "政治话题讨论", "en": "Political Discussion" },
               "source_session": "session_20260202_052426_8eae8492"
             },
             {
               "id": "english_conv_003",
-              "summary": "AI 职业影响",
+              "summary": { "zh": "AI 职业影响", "en": "AI Impact on Jobs" },
               "source_session": "session_20260202_095916_841945f1"
             }
           ]
         },
         {
           "id": "roleplay",
-          "name": "角色扮演",
+          "name": { "zh": "角色扮演", "en": "Roleplay" },
           "cases": [
             {
               "id": "english_role_001",
-              "summary": "Hermione（霍格沃茨）",
+              "summary": { "zh": "Hermione（霍格沃茨）", "en": "Hermione (Hogwarts)" },
               "source_session": "session_20260202_102023_bd095bf7"
             },
             {
               "id": "english_role_002",
-              "summary": "Groot（银河护卫队）",
+              "summary": { "zh": "Groot（银河护卫队）", "en": "Groot (Guardians)" },
               "source_session": "session_20260202_104302_1be1c709"
             },
             {
               "id": "english_role_003",
-              "summary": "Elon Musk（特斯拉CEO）",
+              "summary": { "zh": "Elon Musk（特斯拉CEO）", "en": "Elon Musk (Tesla CEO)" },
               "source_session": "session_20260202_105227_ce11813b"
             },
             {
               "id": "english_role_004",
-              "summary": "Carly Rae（歌手）",
+              "summary": { "zh": "Carly Rae（歌手）", "en": "Carly Rae (Singer)" },
               "source_session": "session_20260202_110538_209d75f5"
             }
           ]
