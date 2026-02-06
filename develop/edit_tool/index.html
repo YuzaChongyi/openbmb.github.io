@@ -60,6 +60,132 @@
             padding: 0 24px;
             z-index: 1000;
         }
+        
+        /* === 整体布局 === */
+        .editor-layout {
+            display: flex;
+            margin-top: 52px;
+            min-height: calc(100vh - 52px);
+        }
+        
+        /* === 左侧大纲面板 === */
+        .outline-panel {
+            width: 260px;
+            min-width: 260px;
+            background: var(--bg-section);
+            border-right: 1px solid var(--border);
+            position: fixed;
+            top: 52px;
+            left: 0;
+            bottom: 32px;
+            overflow-y: auto;
+            z-index: 100;
+        }
+        
+        .outline-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .outline-content {
+            padding: 8px;
+        }
+        
+        .outline-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 13px;
+            color: var(--text-secondary);
+            transition: all 0.15s;
+            user-select: none;
+        }
+        
+        .outline-item:hover {
+            background: var(--bg-body);
+            color: var(--text-primary);
+        }
+        
+        .outline-item.dragging {
+            opacity: 0.5;
+            background: var(--bg-body);
+        }
+        
+        .outline-item.drag-over {
+            border-top: 2px solid var(--accent);
+        }
+        
+        .outline-item .drag-handle {
+            cursor: grab;
+            margin-right: 8px;
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+        
+        .outline-item .drag-handle:active {
+            cursor: grabbing;
+        }
+        
+        .outline-item .item-icon {
+            margin-right: 8px;
+            font-size: 14px;
+        }
+        
+        .outline-item .item-text {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .outline-ability {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        .outline-sub {
+            padding-left: 24px;
+            font-size: 12px;
+        }
+        
+        .outline-case {
+            padding-left: 44px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .outline-add-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            margin: 4px 8px;
+            border: 1px dashed var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text-muted);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        
+        .outline-add-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--bg-body);
+        }
+        
+        /* === 主内容区域调整 === */
+        .content-area {
+            flex: 1;
+            margin-left: 260px;
+        }
 
         .toolbar-left {
             display: flex;
@@ -119,6 +245,11 @@
             gap: 5px;
         }
 
+        .btn-sm {
+            padding: 4px 10px;
+            font-size: 11px;
+        }
+        
         .btn:hover {
             background: var(--bg-body);
         }
@@ -258,6 +389,22 @@
             color: white;
             border-color: var(--accent);
         }
+        
+        .tab-btn.editing {
+            padding: 0;
+            min-width: 80px;
+        }
+        
+        .tab-btn.editing .editable-input {
+            border: none;
+            background: transparent;
+            color: inherit;
+            font: inherit;
+            padding: 6px 14px;
+            width: 100%;
+            text-align: center;
+            outline: none;
+        }
 
         /* === Case Content === */
         .case-content {
@@ -318,6 +465,23 @@
             background: var(--bg-section);
             padding: 10px 14px;
             border-radius: var(--radius-sm);
+        }
+        
+        .system-value.placeholder {
+            color: var(--text-muted);
+            font-style: italic;
+        }
+        
+        .system-value.audio-upload {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .system-value.audio-upload .audio-player {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             line-height: 1.5;
             color: var(--text-primary);
         }
@@ -388,10 +552,14 @@
         }
 
         .audio-player audio {
-            height: 32px;
-            width: 100%;
-            max-width: 320px;
+            height: 36px;
+            width: 280px;
+            min-width: 200px;
             border-radius: var(--radius-sm);
+        }
+        
+        .system-value.audio-upload .audio-player audio {
+            width: 250px;
         }
 
         /* === 可编辑元素 === */
@@ -447,7 +615,7 @@
         .section:hover > .section-header .action-btns,
         .subsection:hover > .subsection-header .action-btns,
         .turn:hover > .action-btns,
-        .tab-btn:hover .action-btns {
+        .tab-wrapper:hover .action-btns {
             opacity: 1;
         }
 
@@ -504,9 +672,9 @@
         .status-bar {
             position: fixed;
             bottom: 0;
-            left: 0;
+            left: 260px;
             right: 0;
-            height: 28px;
+            height: 32px;
             background: var(--bg-section);
             border-top: 1px solid var(--border);
             display: flex;
@@ -515,6 +683,7 @@
             padding: 0 16px;
             font-size: 11px;
             color: var(--text-muted);
+            z-index: 100;
         }
 
         .status-indicator {
@@ -705,18 +874,32 @@
         </div>
     </header>
 
-    <!-- Hero -->
-    <section class="hero">
-        <div class="hero-inner">
-            <h1 class="editable" data-path="meta.title" ondblclick="startEdit(this)" id="meta-title">MiniCPM-o 4.5</h1>
-            <p class="hero-desc editable" data-path="meta.description" ondblclick="startEdit(this)" id="meta-desc">下一代全模态语音对话模型</p>
-        </div>
-    </section>
+    <!-- 编辑器布局 -->
+    <div class="editor-layout">
+        <!-- 左侧大纲面板 -->
+        <aside class="outline-panel">
+            <div class="outline-header">📋 大纲</div>
+            <div class="outline-content" id="outline-content">
+                <!-- 由 JS 动态渲染 -->
+            </div>
+        </aside>
+        
+        <!-- 右侧内容区域 -->
+        <div class="content-area">
+            <!-- Hero -->
+            <section class="hero">
+                <div class="hero-inner">
+                    <h1 class="editable" data-path="meta.title" ondblclick="startEdit(this)" id="meta-title">MiniCPM-o 4.5</h1>
+                    <p class="hero-desc editable" data-path="meta.description" ondblclick="startEdit(this)" id="meta-desc">下一代全模态语音对话模型</p>
+                </div>
+            </section>
 
-    <!-- 主内容 -->
-    <main class="main" id="main-content">
-        <!-- 由 JS 动态渲染 -->
-    </main>
+            <!-- 主内容 -->
+            <main class="main" id="main-content">
+                <!-- 由 JS 动态渲染 -->
+            </main>
+        </div>
+    </div>
 
     <!-- 状态栏 -->
     <footer class="status-bar">
@@ -724,7 +907,7 @@
             <span class="status-dot" id="status-dot"></span>
             <span id="status-text">已保存</span>
         </div>
-        <span id="status-info">双击编辑 · 拖拽排序 · Ctrl+S 保存</span>
+        <span id="status-info">双击编辑 · 左侧大纲排序 · Ctrl+S 保存</span>
     </footer>
 
     <!-- Toast -->
@@ -748,36 +931,233 @@
     <script>
         // ==================== 数据 ====================
         let currentLang = 'zh';
-        let data = { zh: null, en: null };
+        let data = null; // 单一多语言数据
         let modified = false;
         let activeCases = {}; // 记录每个 subsection 激活的 case
 
         const API_BASE = window.location.protocol === 'file:' ? null : '';
 
+        // ==================== 多语言文本处理 ====================
+        function getText(obj) {
+            if (!obj) return '';
+            if (typeof obj === 'string') return obj;
+            return obj[currentLang] || obj.zh || obj.en || '';
+        }
+        
+        function setText(obj, value) {
+            // 如果是字符串，转换为多语言对象
+            if (typeof obj === 'string') {
+                return { zh: currentLang === 'zh' ? value : obj, en: currentLang === 'en' ? value : obj };
+            }
+            // 更新对应语言
+            obj[currentLang] = value;
+            return obj;
+        }
+
+        // ==================== 顺序管理 ====================
+        function initOrder() {
+            // 确保 order 结构存在
+            if (!data.meta.order) {
+                data.meta.order = { zh: {}, en: {} };
+            }
+            
+            ['zh', 'en'].forEach(lang => {
+                if (!data.meta.order[lang]) {
+                    data.meta.order[lang] = {};
+                }
+                
+                // 初始化 abilities 顺序
+                if (!data.meta.order[lang].abilities) {
+                    data.meta.order[lang].abilities = (data.abilities || []).map(a => a.id);
+                }
+                
+                // 初始化 sub_abilities 顺序
+                if (!data.meta.order[lang].sub_abilities) {
+                    data.meta.order[lang].sub_abilities = {};
+                }
+                (data.abilities || []).forEach(ability => {
+                    if (!data.meta.order[lang].sub_abilities[ability.id]) {
+                        data.meta.order[lang].sub_abilities[ability.id] = (ability.sub_abilities || []).map(s => s.id);
+                    }
+                });
+                
+                // 初始化 cases 顺序
+                if (!data.meta.order[lang].cases) {
+                    data.meta.order[lang].cases = {};
+                }
+                (data.abilities || []).forEach(ability => {
+                    (ability.sub_abilities || []).forEach(sub => {
+                        if (!data.meta.order[lang].cases[sub.id]) {
+                            data.meta.order[lang].cases[sub.id] = (sub.cases || []).map(c => c.id);
+                        }
+                    });
+                });
+            });
+        }
+        
+        function getOrderedAbilities() {
+            const order = data.meta.order?.[currentLang]?.abilities || [];
+            if (order.length === 0) {
+                return data.abilities || [];
+            }
+            
+            // 根据顺序重新排列
+            const abilityMap = {};
+            (data.abilities || []).forEach(a => {
+                abilityMap[a.id] = a;
+            });
+            
+            const ordered = [];
+            order.forEach(id => {
+                if (abilityMap[id]) {
+                    ordered.push(abilityMap[id]);
+                }
+            });
+            
+            // 添加新增但未在 order 中的 abilities
+            (data.abilities || []).forEach(a => {
+                if (!order.includes(a.id)) {
+                    ordered.push(a);
+                }
+            });
+            
+            return ordered;
+        }
+        
+        function getOrderedSubAbilities(abilityId) {
+            const ability = data.abilities.find(a => a.id === abilityId);
+            if (!ability) return [];
+            
+            const order = data.meta.order?.[currentLang]?.sub_abilities?.[abilityId] || [];
+            if (order.length === 0) {
+                return ability.sub_abilities || [];
+            }
+            
+            const subMap = {};
+            (ability.sub_abilities || []).forEach(s => {
+                subMap[s.id] = s;
+            });
+            
+            const ordered = [];
+            order.forEach(id => {
+                if (subMap[id]) {
+                    ordered.push(subMap[id]);
+                }
+            });
+            
+            (ability.sub_abilities || []).forEach(s => {
+                if (!order.includes(s.id)) {
+                    ordered.push(s);
+                }
+            });
+            
+            return ordered;
+        }
+        
+        function getOrderedCases(subId) {
+            let subAbility = null;
+            for (const ability of data.abilities || []) {
+                for (const sub of ability.sub_abilities || []) {
+                    if (sub.id === subId) {
+                        subAbility = sub;
+                        break;
+                    }
+                }
+                if (subAbility) break;
+            }
+            
+            if (!subAbility) return [];
+            
+            const order = data.meta.order?.[currentLang]?.cases?.[subId] || [];
+            if (order.length === 0) {
+                return subAbility.cases || [];
+            }
+            
+            const caseMap = {};
+            (subAbility.cases || []).forEach(c => {
+                caseMap[c.id] = c;
+            });
+            
+            const ordered = [];
+            order.forEach(id => {
+                if (caseMap[id]) {
+                    ordered.push(caseMap[id]);
+                }
+            });
+            
+            (subAbility.cases || []).forEach(c => {
+                if (!order.includes(c.id)) {
+                    ordered.push(c);
+                }
+            });
+            
+            return ordered;
+        }
+        
+        function updateAbilityOrder(fromId, toId) {
+            const order = data.meta.order[currentLang].abilities;
+            const fromIdx = order.indexOf(fromId);
+            const toIdx = order.indexOf(toId);
+            
+            if (fromIdx === -1 || toIdx === -1) return;
+            
+            order.splice(fromIdx, 1);
+            order.splice(toIdx, 0, fromId);
+        }
+        
+        function updateSubAbilityOrder(abilityId, fromId, toId) {
+            const order = data.meta.order[currentLang].sub_abilities[abilityId];
+            const fromIdx = order.indexOf(fromId);
+            const toIdx = order.indexOf(toId);
+            
+            if (fromIdx === -1 || toIdx === -1) return;
+            
+            order.splice(fromIdx, 1);
+            order.splice(toIdx, 0, fromId);
+        }
+        
+        function updateCaseOrder(subId, fromId, toId) {
+            const order = data.meta.order[currentLang].cases[subId];
+            const fromIdx = order.indexOf(fromId);
+            const toIdx = order.indexOf(toId);
+            
+            if (fromIdx === -1 || toIdx === -1) return;
+            
+            order.splice(fromIdx, 1);
+            order.splice(toIdx, 0, fromId);
+        }
+
         // ==================== 初始化 ====================
         async function init() {
-            // 从服务器或本地加载
-            for (const lang of ['zh', 'en']) {
-                try {
-                    if (API_BASE !== null) {
-                        const res = await fetch(`${API_BASE}/api/data/${lang}`);
-                        if (res.ok) data[lang] = await res.json();
-                    }
-                } catch (e) {}
-                
-                if (!data[lang]) {
-                    try {
-                        const res = await fetch(`/minicpm-o-4_5/data${lang === 'en' ? '_en' : ''}.js`);
-                        const text = await res.text();
-                        const match = text.match(/const DEMO_DATA = ({[\s\S]*});/);
-                        if (match) data[lang] = JSON.parse(match[1]);
-                    } catch (e) {}
+            // 从服务器加载单一数据
+            try {
+                if (API_BASE !== null) {
+                    const res = await fetch(`${API_BASE}/api/data`);
+                    if (res.ok) data = await res.json();
                 }
-                
-                if (!data[lang]) {
-                    data[lang] = { meta: { title: "MiniCPM-o 4.5", description: "" }, abilities: [] };
+            } catch (e) {
+                console.error('加载数据失败:', e);
+            }
+            
+            // 回退到 data.js
+            if (!data) {
+                try {
+                    const res = await fetch('/minicpm-o-4_5/data.js');
+                    const text = await res.text();
+                    const match = text.match(/const DEMO_DATA = ({[\s\S]*});/);
+                    if (match) data = JSON.parse(match[1]);
+                } catch (e) {
+                    console.error('加载 data.js 失败:', e);
                 }
             }
+            
+            // 默认空数据
+            if (!data) {
+                data = { meta: { title: "MiniCPM-o 4.5", description: { zh: "", en: "" } }, abilities: [] };
+            }
+            
+            // 初始化顺序
+            initOrder();
             
             render();
             updateStatus();
@@ -785,37 +1165,194 @@
 
         // ==================== 渲染 ====================
         function render() {
-            const d = data[currentLang];
+            if (!data) return;
             
             // Meta
-            document.getElementById('meta-title').textContent = d.meta?.title || '';
-            document.getElementById('meta-desc').textContent = d.meta?.description || '';
+            document.getElementById('meta-title').textContent = data.meta?.title || '';
+            document.getElementById('meta-desc').textContent = getText(data.meta?.description) || '';
             
-            // Abilities
+            // 渲染大纲
+            renderOutline();
+            
+            // Abilities - 使用当前语言的顺序
             const main = document.getElementById('main-content');
             let html = '';
             
-            (d.abilities || []).forEach((ability, aIdx) => {
+            const orderedAbilities = getOrderedAbilities();
+            orderedAbilities.forEach((ability) => {
+                const aIdx = data.abilities.indexOf(ability);
                 html += renderAbility(ability, aIdx);
             });
             
             html += `<button class="add-btn" onclick="addAbility()">+ 添加能力分类</button>`;
             main.innerHTML = html;
         }
+        
+        // ==================== 大纲渲染 ====================
+        function renderOutline() {
+            const container = document.getElementById('outline-content');
+            let html = '';
+            
+            const orderedAbilities = getOrderedAbilities();
+            orderedAbilities.forEach((ability) => {
+                const aIdx = data.abilities.indexOf(ability);
+                html += `
+                <div class="outline-item outline-ability" 
+                     draggable="true" 
+                     data-type="ability" 
+                     data-id="${ability.id}"
+                     data-idx="${aIdx}"
+                     onclick="scrollToSection('ability-${aIdx}')"
+                     ondragstart="outlineDragStart(event)" 
+                     ondragover="outlineDragOver(event)" 
+                     ondragleave="outlineDragLeave(event)"
+                     ondrop="outlineDrop(event)">
+                    <span class="drag-handle">⋮⋮</span>
+                    <span class="item-icon">📁</span>
+                    <span class="item-text">${getText(ability.name) || '未命名'}</span>
+                </div>`;
+                
+                const orderedSubs = getOrderedSubAbilities(ability.id);
+                orderedSubs.forEach((sub) => {
+                    const sIdx = ability.sub_abilities.indexOf(sub);
+                    html += `
+                    <div class="outline-item outline-sub" 
+                         draggable="true" 
+                         data-type="sub" 
+                         data-id="${sub.id}"
+                         data-ability="${aIdx}"
+                         data-ability-id="${ability.id}"
+                         data-idx="${sIdx}"
+                         onclick="scrollToSection('ability-${aIdx}')"
+                         ondragstart="outlineDragStart(event)" 
+                         ondragover="outlineDragOver(event)" 
+                         ondragleave="outlineDragLeave(event)"
+                         ondrop="outlineDrop(event)">
+                        <span class="drag-handle">⋮⋮</span>
+                        <span class="item-icon">📄</span>
+                        <span class="item-text">${getText(sub.name) || '未命名'}</span>
+                    </div>`;
+                    
+                    const orderedCases = getOrderedCases(sub.id);
+                    orderedCases.forEach((c) => {
+                        const cIdx = sub.cases.indexOf(c);
+                        html += `
+                        <div class="outline-item outline-case" 
+                             draggable="true" 
+                             data-type="case" 
+                             data-id="${c.id}"
+                             data-ability="${aIdx}"
+                             data-sub="${sIdx}"
+                             data-sub-id="${sub.id}"
+                             data-idx="${cIdx}"
+                             onclick="scrollToSection('ability-${aIdx}'); selectCase(${aIdx}, ${sIdx}, ${cIdx})"
+                             ondragstart="outlineDragStart(event)" 
+                             ondragover="outlineDragOver(event)" 
+                             ondragleave="outlineDragLeave(event)"
+                             ondrop="outlineDrop(event)">
+                            <span class="drag-handle">⋮⋮</span>
+                            <span class="item-text">${getText(c.summary) || c.id}</span>
+                        </div>`;
+                    });
+                });
+            });
+            
+            html += `<div class="outline-add-btn" onclick="addAbility()">+ 添加能力分类</div>`;
+            container.innerHTML = html;
+        }
+        
+        function scrollToSection(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+        
+        // ==================== 大纲拖拽 ====================
+        let draggedOutlineItem = null;
+        
+        function outlineDragStart(e) {
+            draggedOutlineItem = e.target;
+            e.target.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        }
+        
+        function outlineDragOver(e) {
+            e.preventDefault();
+            const target = e.target.closest('.outline-item');
+            if (!target || target === draggedOutlineItem) return;
+            
+            // 只允许同类型拖拽
+            const dragType = draggedOutlineItem.dataset.type;
+            const targetType = target.dataset.type;
+            
+            if (dragType === targetType) {
+                // 同级别可以排序
+                if (dragType === 'ability' || 
+                    (dragType === 'sub' && draggedOutlineItem.dataset.abilityId === target.dataset.abilityId) ||
+                    (dragType === 'case' && draggedOutlineItem.dataset.subId === target.dataset.subId)) {
+                    target.classList.add('drag-over');
+                }
+            }
+        }
+        
+        function outlineDragLeave(e) {
+            const target = e.target.closest('.outline-item');
+            if (target) target.classList.remove('drag-over');
+        }
+        
+        function outlineDrop(e) {
+            e.preventDefault();
+            const target = e.target.closest('.outline-item');
+            if (!target || !draggedOutlineItem) return;
+            
+            target.classList.remove('drag-over');
+            draggedOutlineItem.classList.remove('dragging');
+            
+            const dragType = draggedOutlineItem.dataset.type;
+            const targetType = target.dataset.type;
+            
+            if (dragType !== targetType) return;
+            
+            const fromId = draggedOutlineItem.dataset.id;
+            const toId = target.dataset.id;
+            
+            if (fromId === toId) return;
+            
+            if (dragType === 'ability') {
+                // 更新当前语言的 ability 顺序
+                updateAbilityOrder(fromId, toId);
+            } else if (dragType === 'sub') {
+                const abilityId = draggedOutlineItem.dataset.abilityId;
+                if (abilityId !== target.dataset.abilityId) return;
+                updateSubAbilityOrder(abilityId, fromId, toId);
+            } else if (dragType === 'case') {
+                const subId = draggedOutlineItem.dataset.subId;
+                if (subId !== target.dataset.subId) return;
+                updateCaseOrder(subId, fromId, toId);
+            }
+            
+            markModified();
+            render();
+            draggedOutlineItem = null;
+        }
 
         function renderAbility(ability, aIdx) {
             let html = `
-            <div class="section" draggable="true" data-type="ability" data-index="${aIdx}">
+            <div class="section" data-type="ability" data-index="${aIdx}" id="ability-${aIdx}">
                 <div class="section-header">
-                    <h2 class="section-title editable" data-path="abilities.${aIdx}.name" ondblclick="startEdit(this)">${ability.name || '未命名'}</h2>
+                    <h2 class="section-title editable" data-path="abilities.${aIdx}.name" ondblclick="startEdit(this)">${getText(ability.name) || '未命名'}</h2>
                     <div class="action-btns">
                         <button class="action-btn danger" onclick="deleteAbility(${aIdx})" title="删除">✕</button>
                     </div>
                 </div>
-                <p class="section-desc editable" data-path="abilities.${aIdx}.description" ondblclick="startEdit(this)">${ability.description || '描述'}</p>
+                <p class="section-desc editable" data-path="abilities.${aIdx}.description" ondblclick="startEdit(this)">${getText(ability.description) || '描述'}</p>
             `;
             
-            (ability.sub_abilities || []).forEach((sub, sIdx) => {
+            // 使用排序后的 sub_abilities
+            const orderedSubs = getOrderedSubAbilities(ability.id);
+            orderedSubs.forEach((sub) => {
+                const sIdx = ability.sub_abilities.indexOf(sub);
                 html += renderSubAbility(sub, aIdx, sIdx);
             });
             
@@ -827,12 +1364,14 @@
         function renderSubAbility(sub, aIdx, sIdx) {
             const key = `${aIdx}-${sIdx}`;
             const activeIdx = activeCases[key] || 0;
-            const cases = sub.cases || [];
+            
+            // 使用排序后的 cases
+            const orderedCases = getOrderedCases(sub.id);
             
             let html = `
             <div class="subsection" data-type="sub" data-ability="${aIdx}" data-index="${sIdx}">
                 <div class="subsection-header">
-                    <h3 class="subsection-title editable" data-path="abilities.${aIdx}.sub_abilities.${sIdx}.name" ondblclick="startEdit(this)">${sub.name || '未命名'}</h3>
+                    <h3 class="subsection-title editable" data-path="abilities.${aIdx}.sub_abilities.${sIdx}.name" ondblclick="startEdit(this)">${getText(sub.name) || '未命名'}</h3>
                     <div class="action-btns">
                         <button class="action-btn danger" onclick="deleteSubAbility(${aIdx}, ${sIdx})" title="删除">✕</button>
                     </div>
@@ -840,10 +1379,11 @@
                 <div class="tab-group">
             `;
             
-            cases.forEach((c, cIdx) => {
+            orderedCases.forEach((c) => {
+                const cIdx = sub.cases.indexOf(c);
                 html += `
                     <div class="tab-wrapper">
-                        <button class="tab-btn ${cIdx === activeIdx ? 'active' : ''}" onclick="selectCase(${aIdx}, ${sIdx}, ${cIdx})">${c.summary || c.id}</button>
+                        <button class="tab-btn ${cIdx === activeIdx ? 'active' : ''}" onclick="handleTabClick(event, ${aIdx}, ${sIdx}, ${cIdx})" data-path="abilities.${aIdx}.sub_abilities.${sIdx}.cases.${cIdx}.summary">${getText(c.summary) || c.id}</button>
                         <div class="action-btns">
                             <button class="action-btn danger" onclick="event.stopPropagation(); deleteCase(${aIdx}, ${sIdx}, ${cIdx})" title="删除">✕</button>
                         </div>
@@ -854,7 +1394,8 @@
             html += `<button class="tab-btn" onclick="addCase(${aIdx}, ${sIdx})">+</button></div>`;
             
             // Case 内容
-            cases.forEach((c, cIdx) => {
+            orderedCases.forEach((c) => {
+                const cIdx = sub.cases.indexOf(c);
                 html += renderCase(c, aIdx, sIdx, cIdx, cIdx === activeIdx);
             });
             
@@ -872,17 +1413,17 @@
                     <div class="system-title">System Prompt</div>
                     <div class="system-row">
                         <span class="system-label">Prefix</span>
-                        <div class="system-value mono editable" data-path="abilities.${aIdx}.sub_abilities.${sIdx}.cases.${cIdx}.system.prefix" ondblclick="startEditArea(this)">${sys.prefix || '(无)'}</div>
+                        <div class="system-value mono editable ${!sys.prefix ? 'placeholder' : ''}" data-path="abilities.${aIdx}.sub_abilities.${sIdx}.cases.${cIdx}.system.prefix" data-real-value="${escapeHtml(sys.prefix || '')}" ondblclick="startEditArea(this)">${sys.prefix || '(双击编辑)'}</div>
                     </div>
                     <div class="system-row">
                         <span class="system-label">Ref Audio</span>
-                        <div class="system-value">
-                            ${sys.ref_audio ? `<div class="audio-player"><audio controls src="/minicpm-o-4_5/${sys.ref_audio}"></audio></div>` : '(无音频)'}
+                        <div class="system-value audio-upload">
+                            ${sys.ref_audio && sys.ref_audio.trim() ? `<div class="audio-player"><audio controls src="/minicpm-o-4_5/${sys.ref_audio}?t=${Date.now()}"></audio><button class="action-btn" onclick="changeRefAudio(${aIdx}, ${sIdx}, ${cIdx})" title="更换音频">🔄</button></div>` : `<button class="btn" onclick="changeRefAudio(${aIdx}, ${sIdx}, ${cIdx})">+ 上传参考音频</button>`}
                         </div>
                     </div>
                     <div class="system-row">
                         <span class="system-label">Suffix</span>
-                        <div class="system-value mono editable" data-path="abilities.${aIdx}.sub_abilities.${sIdx}.cases.${cIdx}.system.suffix" ondblclick="startEditArea(this)">${sys.suffix || '(无)'}</div>
+                        <div class="system-value mono editable ${!sys.suffix ? 'placeholder' : ''}" data-path="abilities.${aIdx}.sub_abilities.${sIdx}.cases.${cIdx}.system.suffix" data-real-value="${escapeHtml(sys.suffix || '')}" ondblclick="startEditArea(this)">${sys.suffix || '(双击编辑)'}</div>
                     </div>
                 </div>
                 
@@ -918,7 +1459,11 @@
                     <span class="message-role">AI</span>
                     <div class="message-content">
                         <div class="message-text editable" data-path="${basePath}.assistant_text" ondblclick="startEditArea(this)">${turn.assistant_text || '(AI回复)'}</div>
-                        ${turn.assistant_audio ? `<div class="audio-player"><audio controls src="/minicpm-o-4_5/${turn.assistant_audio}"></audio></div>` : ''}
+                        <div class="audio-upload">
+                            ${turn.assistant_audio 
+                                ? `<div class="audio-player"><audio controls src="/minicpm-o-4_5/${turn.assistant_audio}?t=${Date.now()}"></audio><button class="action-btn" onclick="changeAssistantAudio(${aIdx}, ${sIdx}, ${cIdx}, ${tIdx})" title="更换音频">🔄</button></div>` 
+                                : `<button class="btn btn-sm" onclick="changeAssistantAudio(${aIdx}, ${sIdx}, ${cIdx}, ${tIdx})">+ 上传AI音频</button>`}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -941,20 +1486,183 @@
             el.querySelector('input').focus();
             el.querySelector('input').select();
         }
+        
+        function handleTabClick(e, aIdx, sIdx, cIdx) {
+            const btn = e.target;
+            if (btn.classList.contains('editing')) return;
+            
+            const key = `${aIdx}-${sIdx}`;
+            const currentActive = activeCases[key] || 0;
+            
+            // 如果点击的是已激活的 tab，进入编辑模式
+            if (currentActive === cIdx) {
+                startEditTab(btn, aIdx, sIdx, cIdx);
+            } else {
+                // 否则切换 tab
+                selectCase(aIdx, sIdx, cIdx);
+            }
+        }
+        
+        function startEditTab(btn, aIdx, sIdx, cIdx) {
+            if (btn.classList.contains('editing')) return;
+            const text = getText(data.abilities[aIdx].sub_abilities[sIdx].cases[cIdx].summary) || '';
+            btn.classList.add('editing');
+            btn.innerHTML = `<input type="text" class="editable-input" value="${escapeHtml(text)}" onclick="event.stopPropagation()" onblur="finishEditTab(this, ${aIdx}, ${sIdx}, ${cIdx})" onkeydown="handleEditTabKey(event, this, ${aIdx}, ${sIdx}, ${cIdx})">`;
+            btn.querySelector('input').focus();
+            btn.querySelector('input').select();
+        }
+        
+        function finishEditTab(input, aIdx, sIdx, cIdx) {
+            const btn = input.parentElement;
+            const value = input.value.trim() || '未命名';
+            const caseData = data.abilities[aIdx].sub_abilities[sIdx].cases[cIdx];
+            
+            // 更新多语言 summary
+            if (typeof caseData.summary === 'string') {
+                caseData.summary = { zh: caseData.summary, en: caseData.summary };
+            }
+            if (!caseData.summary || typeof caseData.summary !== 'object') {
+                caseData.summary = { zh: '', en: '' };
+            }
+            caseData.summary[currentLang] = value;
+            
+            btn.classList.remove('editing');
+            btn.textContent = value;
+            markModified();
+        }
+        
+        function handleEditTabKey(e, input, aIdx, sIdx, cIdx) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                finishEditTab(input, aIdx, sIdx, cIdx);
+            } else if (e.key === 'Escape') {
+                e.preventDefault();
+                render();
+            }
+        }
 
         function startEditArea(el) {
             if (el.classList.contains('editing')) return;
-            const text = el.textContent;
+            // 使用真实值而不是占位符显示
+            const text = el.dataset.realValue !== undefined ? el.dataset.realValue : el.textContent;
             el.classList.add('editing');
+            el.classList.remove('placeholder');
             el.innerHTML = `<textarea class="editable-textarea" onblur="finishEdit(this)" onkeydown="handleEditKey(event, this)">${escapeHtml(text)}</textarea>`;
             el.querySelector('textarea').focus();
+        }
+        
+        // ==================== 音频上传 ====================
+        async function uploadAudioFile(file, targetPath) {
+            /**
+             * 上传音频文件到服务器
+             * @param {File} file - 用户选择的文件
+             * @param {string} targetPath - 目标路径，如 "audio/case_id/ref.mp3"
+             * @returns {boolean} 是否成功
+             */
+            try {
+                showToast('正在上传...', 'info');
+                
+                // 读取文件为 base64
+                const base64Data = await new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result.split(',')[1]);
+                    reader.onerror = reject;
+                    reader.readAsDataURL(file);
+                });
+                
+                const res = await fetch(`${API_BASE}/api/upload`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        path: targetPath,
+                        data: base64Data
+                    })
+                });
+                
+                if (res.ok) {
+                    const result = await res.json();
+                    const sizeKB = (result.size / 1024).toFixed(1);
+                    showToast(`上传成功 (${sizeKB} KB)`, 'success');
+                    return true;
+                } else {
+                    showToast('上传失败: ' + res.statusText, 'error');
+                    return false;
+                }
+            } catch (e) {
+                showToast('上传失败: ' + e.message, 'error');
+                return false;
+            }
+        }
+        
+        function changeRefAudio(aIdx, sIdx, cIdx) {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'audio/*';
+            input.onchange = async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                const caseData = data.abilities[aIdx].sub_abilities[sIdx].cases[cIdx];
+                if (!caseData.system) caseData.system = {};
+                
+                const targetPath = `audio/${caseData.id}/ref.mp3`;
+                const success = await uploadAudioFile(file, targetPath);
+                
+                if (success) {
+                    caseData.system.ref_audio = targetPath;
+                    markModified();
+                    render();
+                }
+            };
+            input.click();
+        }
+        
+        function changeAssistantAudio(aIdx, sIdx, cIdx, tIdx) {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'audio/*';
+            input.onchange = async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                const caseData = data.abilities[aIdx].sub_abilities[sIdx].cases[cIdx];
+                const turn = caseData.turns[tIdx];
+                
+                const targetPath = `audio/${caseData.id}/${String(tIdx).padStart(3, '0')}_assistant.mp3`;
+                const success = await uploadAudioFile(file, targetPath);
+                
+                if (success) {
+                    turn.assistant_audio = targetPath;
+                    markModified();
+                    render();
+                }
+            };
+            input.click();
         }
 
         function finishEdit(input) {
             const el = input.parentElement;
             const path = el.dataset.path;
             const value = input.value;
-            setNestedValue(data[currentLang], path, value);
+            // 对于多语言字段（name, description, summary），更新对应语言
+            const multiLangFields = ['name', 'description', 'summary'];
+            const fieldName = path.split('.').pop();
+            if (multiLangFields.includes(fieldName)) {
+                const parentPath = path.split('.').slice(0, -1).join('.');
+                const parent = getNestedValue(data, parentPath);
+                if (parent) {
+                    if (typeof parent[fieldName] === 'string') {
+                        // 转换为多语言对象
+                        parent[fieldName] = { zh: parent[fieldName], en: parent[fieldName] };
+                    }
+                    if (typeof parent[fieldName] !== 'object') {
+                        parent[fieldName] = { zh: '', en: '' };
+                    }
+                    parent[fieldName][currentLang] = value;
+                }
+            } else {
+                setNestedValue(data, path, value);
+            }
             el.classList.remove('editing');
             el.textContent = value || '(空)';
             markModified();
@@ -968,18 +1676,27 @@
                 const el = input.parentElement;
                 const path = el.dataset.path;
                 el.classList.remove('editing');
-                el.textContent = getNestedValue(data[currentLang], path) || '(空)';
+                const val = getNestedValue(data, path);
+                el.textContent = (typeof val === 'object' ? getText(val) : val) || '(空)';
             }
         }
 
         // ==================== 添加/删除 ====================
         function addAbility() {
-            data[currentLang].abilities.push({
-                id: 'ability_' + Date.now(),
-                name: '新能力分类',
-                description: '描述',
+            const newId = 'ability_' + Date.now();
+            data.abilities.push({
+                id: newId,
+                name: { zh: '新能力分类', en: 'New Ability' },
+                description: { zh: '描述', en: 'Description' },
                 sub_abilities: []
             });
+            
+            // 添加到当前语言的顺序列表
+            if (!data.meta.order[currentLang].abilities) {
+                data.meta.order[currentLang].abilities = [];
+            }
+            data.meta.order[currentLang].abilities.push(newId);
+            
             markModified();
             render();
             showToast('已添加能力分类', 'success');
@@ -987,39 +1704,78 @@
 
         function deleteAbility(aIdx) {
             if (!confirm('确定删除此能力分类？')) return;
-            data[currentLang].abilities.splice(aIdx, 1);
+            const ability = data.abilities[aIdx];
+            
+            // 从所有语言的顺序列表中移除
+            ['zh', 'en'].forEach(lang => {
+                const order = data.meta.order[lang].abilities;
+                const idx = order.indexOf(ability.id);
+                if (idx > -1) order.splice(idx, 1);
+            });
+            
+            data.abilities.splice(aIdx, 1);
             markModified();
             render();
         }
 
         function addSubAbility(aIdx) {
-            const ability = data[currentLang].abilities[aIdx];
+            const ability = data.abilities[aIdx];
             if (!ability.sub_abilities) ability.sub_abilities = [];
+            
+            const newId = 'sub_' + Date.now();
             ability.sub_abilities.push({
-                id: 'sub_' + Date.now(),
-                name: '新子分类',
+                id: newId,
+                name: { zh: '新子分类', en: 'New Sub-category' },
                 cases: []
             });
+            
+            // 添加到当前语言的顺序列表
+            if (!data.meta.order[currentLang].sub_abilities[ability.id]) {
+                data.meta.order[currentLang].sub_abilities[ability.id] = [];
+            }
+            data.meta.order[currentLang].sub_abilities[ability.id].push(newId);
+            
             markModified();
             render();
         }
 
         function deleteSubAbility(aIdx, sIdx) {
             if (!confirm('确定删除此子分类？')) return;
-            data[currentLang].abilities[aIdx].sub_abilities.splice(sIdx, 1);
+            const ability = data.abilities[aIdx];
+            const sub = ability.sub_abilities[sIdx];
+            
+            // 从所有语言的顺序列表中移除
+            ['zh', 'en'].forEach(lang => {
+                const order = data.meta.order[lang].sub_abilities[ability.id];
+                if (order) {
+                    const idx = order.indexOf(sub.id);
+                    if (idx > -1) order.splice(idx, 1);
+                }
+            });
+            
+            ability.sub_abilities.splice(sIdx, 1);
             markModified();
             render();
         }
 
         function addCase(aIdx, sIdx) {
-            const sub = data[currentLang].abilities[aIdx].sub_abilities[sIdx];
+            const sub = data.abilities[aIdx].sub_abilities[sIdx];
             if (!sub.cases) sub.cases = [];
+            
+            const newId = 'case_' + Date.now();
             sub.cases.push({
-                id: 'case_' + Date.now(),
-                summary: '新案例',
+                id: newId,
+                summary: { zh: '新案例', en: 'New Case' },
                 system: { prefix: '', ref_audio: '', suffix: '' },
                 turns: []
             });
+            
+            // 添加到当前语言的顺序列表
+            if (!data.meta.order[currentLang].cases[sub.id]) {
+                data.meta.order[currentLang].cases[sub.id] = [];
+            }
+            data.meta.order[currentLang].cases[sub.id].push(newId);
+            
             activeCases[`${aIdx}-${sIdx}`] = sub.cases.length - 1;
             markModified();
             render();
@@ -1027,7 +1783,19 @@
 
         function deleteCase(aIdx, sIdx, cIdx) {
             if (!confirm('确定删除此案例？')) return;
-            data[currentLang].abilities[aIdx].sub_abilities[sIdx].cases.splice(cIdx, 1);
+            const sub = data.abilities[aIdx].sub_abilities[sIdx];
+            const caseItem = sub.cases[cIdx];
+            
+            // 从所有语言的顺序列表中移除
+            ['zh', 'en'].forEach(lang => {
+                const order = data.meta.order[lang].cases[sub.id];
+                if (order) {
+                    const idx = order.indexOf(caseItem.id);
+                    if (idx > -1) order.splice(idx, 1);
+                }
+            });
+            
+            sub.cases.splice(cIdx, 1);
             const key = `${aIdx}-${sIdx}`;
             if (activeCases[key] >= cIdx) activeCases[key] = Math.max(0, activeCases[key] - 1);
             markModified();
@@ -1035,7 +1803,7 @@
         }
 
         function addTurn(aIdx, sIdx, cIdx) {
-            const c = data[currentLang].abilities[aIdx].sub_abilities[sIdx].cases[cIdx];
+            const c = data.abilities[aIdx].sub_abilities[sIdx].cases[cIdx];
             if (!c.turns) c.turns = [];
             c.turns.push({
                 user_text: '用户输入',
@@ -1048,7 +1816,7 @@
 
         function deleteTurn(aIdx, sIdx, cIdx, tIdx) {
             if (!confirm('确定删除此对话轮次？')) return;
-            data[currentLang].abilities[aIdx].sub_abilities[sIdx].cases[cIdx].turns.splice(tIdx, 1);
+            data.abilities[aIdx].sub_abilities[sIdx].cases[cIdx].turns.splice(tIdx, 1);
             markModified();
             render();
         }
@@ -1069,10 +1837,10 @@
                 return;
             }
             try {
-                const res = await fetch(`${API_BASE}/api/data/${currentLang}`, {
+                const res = await fetch(`${API_BASE}/api/data`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data[currentLang])
+                    body: JSON.stringify(data)
                 });
                 if (res.ok) {
                     modified = false;
@@ -1087,7 +1855,7 @@
         }
 
         function exportData() {
-            const blob = new Blob([JSON.stringify(data[currentLang], null, 2)], { type: 'application/json' });
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
             a.download = `data_${currentLang}.json`;
@@ -1103,7 +1871,7 @@
                 const file = e.target.files[0];
                 if (!file) return;
                 try {
-                    data[currentLang] = JSON.parse(await file.text());
+                    data = JSON.parse(await file.text());
                     render();
                     markModified();
                     showToast('导入成功', 'success');

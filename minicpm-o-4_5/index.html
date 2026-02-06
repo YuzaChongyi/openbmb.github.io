@@ -530,7 +530,13 @@
             
             let html = '';
             
-            DEMO_DATA.abilities.forEach(ability => {
+            // 获取当前语言的顺序信息
+            const order = DEMO_DATA.meta?.order?.[state.lang];
+            const abilities = order?.abilities 
+                ? order.abilities.map(id => DEMO_DATA.abilities.find(a => a.id === id)).filter(Boolean)
+                : DEMO_DATA.abilities;
+            
+            abilities.forEach(ability => {
                 // Check if has cases
                 const hasCases = ability.sub_abilities.some(sub => sub.cases && sub.cases.length > 0);
                 if (!hasCases) return;
@@ -539,7 +545,7 @@
                     <div class="section">
                         <h2 class="section-title">${getText(ability.name)}</h2>
                         <p class="section-desc">${getText(ability.description)}</p>
-                        ${renderSubAbilities(ability)}
+                        ${renderSubAbilities(ability, order)}
                     </div>
                 `;
             });
@@ -556,26 +562,38 @@
             bindEvents();
         }
         
-        function renderSubAbilities(ability) {
-            return ability.sub_abilities.map(sub => {
+        function renderSubAbilities(ability, order) {
+            // 获取排序后的 sub_abilities
+            const subOrder = order?.sub_abilities?.[ability.id];
+            const subs = subOrder
+                ? subOrder.map(id => ability.sub_abilities.find(s => s.id === id)).filter(Boolean)
+                : ability.sub_abilities;
+            
+            return subs.map(sub => {
                 if (!sub.cases || sub.cases.length === 0) return '';
                 
+                // 获取排序后的 cases
+                const caseOrder = order?.cases?.[sub.id];
+                const cases = caseOrder
+                    ? caseOrder.map(id => sub.cases.find(c => c.id === id)).filter(Boolean)
+                    : sub.cases;
+                
                 const sectionId = `${ability.id}_${sub.id}`;
-                const activeCase = state.activeCase[sectionId] || (sub.cases[0] ? sub.cases[0].id : null);
+                const activeCase = state.activeCase[sectionId] || (cases[0] ? cases[0].id : null);
                 
                 return `
                     <div class="subsection">
                         <h3 class="subsection-title">${getText(sub.name)}</h3>
                         <div class="case-card">
                             <div class="tab-group" data-section="${sectionId}">
-                                ${sub.cases.map((c, i) => `
+                                ${cases.map((c, i) => `
                                     <button class="tab-btn ${c.id === activeCase ? 'active' : ''}" 
                                             data-case="${c.id}">
                                         ${getText(c.summary) || `Case ${i + 1}`}
                                     </button>
                                 `).join('')}
                             </div>
-                            ${sub.cases.map(c => `
+                            ${cases.map(c => `
                                 <div class="case-content ${c.id === activeCase ? 'active' : ''}" 
                                      data-section="${sectionId}" data-case="${c.id}">
                                     ${renderCaseContent(c)}
