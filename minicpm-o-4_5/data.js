@@ -7,6 +7,10 @@ const DEMO_DATA = {
       "en": "Next-generation Omni-modal Voice Dialog Model"
     },
     "version": "1.0.0",
+    "disclaimer": {
+      "zh": "免责声明：本页面展示的语音合成与声音克隆案例仅用于AI技术演示目的。所有 AI 生成的音频均为模型自动合成，不代表任何真实个人的观点、立场或意图。涉及公众人物的声音克隆案例已尽量选取公开、非争议性内容。所有参考音色的权利归原始权利人所有。请勿将相关技术用于未经授权的模仿、欺诈或其他不当用途。",
+      "en": "Disclaimer: The voice synthesis and voice cloning demonstrations on this page are for AI technology showcase purposes only. All AI-generated audio is automatically synthesized by the model and does not represent the views, positions, or intentions of any real individual. Voice cloning cases involving public figures have been selected with publicly available, non-controversial content where possible. All rights to reference voices belong to their respective owners. Do not use related technologies for unauthorized impersonation, fraud, or other inappropriate purposes."
+    },
     "order": {
       "zh": {
         "abilities": [
@@ -103,7 +107,8 @@ const DEMO_DATA = {
             "natural"
           ],
           "english": [
-            "roleplay"
+            "roleplay",
+            "sub_1770396004765"
           ]
         },
         "cases": {
