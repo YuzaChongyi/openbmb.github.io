@@ -770,8 +770,8 @@
                         c.classList.toggle('active', c.dataset.case === caseId);
                     });
                     
-                    // Update URL hash (不触发 scroll)
-                    history.replaceState(null, '', '#' + caseId);
+                    // Update URL hash (lang/caseId)
+                    history.replaceState(null, '', '#' + state.lang + '/' + caseId);
                 });
             });
             
@@ -779,7 +779,7 @@
             document.querySelectorAll('.copy-link-btn[data-copy-case]').forEach(btn => {
                 btn.addEventListener('click', () => {
                     const caseId = btn.dataset.copyCase;
-                    const url = window.location.origin + window.location.pathname + '#' + caseId;
+                    const url = window.location.origin + window.location.pathname + '#' + state.lang + '/' + caseId;
                     navigator.clipboard.writeText(url).then(() => {
                         btn.classList.add('copied');
                         btn.textContent = t('copied');
@@ -800,6 +800,37 @@
         }
         
         // === Hash Navigation ===
+        // Hash format: #lang/caseId (e.g. #zh/english_conv_001)
+        // Also supports legacy #caseId (no lang switch)
+        function parseHash() {
+            const raw = window.location.hash.slice(1);
+            if (!raw) return null;
+            const slash = raw.indexOf('/');
+            if (slash > 0) {
+                const lang = raw.slice(0, slash);
+                const caseId = raw.slice(slash + 1);
+                if (lang === 'zh' || lang === 'en') {
+                    return { lang, caseId };
+                }
+            }
+            // Legacy: #caseId only
+            return { lang: null, caseId: raw };
+        }
+        
+        function navigateFromHash() {
+            const parsed = parseHash();
+            if (!parsed) return;
+            
+            // Switch language if specified and different
+            if (parsed.lang && parsed.lang !== state.lang) {
+                switchLang(parsed.lang);
+                // switchLang calls render() which rebuilds DOM, need to wait
+                setTimeout(() => navigateToCase(parsed.caseId), 100);
+            } else {
+                navigateToCase(parsed.caseId);
+            }
+        }
+        
         function navigateToCase(caseId) {
             const el = document.getElementById('case-' + caseId);
             if (!el) return false;
@@ -834,15 +865,13 @@
             
             // Handle hash navigation on load
             if (window.location.hash) {
-                const caseId = window.location.hash.slice(1);
-                setTimeout(() => navigateToCase(caseId), 150);
+                setTimeout(() => navigateFromHash(), 150);
             }
         });
         
         // Handle hash changes (e.g. back/forward)
         window.addEventListener('hashchange', () => {
-            const caseId = window.location.hash.slice(1);
-            if (caseId) navigateToCase(caseId);
+            navigateFromHash();
         });
     </script>
 </body>
