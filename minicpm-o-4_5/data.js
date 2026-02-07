@@ -136,10 +136,10 @@ const DEMO_DATA = {
             "custom_voice_daily_003"
           ],
           "roleplay": [
-            "english_role_002",
             "english_role_003",
+            "english_conv_003",
             "english_conv_001",
-            "english_conv_003"
+            "english_role_002"
           ],
           "emotional_support": [
             "haitian_qa_001"
@@ -150,10 +150,10 @@ const DEMO_DATA = {
             "haitian_story_003"
           ],
           "sub_1770396004765": [
+            "en_ht_004",
             "en_ht_001",
             "en_ht_002",
-            "en_ht_003",
-            "en_ht_004"
+            "en_ht_003"
           ]
         }
       }
@@ -983,7 +983,7 @@ const DEMO_DATA = {
             {
               "id": "en_ht_002",
               "summary": {
-                "zh": "",
+                "zh": "旅行建议",
                 "en": "trip advice"
               },
               "system": {
@@ -1017,7 +1017,7 @@ const DEMO_DATA = {
             {
               "id": "en_ht_003",
               "summary": {
-                "zh": "",
+                "zh": "jie",
                 "en": "improv comedy"
               },
               "system": {
