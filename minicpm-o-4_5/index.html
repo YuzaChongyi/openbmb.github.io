@@ -385,6 +385,36 @@
             color: var(--text-secondary);
         }
         
+        /* === Copy Link Button === */
+        .case-header {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 4px;
+        }
+        
+        .copy-link-btn {
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 3px 10px;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.15s;
+            letter-spacing: 0.02em;
+        }
+        
+        .copy-link-btn:hover {
+            color: var(--text-primary);
+            border-color: var(--text-secondary);
+            background: var(--bg-body);
+        }
+        
+        .copy-link-btn.copied {
+            color: #22c55e;
+            border-color: #22c55e;
+        }
+        
         /* === Footer Disclaimer === */
         .footer-disclaimer {
             max-width: 900px;
@@ -492,7 +522,9 @@
                 noData: '数据未加载',
                 ensureFile: '请确保 data.js 文件存在',
                 noCases: '暂无案例',
-                addCases: '请在配置中添加案例'
+                addCases: '请在配置中添加案例',
+                copyLink: '🔗 复制链接',
+                copied: '✓ 已复制'
             },
             en: {
                 systemSetting: 'System Setting',
@@ -504,7 +536,9 @@
                 noData: 'Data not loaded',
                 ensureFile: 'Please ensure data.js file exists',
                 noCases: 'No cases available',
-                addCases: 'Please add cases in configuration'
+                addCases: 'Please add cases in configuration',
+                copyLink: '🔗 Link',
+                copied: '✓ Copied'
             }
         };
         
@@ -623,6 +657,7 @@
                             </div>
                             ${cases.map(c => `
                                 <div class="case-content ${c.id === activeCase ? 'active' : ''}" 
+                                     id="case-${c.id}"
                                      data-section="${sectionId}" data-case="${c.id}">
                                     ${renderCaseContent(c)}
                                 </div>
@@ -635,6 +670,9 @@
         
         function renderCaseContent(caseData) {
             return `
+                <div class="case-header">
+                    <button class="copy-link-btn" data-copy-case="${caseData.id}">${t('copyLink')}</button>
+                </div>
                 ${renderSystemBlock(caseData.system)}
                 ${renderConversation(caseData.turns)}
             `;
@@ -731,6 +769,25 @@
                     document.querySelectorAll(`.case-content[data-section="${sectionId}"]`).forEach(c => {
                         c.classList.toggle('active', c.dataset.case === caseId);
                     });
+                    
+                    // Update URL hash (不触发 scroll)
+                    history.replaceState(null, '', '#' + caseId);
+                });
+            });
+            
+            // Copy link buttons
+            document.querySelectorAll('.copy-link-btn[data-copy-case]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const caseId = btn.dataset.copyCase;
+                    const url = window.location.origin + window.location.pathname + '#' + caseId;
+                    navigator.clipboard.writeText(url).then(() => {
+                        btn.classList.add('copied');
+                        btn.textContent = t('copied');
+                        setTimeout(() => {
+                            btn.classList.remove('copied');
+                            btn.textContent = t('copyLink');
+                        }, 1500);
+                    });
                 });
             });
             
@@ -742,6 +799,30 @@
             });
         }
         
+        // === Hash Navigation ===
+        function navigateToCase(caseId) {
+            const el = document.getElementById('case-' + caseId);
+            if (!el) return false;
+            
+            const sectionId = el.dataset.section;
+            
+            // Activate tab
+            state.activeCase[sectionId] = caseId;
+            const tabGroup = document.querySelector(`.tab-group[data-section="${sectionId}"]`);
+            if (tabGroup) {
+                tabGroup.querySelectorAll('.tab-btn').forEach(b => {
+                    b.classList.toggle('active', b.dataset.case === caseId);
+                });
+            }
+            document.querySelectorAll(`.case-content[data-section="${sectionId}"]`).forEach(c => {
+                c.classList.toggle('active', c.dataset.case === caseId);
+            });
+            
+            // Scroll into view
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return true;
+        }
+        
         // === Init ===
         document.addEventListener('DOMContentLoaded', () => {
             // Init lang buttons
@@ -750,6 +831,18 @@
             });
             document.documentElement.lang = state.lang === 'zh' ? 'zh-CN' : 'en';
             render();
+            
+            // Handle hash navigation on load
+            if (window.location.hash) {
+                const caseId = window.location.hash.slice(1);
+                setTimeout(() => navigateToCase(caseId), 150);
+            }
+        });
+        
+        // Handle hash changes (e.g. back/forward)
+        window.addEventListener('hashchange', () => {
+            const caseId = window.location.hash.slice(1);
+            if (caseId) navigateToCase(caseId);
         });
     </script>
 </body>
