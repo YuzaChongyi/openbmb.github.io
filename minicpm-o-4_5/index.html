@@ -385,6 +385,22 @@
             color: var(--text-secondary);
         }
         
+        /* === Footer Disclaimer === */
+        .footer-disclaimer {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 24px 24px 48px;
+            text-align: center;
+        }
+        
+        .disclaimer-text {
+            font-size: 0.75rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-light);
+            padding-top: 24px;
+        }
+        
         /* === Responsive === */
         @media (max-width: 640px) {
             .hero {
@@ -449,6 +465,9 @@
             <div class="loading" style="text-align:center;padding:40px;color:#888;">Loading...</div>
         </div>
     </main>
+    
+    <!-- Footer Disclaimer -->
+    <footer class="footer-disclaimer" id="footerDisclaimer"></footer>
     
     <!-- Data (single file with multi-lang) -->
     <script src="data.js"></script>
@@ -560,6 +579,15 @@
             `;
             
             bindEvents();
+            
+            // Render disclaimer
+            const disclaimer = getText(DEMO_DATA.meta?.disclaimer);
+            const footerEl = document.getElementById('footerDisclaimer');
+            if (footerEl) {
+                footerEl.innerHTML = disclaimer 
+                    ? `<p class="disclaimer-text">${escapeHtml(disclaimer)}</p>` 
+                    : '';
+            }
         }
         
         function renderSubAbilities(ability, order) {

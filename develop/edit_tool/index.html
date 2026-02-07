@@ -114,12 +114,70 @@
         }
         
         .outline-item.dragging {
-            opacity: 0.5;
+            opacity: 0.4;
             background: var(--bg-body);
         }
         
-        .outline-item.drag-over {
-            border-top: 2px solid var(--accent);
+        /* 插入指示线：上方 */
+        .outline-item.drag-before {
+            position: relative;
+        }
+        .outline-item.drag-before::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 8px;
+            right: 8px;
+            height: 2px;
+            background: var(--edit-accent);
+            border-radius: 1px;
+            z-index: 10;
+        }
+        .outline-item.drag-before::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: 5px;
+            width: 8px;
+            height: 8px;
+            background: var(--edit-accent);
+            border-radius: 50%;
+            z-index: 10;
+        }
+        
+        /* 插入指示线：下方 */
+        .outline-item.drag-after {
+            position: relative;
+        }
+        .outline-item.drag-after::before {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 8px;
+            right: 8px;
+            height: 2px;
+            background: var(--edit-accent);
+            border-radius: 1px;
+            z-index: 10;
+        }
+        .outline-item.drag-after::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 5px;
+            width: 8px;
+            height: 8px;
+            background: var(--edit-accent);
+            border-radius: 50%;
+            z-index: 10;
+        }
+        
+        /* 移入目标容器（跨层级放入） */
+        .outline-item.drag-into {
+            background: rgba(78,205,196,0.12);
+            outline: 2px solid #4ecdc4;
+            outline-offset: -2px;
+            border-radius: var(--radius-sm);
         }
         
         .outline-item .drag-handle {
@@ -830,8 +888,7 @@
         .toast.info { border-left: 3px solid #64b5f6; }
 
         /* === 拖拽状态 === */
-        .dragging { opacity: 0.5; }
-        .drag-over { outline: 2px dashed var(--edit-accent); outline-offset: 2px; }
+        .dragging { opacity: 0.4; }
 
         /* Turn action buttons positioning */
         .turn {
@@ -923,7 +980,7 @@
             <div class="modal-body" id="modal-body"></div>
             <div class="modal-footer">
                 <button class="btn" onclick="closeModal()">取消</button>
-                <button class="btn btn-primary" onclick="saveModal()">保存</button>
+                <button class="btn btn-primary" id="modal-save-btn" onclick="saveModal()">保存</button>
             </div>
         </div>
     </div>
@@ -1094,38 +1151,8 @@
             return ordered;
         }
         
-        function updateAbilityOrder(fromId, toId) {
-            const order = data.meta.order[currentLang].abilities;
-            const fromIdx = order.indexOf(fromId);
-            const toIdx = order.indexOf(toId);
-            
-            if (fromIdx === -1 || toIdx === -1) return;
-            
-            order.splice(fromIdx, 1);
-            order.splice(toIdx, 0, fromId);
-        }
-        
-        function updateSubAbilityOrder(abilityId, fromId, toId) {
-            const order = data.meta.order[currentLang].sub_abilities[abilityId];
-            const fromIdx = order.indexOf(fromId);
-            const toIdx = order.indexOf(toId);
-            
-            if (fromIdx === -1 || toIdx === -1) return;
-            
-            order.splice(fromIdx, 1);
-            order.splice(toIdx, 0, fromId);
-        }
-        
-        function updateCaseOrder(subId, fromId, toId) {
-            const order = data.meta.order[currentLang].cases[subId];
-            const fromIdx = order.indexOf(fromId);
-            const toIdx = order.indexOf(toId);
-            
-            if (fromIdx === -1 || toIdx === -1) return;
-            
-            order.splice(fromIdx, 1);
-            order.splice(toIdx, 0, fromId);
-        }
+        // (旧的 updateAbilityOrder/updateSubAbilityOrder/updateCaseOrder 已被
+        //  reorderItem/reorderSubItem/reorderCaseItem 替代，支持 before/after 精确位置)
 
         // ==================== 初始化 ====================
         async function init() {
@@ -1206,7 +1233,8 @@
                      ondragstart="outlineDragStart(event)" 
                      ondragover="outlineDragOver(event)" 
                      ondragleave="outlineDragLeave(event)"
-                     ondrop="outlineDrop(event)">
+                     ondrop="outlineDrop(event)"
+                     ondragend="outlineDragEnd(event)">
                     <span class="drag-handle">⋮⋮</span>
                     <span class="item-icon">📁</span>
                     <span class="item-text">${getText(ability.name) || '未命名'}</span>
@@ -1223,11 +1251,12 @@
                          data-ability="${aIdx}"
                          data-ability-id="${ability.id}"
                          data-idx="${sIdx}"
-                         onclick="scrollToSection('ability-${aIdx}')"
+                         onclick="scrollToSection('sub-${aIdx}-${sIdx}')"
                          ondragstart="outlineDragStart(event)" 
                          ondragover="outlineDragOver(event)" 
                          ondragleave="outlineDragLeave(event)"
-                         ondrop="outlineDrop(event)">
+                         ondrop="outlineDrop(event)"
+                         ondragend="outlineDragEnd(event)">
                         <span class="drag-handle">⋮⋮</span>
                         <span class="item-icon">📄</span>
                         <span class="item-text">${getText(sub.name) || '未命名'}</span>
@@ -1245,11 +1274,12 @@
                              data-sub="${sIdx}"
                              data-sub-id="${sub.id}"
                              data-idx="${cIdx}"
-                             onclick="scrollToSection('ability-${aIdx}'); selectCase(${aIdx}, ${sIdx}, ${cIdx})"
+                             onclick="selectCaseAndScroll(${aIdx}, ${sIdx}, ${cIdx})"
                              ondragstart="outlineDragStart(event)" 
                              ondragover="outlineDragOver(event)" 
                              ondragleave="outlineDragLeave(event)"
-                             ondrop="outlineDrop(event)">
+                             ondrop="outlineDrop(event)"
+                             ondragend="outlineDragEnd(event)">
                             <span class="drag-handle">⋮⋮</span>
                             <span class="item-text">${getText(c.summary) || c.id}</span>
                         </div>`;
@@ -1263,13 +1293,24 @@
         
         function scrollToSection(id) {
             const el = document.getElementById(id);
-            if (el) {
-                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
+            if (!el) return;
+            const container = document.querySelector('.main-content');
+            if (!container) { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
+            const containerRect = container.getBoundingClientRect();
+            const elRect = el.getBoundingClientRect();
+            const offset = elRect.top - containerRect.top + container.scrollTop - 16; // 16px 上方留白
+            container.scrollTo({ top: Math.max(0, offset), behavior: 'smooth' });
         }
         
         // ==================== 大纲拖拽 ====================
         let draggedOutlineItem = null;
+        let lastDropIndicator = null; // 'before' | 'after' | 'into'
+        
+        const DRAG_CLASSES = ['drag-before', 'drag-after', 'drag-into'];
+        
+        function clearDragClasses(el) {
+            if (el) DRAG_CLASSES.forEach(c => el.classList.remove(c));
+        }
         
         function outlineDragStart(e) {
             draggedOutlineItem = e.target;
@@ -1277,28 +1318,63 @@
             e.dataTransfer.effectAllowed = 'move';
         }
         
+        function outlineDragEnd(e) {
+            // 清理所有拖拽残留状态
+            if (draggedOutlineItem) draggedOutlineItem.classList.remove('dragging');
+            document.querySelectorAll('.outline-item').forEach(el => clearDragClasses(el));
+            draggedOutlineItem = null;
+            lastDropIndicator = null;
+        }
+        
+        let lastDragTarget = null;
+        
         function outlineDragOver(e) {
             e.preventDefault();
             const target = e.target.closest('.outline-item');
             if (!target || target === draggedOutlineItem) return;
             
-            // 只允许同类型拖拽
             const dragType = draggedOutlineItem.dataset.type;
             const targetType = target.dataset.type;
             
+            // 如果 hover 到了新的目标，清除旧的
+            if (lastDragTarget && lastDragTarget !== target) {
+                clearDragClasses(lastDragTarget);
+            }
+            lastDragTarget = target;
+            
+            // 清除当前目标的旧指示
+            clearDragClasses(target);
+            lastDropIndicator = null;
+            
+            // 判断鼠标在目标元素的上半还是下半
+            const rect = target.getBoundingClientRect();
+            const midY = rect.top + rect.height / 2;
+            const isUpperHalf = e.clientY < midY;
+            
+            // === 同类型：排序（用线指示插入位置）===
             if (dragType === targetType) {
-                // 同级别可以排序
-                if (dragType === 'ability' || 
-                    (dragType === 'sub' && draggedOutlineItem.dataset.abilityId === target.dataset.abilityId) ||
-                    (dragType === 'case' && draggedOutlineItem.dataset.subId === target.dataset.subId)) {
-                    target.classList.add('drag-over');
-                }
+                lastDropIndicator = isUpperHalf ? 'before' : 'after';
+                target.classList.add(isUpperHalf ? 'drag-before' : 'drag-after');
+            }
+            // === 跨层级：移入父容器 ===
+            else if (dragType === 'sub' && targetType === 'ability') {
+                lastDropIndicator = 'into';
+                target.classList.add('drag-into');
+            } else if (dragType === 'case' && targetType === 'sub') {
+                lastDropIndicator = 'into';
+                target.classList.add('drag-into');
             }
         }
         
         function outlineDragLeave(e) {
             const target = e.target.closest('.outline-item');
-            if (target) target.classList.remove('drag-over');
+            if (!target) return;
+            // 检查是否真的离开了元素（排除进入子元素的情况）
+            const rect = target.getBoundingClientRect();
+            const x = e.clientX, y = e.clientY;
+            if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) return;
+            clearDragClasses(target);
+            if (lastDragTarget === target) lastDragTarget = null;
         }
         
         function outlineDrop(e) {
@@ -1306,35 +1382,239 @@
             const target = e.target.closest('.outline-item');
             if (!target || !draggedOutlineItem) return;
             
-            target.classList.remove('drag-over');
+            const indicator = lastDropIndicator;
+            clearDragClasses(target);
             draggedOutlineItem.classList.remove('dragging');
+            
+            if (!indicator) { draggedOutlineItem = null; return; }
             
             const dragType = draggedOutlineItem.dataset.type;
             const targetType = target.dataset.type;
-            
-            if (dragType !== targetType) return;
-            
             const fromId = draggedOutlineItem.dataset.id;
             const toId = target.dataset.id;
             
-            if (fromId === toId) return;
+            if (fromId === toId) { draggedOutlineItem = null; return; }
             
-            if (dragType === 'ability') {
-                // 更新当前语言的 ability 顺序
-                updateAbilityOrder(fromId, toId);
+            if (dragType === 'ability' && targetType === 'ability') {
+                // ability 排序：before/after
+                reorderItem('ability', fromId, toId, indicator);
+                
             } else if (dragType === 'sub') {
-                const abilityId = draggedOutlineItem.dataset.abilityId;
-                if (abilityId !== target.dataset.abilityId) return;
-                updateSubAbilityOrder(abilityId, fromId, toId);
+                if (targetType === 'sub') {
+                    const fromAbilityId = draggedOutlineItem.dataset.abilityId;
+                    const toAbilityId = target.dataset.abilityId;
+                    
+                    if (fromAbilityId === toAbilityId) {
+                        // 同父级排序
+                        reorderSubItem(fromAbilityId, fromId, toId, indicator);
+                    } else {
+                        // 跨父级：移到目标 sub 的 before/after 位置
+                        moveSubAbilityCross(fromId, fromAbilityId, toAbilityId, toId, indicator);
+                    }
+                } else if (targetType === 'ability' && indicator === 'into') {
+                    // 移入目标 ability 末尾
+                    const fromAbilityId = draggedOutlineItem.dataset.abilityId;
+                    if (fromAbilityId === toId) { draggedOutlineItem = null; return; }
+                    moveSubAbilityCross(fromId, fromAbilityId, toId, null, 'into');
+                }
+                
             } else if (dragType === 'case') {
-                const subId = draggedOutlineItem.dataset.subId;
-                if (subId !== target.dataset.subId) return;
-                updateCaseOrder(subId, fromId, toId);
+                if (targetType === 'case') {
+                    const fromSubId = draggedOutlineItem.dataset.subId;
+                    const toSubId = target.dataset.subId;
+                    
+                    if (fromSubId === toSubId) {
+                        // 同父级排序
+                        reorderCaseItem(fromSubId, fromId, toId, indicator);
+                    } else {
+                        // 跨父级
+                        moveCaseCross(fromId, fromSubId, toSubId, toId, indicator);
+                    }
+                } else if (targetType === 'sub' && indicator === 'into') {
+                    // 移入目标 sub 末尾
+                    const fromSubId = draggedOutlineItem.dataset.subId;
+                    if (fromSubId === toId) { draggedOutlineItem = null; return; }
+                    moveCaseCross(fromId, fromSubId, toId, null, 'into');
+                }
             }
             
             markModified();
             render();
             draggedOutlineItem = null;
+        }
+        
+        // ==================== 排序辅助（支持 before/after）====================
+        function reorderItem(type, fromId, toId, indicator) {
+            // ability 排序
+            const order = data.meta.order[currentLang].abilities;
+            const fromIdx = order.indexOf(fromId);
+            const toIdx = order.indexOf(toId);
+            if (fromIdx === -1 || toIdx === -1) return;
+            
+            order.splice(fromIdx, 1);
+            let insertIdx = order.indexOf(toId);
+            if (indicator === 'after') insertIdx++;
+            order.splice(insertIdx, 0, fromId);
+        }
+        
+        function reorderSubItem(abilityId, fromId, toId, indicator) {
+            const order = data.meta.order[currentLang].sub_abilities[abilityId];
+            if (!order) return;
+            const fromIdx = order.indexOf(fromId);
+            const toIdx = order.indexOf(toId);
+            if (fromIdx === -1 || toIdx === -1) return;
+            
+            order.splice(fromIdx, 1);
+            let insertIdx = order.indexOf(toId);
+            if (indicator === 'after') insertIdx++;
+            order.splice(insertIdx, 0, fromId);
+        }
+        
+        function reorderCaseItem(subId, fromId, toId, indicator) {
+            const order = data.meta.order[currentLang].cases[subId];
+            if (!order) return;
+            const fromIdx = order.indexOf(fromId);
+            const toIdx = order.indexOf(toId);
+            if (fromIdx === -1 || toIdx === -1) return;
+            
+            order.splice(fromIdx, 1);
+            let insertIdx = order.indexOf(toId);
+            if (indicator === 'after') insertIdx++;
+            order.splice(insertIdx, 0, fromId);
+        }
+        
+        // ==================== 跨层级移动 ====================
+        function moveSubAbilityCross(subId, fromAbilityId, toAbilityId, refSubId, indicator) {
+            /**
+             * 将 sub_ability 从一个 ability 移到另一个 ability
+             * @param {string} subId - 被移动的 sub ID
+             * @param {string} fromAbilityId - 原父级 ability ID
+             * @param {string} toAbilityId - 目标父级 ability ID
+             * @param {string|null} refSubId - 参考位置的 sub ID
+             * @param {string} indicator - 'before' | 'after' | 'into'
+             */
+            const fromAbility = data.abilities.find(a => a.id === fromAbilityId);
+            const toAbility = data.abilities.find(a => a.id === toAbilityId);
+            if (!fromAbility || !toAbility) return;
+            
+            // 从原数组移除
+            const subIdx = fromAbility.sub_abilities.findIndex(s => s.id === subId);
+            if (subIdx === -1) return;
+            const [subItem] = fromAbility.sub_abilities.splice(subIdx, 1);
+            
+            // 插入到目标数组
+            if (refSubId && indicator !== 'into') {
+                let targetIdx = toAbility.sub_abilities.findIndex(s => s.id === refSubId);
+                if (targetIdx >= 0) {
+                    if (indicator === 'after') targetIdx++;
+                    toAbility.sub_abilities.splice(targetIdx, 0, subItem);
+                } else {
+                    toAbility.sub_abilities.push(subItem);
+                }
+            } else {
+                toAbility.sub_abilities.push(subItem);
+            }
+            
+            // 更新所有语言的顺序
+            ['zh', 'en'].forEach(lang => {
+                const order = data.meta.order[lang];
+                
+                // 从原父级顺序中移除
+                const fromOrder = order.sub_abilities[fromAbilityId];
+                if (fromOrder) {
+                    const idx = fromOrder.indexOf(subId);
+                    if (idx > -1) fromOrder.splice(idx, 1);
+                }
+                
+                // 添加到目标父级顺序
+                if (!order.sub_abilities[toAbilityId]) {
+                    order.sub_abilities[toAbilityId] = [];
+                }
+                const toOrder = order.sub_abilities[toAbilityId];
+                
+                if (lang === currentLang && refSubId && indicator !== 'into') {
+                    let insertIdx = toOrder.indexOf(refSubId);
+                    if (insertIdx >= 0) {
+                        if (indicator === 'after') insertIdx++;
+                        toOrder.splice(insertIdx, 0, subId);
+                    } else {
+                        toOrder.push(subId);
+                    }
+                } else {
+                    toOrder.push(subId);
+                }
+            });
+            
+            showToast(`已移动到 ${getText(toAbility.name)}`, 'success');
+        }
+        
+        function moveCaseCross(caseId, fromSubId, toSubId, refCaseId, indicator) {
+            /**
+             * 将 case 从一个 sub 移到另一个 sub
+             * @param {string} caseId - 被移动的 case ID
+             * @param {string} fromSubId - 原父级 sub ID
+             * @param {string} toSubId - 目标父级 sub ID
+             * @param {string|null} refCaseId - 参考位置的 case ID
+             * @param {string} indicator - 'before' | 'after' | 'into'
+             */
+            let fromSub = null, toSub = null;
+            for (const ability of data.abilities) {
+                for (const sub of ability.sub_abilities || []) {
+                    if (sub.id === fromSubId) fromSub = sub;
+                    if (sub.id === toSubId) toSub = sub;
+                }
+            }
+            if (!fromSub || !toSub) return;
+            
+            // 从原数组移除
+            const caseIdx = fromSub.cases.findIndex(c => c.id === caseId);
+            if (caseIdx === -1) return;
+            const [caseItem] = fromSub.cases.splice(caseIdx, 1);
+            
+            // 插入到目标数组
+            if (refCaseId && indicator !== 'into') {
+                let targetIdx = toSub.cases.findIndex(c => c.id === refCaseId);
+                if (targetIdx >= 0) {
+                    if (indicator === 'after') targetIdx++;
+                    toSub.cases.splice(targetIdx, 0, caseItem);
+                } else {
+                    toSub.cases.push(caseItem);
+                }
+            } else {
+                toSub.cases.push(caseItem);
+            }
+            
+            // 更新所有语言的顺序
+            ['zh', 'en'].forEach(lang => {
+                const order = data.meta.order[lang];
+                
+                // 从原父级顺序中移除
+                const fromOrder = order.cases[fromSubId];
+                if (fromOrder) {
+                    const idx = fromOrder.indexOf(caseId);
+                    if (idx > -1) fromOrder.splice(idx, 1);
+                }
+                
+                // 添加到目标父级顺序
+                if (!order.cases[toSubId]) {
+                    order.cases[toSubId] = [];
+                }
+                const toOrder = order.cases[toSubId];
+                
+                if (lang === currentLang && refCaseId && indicator !== 'into') {
+                    let insertIdx = toOrder.indexOf(refCaseId);
+                    if (insertIdx >= 0) {
+                        if (indicator === 'after') insertIdx++;
+                        toOrder.splice(insertIdx, 0, caseId);
+                    } else {
+                        toOrder.push(caseId);
+                    }
+                } else {
+                    toOrder.push(caseId);
+                }
+            });
+            
+            showToast(`已移动到 ${getText(toSub.name)}`, 'success');
         }
 
         function renderAbility(ability, aIdx) {
@@ -1369,7 +1649,7 @@
             const orderedCases = getOrderedCases(sub.id);
             
             let html = `
-            <div class="subsection" data-type="sub" data-ability="${aIdx}" data-index="${sIdx}">
+            <div class="subsection" data-type="sub" data-ability="${aIdx}" data-index="${sIdx}" id="sub-${aIdx}-${sIdx}">
                 <div class="subsection-header">
                     <h3 class="subsection-title editable" data-path="abilities.${aIdx}.sub_abilities.${sIdx}.name" ondblclick="startEdit(this)">${getText(sub.name) || '未命名'}</h3>
                     <div class="action-btns">
@@ -1391,7 +1671,9 @@
                 `;
             });
             
-            html += `<button class="tab-btn" onclick="addCase(${aIdx}, ${sIdx})">+</button></div>`;
+            html += `<button class="tab-btn" onclick="addCase(${aIdx}, ${sIdx})" title="添加空白 Case">+</button>`;
+            html += `<button class="tab-btn" onclick="showImportModal(${aIdx}, ${sIdx})" title="从 Session URL 导入" style="font-size:14px;">📥</button>`;
+            html += `</div>`;
             
             // Case 内容
             orderedCases.forEach((c) => {
@@ -1475,6 +1757,16 @@
             const key = `${aIdx}-${sIdx}`;
             activeCases[key] = cIdx;
             render();
+        }
+        
+        function selectCaseAndScroll(aIdx, sIdx, cIdx) {
+            const key = `${aIdx}-${sIdx}`;
+            activeCases[key] = cIdx;
+            render();
+            // render 后 DOM 已更新，使用 requestAnimationFrame 确保滚动生效
+            requestAnimationFrame(() => {
+                scrollToSection('sub-' + aIdx + '-' + sIdx);
+            });
         }
 
         // ==================== 编辑 ====================
@@ -1891,9 +2183,12 @@
             try {
                 const res = await fetch(`${API_BASE}/api/build`, { method: 'POST' });
                 const result = await res.json();
-                showToast(result.success ? '构建完成！' : '构建失败', result.success ? 'success' : 'error');
+                const ok = result.status === 'success';
+                showToast(ok ? '构建完成！' : `构建失败: ${result.error || result.message || ''}`, ok ? 'success' : 'error');
+                if (!ok) console.error('Build failed:', result);
             } catch (e) {
-                showToast('构建失败', 'error');
+                console.error('Build error:', e);
+                showToast('构建失败: 网络错误', 'error');
             }
         }
 
@@ -1902,13 +2197,216 @@
         }
 
         // ==================== 模态框 ====================
+        let modalCallback = null;
+
         function closeModal() {
             document.getElementById('modal-overlay').classList.remove('active');
+            modalCallback = null;
+            // 重置保存按钮
+            const saveBtn = document.getElementById('modal-save-btn');
+            saveBtn.textContent = '保存';
+            saveBtn.disabled = false;
         }
 
         function saveModal() {
-            // 扩展用
-            closeModal();
+            if (modalCallback) {
+                modalCallback();
+            } else {
+                closeModal();
+            }
+        }
+
+        // ==================== 从 URL 导入 Case ====================
+        function showImportModal(aIdx, sIdx) {
+            document.getElementById('modal-title').textContent = '📥 从 Session URL 导入';
+            document.getElementById('modal-body').innerHTML = `
+                <div class="form-group">
+                    <label class="form-label">Session URL</label>
+                    <input type="text" class="form-input" id="import-url"
+                           placeholder="http://101.200.3.202:7002/.../session_view.html">
+                    <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">
+                        支持 session_view.html 页面地址或 session 目录地址
+                    </div>
+                </div>
+                <div style="display:flex; gap:12px;">
+                    <div class="form-group" style="flex:1;">
+                        <label class="form-label">用户名</label>
+                        <input type="text" class="form-input" id="import-username" value="xu">
+                    </div>
+                    <div class="form-group" style="flex:1;">
+                        <label class="form-label">密码</label>
+                        <input type="password" class="form-input" id="import-password" value="9679">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Case ID</label>
+                    <input type="text" class="form-input" id="import-case-id"
+                           placeholder="english_conv_004">
+                    <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">
+                        唯一标识，用于音频目录命名（建议格式：类别_编号）
+                    </div>
+                </div>
+                <div id="import-progress" style="display:none; margin-top:12px; padding:12px; background:var(--bg-body); border-radius:var(--radius); font-size:12px; color:var(--text-secondary);">
+                    <div id="import-status-text">准备导入...</div>
+                </div>
+            `;
+
+            const saveBtn = document.getElementById('modal-save-btn');
+            saveBtn.textContent = '开始导入';
+
+            modalCallback = () => doImportSession(aIdx, sIdx);
+            document.getElementById('modal-overlay').classList.add('active');
+
+            // 自动聚焦到 URL 输入框
+            setTimeout(() => document.getElementById('import-url')?.focus(), 100);
+        }
+
+        async function doImportSession(aIdx, sIdx) {
+            const url = document.getElementById('import-url').value.trim();
+            const username = document.getElementById('import-username').value.trim();
+            const password = document.getElementById('import-password').value.trim();
+            const caseId = document.getElementById('import-case-id').value.trim();
+
+            if (!url) { showToast('请填写 Session URL', 'warning'); return; }
+            if (!caseId) { showToast('请填写 Case ID', 'warning'); return; }
+
+            // 检查 ID 唯一性
+            for (const ability of data.abilities || []) {
+                for (const sub of ability.sub_abilities || []) {
+                    for (const c of sub.cases || []) {
+                        if (c.id === caseId) {
+                            showToast(`Case ID "${caseId}" 已存在`, 'warning');
+                            return;
+                        }
+                    }
+                }
+            }
+
+            // 显示进度
+            const progressEl = document.getElementById('import-progress');
+            const statusText = document.getElementById('import-status-text');
+            progressEl.style.display = 'block';
+            statusText.textContent = '⏳ 正在下载文件并转录用户音频...（可能需要 30-60 秒）';
+
+            const saveBtn = document.getElementById('modal-save-btn');
+            saveBtn.disabled = true;
+            saveBtn.textContent = '导入中...';
+
+            try {
+                const res = await fetch(`${API_BASE}/api/import-session`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url, username, password, case_id: caseId })
+                });
+
+                const result = await res.json();
+
+                if (result.status === 'success') {
+                    const sub = data.abilities[aIdx].sub_abilities[sIdx];
+                    if (!sub.cases) sub.cases = [];
+                    sub.cases.push(result.case);
+
+                    // 添加到两种语言的顺序列表
+                    ['zh', 'en'].forEach(lang => {
+                        if (!data.meta.order[lang].cases[sub.id]) {
+                            data.meta.order[lang].cases[sub.id] = [];
+                        }
+                        data.meta.order[lang].cases[sub.id].push(caseId);
+                    });
+
+                    activeCases[`${aIdx}-${sIdx}`] = sub.cases.length - 1;
+                    markModified();
+                    render();
+                    closeModal();
+
+                    if (result.has_pending_asr) {
+                        showToast(`⏳ 导入成功: ${result.case.turns.length} 轮对话，ASR 转录进行中...`, 'info');
+                        startTranscriptionPolling(caseId);
+                    } else {
+                        showToast(`✓ 导入成功: ${result.case.turns.length} 轮对话`, 'success');
+                    }
+                } else {
+                    statusText.textContent = `❌ 导入失败: ${result.message}`;
+                    saveBtn.disabled = false;
+                    saveBtn.textContent = '重试';
+                    showToast('导入失败: ' + result.message, 'error');
+                }
+            } catch (e) {
+                statusText.textContent = `❌ 网络错误: ${e.message}`;
+                saveBtn.disabled = false;
+                saveBtn.textContent = '重试';
+                showToast('导入失败: ' + e.message, 'error');
+            }
+        }
+
+        // ==================== ASR 转录轮询 ====================
+        function startTranscriptionPolling(caseId) {
+            const pollInterval = setInterval(async () => {
+                try {
+                    const res = await fetch(`${API_BASE}/api/transcription-status?case_id=${caseId}`);
+                    const status = await res.json();
+
+                    if (status.status !== 'ok') {
+                        clearInterval(pollInterval);
+                        return;
+                    }
+
+                    // 找到对应的 case 数据
+                    const caseData = findCaseById(caseId);
+                    if (!caseData) {
+                        clearInterval(pollInterval);
+                        return;
+                    }
+
+                    // 用转录结果更新 user_text
+                    let updated = false;
+                    for (const [idx, text] of Object.entries(status.results)) {
+                        const turn = caseData.turns[parseInt(idx)];
+                        if (turn && turn.user_text !== text) {
+                            turn.user_text = text;
+                            updated = true;
+                        }
+                    }
+
+                    // 标记失败的
+                    for (const [idx, err] of Object.entries(status.errors)) {
+                        const turn = caseData.turns[parseInt(idx)];
+                        if (turn && turn.user_text === '[转录中...]') {
+                            turn.user_text = `[转录失败: ${err}]`;
+                            updated = true;
+                        }
+                    }
+
+                    if (updated) {
+                        markModified();
+                        render();
+                    }
+
+                    if (status.done) {
+                        clearInterval(pollInterval);
+                        const okCount = Object.keys(status.results).length;
+                        const errCount = Object.keys(status.errors).length;
+                        if (errCount > 0) {
+                            showToast(`ASR 完成: ${okCount} 条成功, ${errCount} 条失败`, 'warning');
+                        } else {
+                            showToast(`✓ ASR 转录完成: ${okCount} 条`, 'success');
+                        }
+                    }
+                } catch (e) {
+                    console.error('ASR polling error:', e);
+                }
+            }, 3000);
+        }
+
+        function findCaseById(caseId) {
+            for (const ability of data.abilities || []) {
+                for (const sub of ability.sub_abilities || []) {
+                    for (const c of sub.cases || []) {
+                        if (c.id === caseId) return c;
+                    }
+                }
+            }
+            return null;
         }
 
         // ==================== 工具函数 ====================
