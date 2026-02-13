@@ -127,6 +127,37 @@
             margin: 0 4px;
         }
         
+        /* === Page Nav === */
+        .page-nav {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .page-nav-btn {
+            display: inline-block;
+            padding: 6px 16px;
+            border: 1px solid rgba(0,0,0,0.15);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-decoration: none;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+        }
+        
+        .page-nav-btn:hover {
+            background: rgba(0,0,0,0.05);
+            color: var(--text-primary);
+        }
+        
+        .page-nav-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+        
         /* === Main Content === */
         .main {
             max-width: 900px;
@@ -482,6 +513,10 @@
                 <a href="https://github.com/OpenBMB/MiniCPM-o" target="_blank">GITHUB</a>
                 <span class="sep">|</span>
                 <a href="https://huggingface.co/openbmb/MiniCPM-o-4_5" target="_blank">HUGGING FACE</a>
+            </div>
+            <div class="page-nav">
+                <a href="#" class="page-nav-btn active">🎙️ Audio Cases</a>
+                <a href="../minicpm-o-4_5-omni/" class="page-nav-btn">🎬 Omni Cases</a>
             </div>
             <div class="lang-switch">
                 <button class="lang-btn" data-lang="zh">中文</button>

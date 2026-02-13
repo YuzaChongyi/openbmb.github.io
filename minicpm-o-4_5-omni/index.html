@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiniCPM-o 4.5 - Omni Demo</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-hero: #e8e4e0;
+            --bg-body: #f5f3f0;
+            --bg-section: #ffffff;
+            --bg-card: #ffffff;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --text-muted: #888888;
+            --text-hero: #1a1a1a;
+            --accent: #1a1a1a;
+            --accent-hover: #333333;
+            --border: #e0dcd8;
+            --border-light: #eae6e2;
+            --radius: 8px;
+            --radius-sm: 4px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-body);
+            color: var(--text-primary);
+            line-height: 1.6;
+            font-size: 15px;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* === Hero Section === */
+        .hero {
+            background: var(--bg-hero);
+            padding: 80px 24px 60px;
+            text-align: center;
+        }
+        
+        .hero-inner {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: var(--text-hero);
+            letter-spacing: -0.02em;
+        }
+        
+        .hero-links {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            align-items: center;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 500;
+        }
+        
+        .hero-links a {
+            color: var(--text-hero);
+            text-decoration: none;
+            transition: opacity 0.15s;
+        }
+        
+        .hero-links a:hover {
+            opacity: 0.7;
+        }
+        
+        .hero-links .sep {
+            color: var(--text-muted);
+            margin: 0 12px;
+        }
+        
+        .lang-switch {
+            margin-top: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .lang-btn {
+            background: none;
+            border: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: all 0.15s;
+        }
+        
+        .lang-btn.active {
+            color: var(--text-primary);
+            background: rgba(0,0,0,0.05);
+        }
+        
+        .lang-btn:not(.active) {
+            color: var(--text-muted);
+        }
+        
+        .lang-btn:hover:not(.active) {
+            color: var(--text-primary);
+        }
+        
+        .lang-sep {
+            color: var(--text-muted);
+            margin: 0 4px;
+        }
+        
+        /* === Page Nav === */
+        .page-nav {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .page-nav-btn {
+            display: inline-block;
+            padding: 6px 16px;
+            border: 1px solid rgba(0,0,0,0.15);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-decoration: none;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+        }
+        
+        .page-nav-btn:hover {
+            background: rgba(0,0,0,0.05);
+            color: var(--text-primary);
+        }
+        
+        .page-nav-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+        
+        /* === Main Content === */
+        .main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 24px 80px;
+        }
+        
+        /* === Section === */
+        .section {
+            background: var(--bg-section);
+            border-radius: var(--radius);
+            padding: 40px 48px;
+            margin-bottom: 24px;
+        }
+        
+        .section-title {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+        }
+        
+        .section-desc {
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        /* === Sub Section === */
+        .subsection {
+            margin-top: 28px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-light);
+        }
+        
+        .subsection:first-of-type {
+            margin-top: 0;
+            padding-top: 0;
+            border-top: none;
+        }
+        
+        .subsection-title {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+        
+        /* === Case Card === */
+        .case-card {
+            background: transparent;
+            border: none;
+            padding: 0;
+            margin-top: 0;
+        }
+        
+        /* === Tab Buttons === */
+        .tab-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+        
+        .tab-btn {
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: var(--bg-body);
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .tab-btn:hover {
+            background: var(--border-light);
+            color: var(--text-primary);
+        }
+        
+        .tab-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+        
+        /* === Tag Content === */
+        .tag-content {
+            display: none;
+        }
+        
+        .tag-content.active {
+            display: block;
+        }
+        
+        /* === Video Grid === */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+        }
+        
+        .video-grid.single {
+            grid-template-columns: 1fr;
+            max-width: 480px;
+        }
+        
+        .video-item {
+            position: relative;
+            border-radius: var(--radius);
+            overflow: hidden;
+            background: #000;
+        }
+        
+        .video-item video {
+            width: 100%;
+            display: block;
+            border-radius: var(--radius);
+        }
+        
+        .video-item {
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .video-play-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.15);
+            border-radius: var(--radius);
+            transition: background 0.2s;
+            z-index: 2;
+        }
+        
+        .video-play-overlay:hover {
+            background: rgba(0,0,0,0.3);
+        }
+        
+        .play-icon {
+            width: 56px;
+            height: 56px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+            transition: transform 0.15s;
+        }
+        
+        .video-play-overlay:hover .play-icon {
+            transform: scale(1.08);
+        }
+        
+        .play-icon::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 10px 0 10px 18px;
+            border-color: transparent transparent transparent #333;
+            margin-left: 3px;
+        }
+        
+        .video-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+            text-align: center;
+        }
+        
+        /* === Reference Audio === */
+        .ref-audio-block {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--bg-body);
+            border-radius: var(--radius);
+            padding: 12px 16px;
+            margin-bottom: 16px;
+        }
+        
+        .ref-audio-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+        
+        .ref-audio-block audio {
+            height: 32px;
+            flex: 1;
+            max-width: 320px;
+            border-radius: var(--radius-sm);
+        }
+        
+        /* === Copy Link Button === */
+        .case-header {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 8px;
+        }
+        
+        .copy-link-btn {
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 3px 10px;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.15s;
+            letter-spacing: 0.02em;
+        }
+        
+        .copy-link-btn:hover {
+            color: var(--text-primary);
+            border-color: var(--text-secondary);
+            background: var(--bg-body);
+        }
+        
+        .copy-link-btn.copied {
+            color: #22c55e;
+            border-color: #22c55e;
+        }
+        
+        /* === Empty State === */
+        .empty-state {
+            text-align: center;
+            padding: 40px 24px;
+            color: var(--text-muted);
+        }
+        
+        .empty-state h3 {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+        }
+        
+        /* === Footer Disclaimer === */
+        .footer-disclaimer {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 24px 24px 48px;
+            text-align: center;
+        }
+        
+        .disclaimer-text {
+            font-size: 0.75rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-light);
+            padding-top: 24px;
+        }
+        
+        /* === Responsive === */
+        @media (max-width: 640px) {
+            .hero {
+                padding: 60px 20px 40px;
+            }
+            
+            .hero h1 {
+                font-size: 1.75rem;
+            }
+            
+            .main {
+                padding: 24px 16px 60px;
+            }
+            
+            .section {
+                padding: 24px 20px;
+            }
+            
+            .section-title {
+                font-size: 1.25rem;
+            }
+            
+            .tab-btn {
+                padding: 5px 10px;
+                font-size: 0.75rem;
+            }
+            
+            .video-container {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero -->
+    <header class="hero">
+        <div class="hero-inner">
+            <h1>MiniCPM-o 4.5 Omni Demo Page</h1>
+            <div class="hero-links">
+                <a href="https://minicpm-omni.openbmb.cn/" target="_blank">DEMO (OFFICIAL)</a>
+                <span class="sep">|</span>
+                <a href="https://huggingface.co/spaces/openbmb/MiniCPM-o-4_5-Demo" target="_blank">DEMO (HF)</a>
+                <span class="sep">|</span>
+                <a href="https://github.com/OpenBMB/MiniCPM-o" target="_blank">GITHUB</a>
+                <span class="sep">|</span>
+                <a href="https://huggingface.co/openbmb/MiniCPM-o-4_5" target="_blank">HUGGING FACE</a>
+            </div>
+            <div class="page-nav">
+                <a href="../minicpm-o-4_5/" class="page-nav-btn">🎙️ Audio Cases</a>
+                <a href="#" class="page-nav-btn active">🎬 Omni Cases</a>
+            </div>
+            <div class="lang-switch">
+                <button class="lang-btn" data-lang="zh">中文</button>
+                <span class="lang-sep">/</span>
+                <button class="lang-btn active" data-lang="en">EN</button>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main -->
+    <main class="main" id="mainContent">
+        <div class="section">
+            <div class="loading" style="text-align:center;padding:40px;color:#888;">Loading...</div>
+        </div>
+    </main>
+    
+    <!-- Footer Disclaimer -->
+    <footer class="footer-disclaimer" id="footerDisclaimer"></footer>
+    
+    <!-- Data -->
+    <script src="data.js"></script>
+    
+    <!-- App Logic -->
+    <script>
+        // === State ===
+        const state = {
+            lang: localStorage.getItem('demo_lang') || 'en',
+            activeTag: {} // { subAbilityId: tagId }
+        };
+        
+        // === i18n ===
+        const i18n = {
+            zh: {
+                noData: '数据未加载',
+                ensureFile: '请确保 data.js 文件存在',
+                noCases: '暂无案例',
+                addCases: '请在配置中添加案例',
+                copyLink: '🔗 复制链接',
+                copied: '✓ 已复制'
+            },
+            en: {
+                noData: 'Data not loaded',
+                ensureFile: 'Please ensure data.js file exists',
+                noCases: 'No cases available',
+                addCases: 'Please add cases in configuration',
+                copyLink: '🔗 Link',
+                copied: '✓ Copied'
+            }
+        };
+        
+        function t(key) {
+            return i18n[state.lang][key] || key;
+        }
+        
+        function getText(obj) {
+            if (!obj) return '';
+            if (typeof obj === 'string') return obj;
+            return obj[state.lang] || obj.zh || obj.en || '';
+        }
+        
+        function switchLang(lang) {
+            state.lang = lang;
+            localStorage.setItem('demo_lang', lang);
+            document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+            
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
+            
+            render();
+        }
+        
+        // === Render ===
+        function render() {
+            if (typeof DEMO_DATA === 'undefined') {
+                document.getElementById('mainContent').innerHTML = `
+                    <div class="section">
+                        <div class="empty-state">
+                            <h3>${t('noData')}</h3>
+                            <p>${t('ensureFile')}</p>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            
+            DEMO_DATA.abilities.forEach(ability => {
+                html += `
+                    <div class="section">
+                        <h2 class="section-title">${getText(ability.name)}</h2>
+                        <p class="section-desc">${getText(ability.description)}</p>
+                        ${renderSubAbilities(ability)}
+                    </div>
+                `;
+            });
+            
+            document.getElementById('mainContent').innerHTML = html || `
+                <div class="section">
+                    <div class="empty-state">
+                        <h3>${t('noCases')}</h3>
+                        <p>${t('addCases')}</p>
+                    </div>
+                </div>
+            `;
+            
+            bindEvents();
+            
+            // Render disclaimer
+            const disclaimer = getText(DEMO_DATA.meta?.disclaimer);
+            const footerEl = document.getElementById('footerDisclaimer');
+            if (footerEl) {
+                footerEl.innerHTML = disclaimer 
+                    ? `<p class="disclaimer-text">${escapeHtml(disclaimer)}</p>` 
+                    : '';
+            }
+        }
+        
+        function renderSubAbilities(ability) {
+            return ability.sub_abilities.map(sub => {
+                if (!sub.case_tags || sub.case_tags.length === 0) return '';
+                
+                const activeTag = state.activeTag[sub.id] || sub.case_tags[0].id;
+                
+                return `
+                    <div class="subsection">
+                        <h3 class="subsection-title">${getText(sub.name)}</h3>
+                        <div class="case-card">
+                            <div class="tab-group" data-sub="${sub.id}">
+                                ${sub.case_tags.map(tag => `
+                                    <button class="tab-btn ${tag.id === activeTag ? 'active' : ''}" 
+                                            data-tag="${tag.id}">
+                                        ${getText(tag.name)}
+                                    </button>
+                                `).join('')}
+                            </div>
+                            ${sub.case_tags.map(tag => `
+                                <div class="tag-content ${tag.id === activeTag ? 'active' : ''}" 
+                                     id="tag-${tag.id}"
+                                     data-sub="${sub.id}" data-tag="${tag.id}">
+                                    ${renderTagVideos(tag)}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function getPosterPath(videoPath) {
+            // videos/xxx.mp4 → videos/posters/xxx.jpg
+            const name = videoPath.replace(/^videos\//, '').replace(/\.mp4$/, '');
+            return `videos/posters/${name}.jpg`;
+        }
+        
+        function renderTagVideos(tag) {
+            const cases = tag.cases;
+            const isSingle = cases.length === 1;
+            
+            // Check if any case has ref_audio
+            const hasRefAudio = cases.some(c => c.ref_audio);
+            
+            return `
+                ${hasRefAudio ? cases.filter(c => c.ref_audio).map(c => `
+                    <div class="ref-audio-block">
+                        <span class="ref-audio-label">${state.lang === 'zh' ? '参考音色' : 'Reference'}</span>
+                        <audio controls preload="none">
+                            <source src="${c.ref_audio}" type="audio/wav">
+                        </audio>
+                    </div>
+                `).join('') : ''}
+                <div class="video-grid ${isSingle ? 'single' : ''}">
+                    ${cases.map((c, i) => `
+                        <div class="video-item" id="case-${c.id}">
+                            <div class="video-play-overlay" data-video-src="${c.video}">
+                                <div class="play-icon"></div>
+                            </div>
+                            <video preload="none" playsinline
+                                   poster="${getPosterPath(c.video)}">
+                            </video>
+                            ${!isSingle ? `<div class="video-label">Case ${i + 1}</div>` : ''}
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // === Click-to-Play ===
+        function bindVideoOverlays() {
+            document.querySelectorAll('.video-play-overlay').forEach(overlay => {
+                overlay.addEventListener('click', () => {
+                    const videoSrc = overlay.dataset.videoSrc;
+                    const video = overlay.parentElement.querySelector('video');
+                    
+                    // Load source and add controls
+                    if (!video.querySelector('source')) {
+                        const source = document.createElement('source');
+                        source.src = videoSrc;
+                        source.type = 'video/mp4';
+                        video.appendChild(source);
+                        video.load();
+                    }
+                    video.setAttribute('controls', '');
+                    
+                    // Remove overlay
+                    overlay.remove();
+                    
+                    // Start playing
+                    video.play();
+                });
+            });
+        }
+        
+        function bindEvents() {
+            // Tag tab switching
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const subId = btn.closest('.tab-group').dataset.sub;
+                    const tagId = btn.dataset.tag;
+                    
+                    state.activeTag[subId] = tagId;
+                    
+                    // Update tab buttons
+                    btn.closest('.tab-group').querySelectorAll('.tab-btn').forEach(b => {
+                        b.classList.toggle('active', b.dataset.tag === tagId);
+                    });
+                    
+                    // Pause all videos in this sub-section before switching
+                    document.querySelectorAll(`.tag-content[data-sub="${subId}"] video`).forEach(v => {
+                        v.pause();
+                    });
+                    
+                    // Show/hide tag content
+                    document.querySelectorAll(`.tag-content[data-sub="${subId}"]`).forEach(c => {
+                        c.classList.toggle('active', c.dataset.tag === tagId);
+                    });
+                    
+                    history.replaceState(null, '', '#' + state.lang + '/' + tagId);
+                });
+            });
+            
+            // Lang switching
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    switchLang(btn.dataset.lang);
+                });
+            });
+            
+            // Bind video click-to-play overlays
+            bindVideoOverlays();
+        }
+        
+        // === Hash Navigation ===
+        function parseHash() {
+            const raw = window.location.hash.slice(1);
+            if (!raw) return null;
+            const slash = raw.indexOf('/');
+            if (slash > 0) {
+                const lang = raw.slice(0, slash);
+                const tagId = raw.slice(slash + 1);
+                if (lang === 'zh' || lang === 'en') {
+                    return { lang, tagId };
+                }
+            }
+            return { lang: null, tagId: raw };
+        }
+        
+        function navigateFromHash() {
+            const parsed = parseHash();
+            if (!parsed) return;
+            
+            if (parsed.lang && parsed.lang !== state.lang) {
+                switchLang(parsed.lang);
+                setTimeout(() => navigateToTag(parsed.tagId), 100);
+            } else {
+                navigateToTag(parsed.tagId);
+            }
+        }
+        
+        function navigateToTag(tagId) {
+            const el = document.getElementById('tag-' + tagId);
+            if (!el) return false;
+            
+            const subId = el.dataset.sub;
+            
+            state.activeTag[subId] = tagId;
+            const tabGroup = document.querySelector(`.tab-group[data-sub="${subId}"]`);
+            if (tabGroup) {
+                tabGroup.querySelectorAll('.tab-btn').forEach(b => {
+                    b.classList.toggle('active', b.dataset.tag === tagId);
+                });
+            }
+            document.querySelectorAll(`.tag-content[data-sub="${subId}"]`).forEach(c => {
+                c.classList.toggle('active', c.dataset.tag === tagId);
+            });
+            
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return true;
+        }
+        
+        // === Init ===
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === state.lang);
+            });
+            document.documentElement.lang = state.lang === 'zh' ? 'zh-CN' : 'en';
+            render();
+            
+            if (window.location.hash) {
+                setTimeout(() => navigateFromHash(), 150);
+            }
+        });
+        
+        window.addEventListener('hashchange', () => {
+            navigateFromHash();
+        });
+    </script>
+</body>
+</html>
